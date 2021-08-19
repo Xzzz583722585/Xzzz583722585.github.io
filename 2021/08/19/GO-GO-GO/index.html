@@ -18,7 +18,7 @@
   <meta name="author" content="Jon Xiao">
   <meta name="keywords" content="">
   
-  <title>DDD-001-对一个未完成项目的总结 - Jon Xzzz</title>
+  <title>GO!GO!GO! - Jon Xzzz</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
 
@@ -115,7 +115,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="DDD-001-对一个未完成项目的总结">
+            <span class="h2" id="subtitle" title="GO!GO!GO!">
               
             </span>
 
@@ -125,8 +125,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-08-19 19:51" pubdate>
-        2021年8月19日 晚上
+      <time datetime="2021-08-19 17:46" pubdate>
+        2021年8月19日 下午
       </time>
     </span>
   
@@ -137,7 +137,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      39 字
+      1.2k 字
     </span>
   
 
@@ -147,7 +147,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1
+      12
        分钟
     </span>
   
@@ -177,10 +177,38 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">DDD-001-对一个未完成项目的总结</h1>
+            <h1 style="display: none">GO!GO!GO!</h1>
             
             <div class="markdown-body">
-              <h1 id="DDD-001-对一个未完成项目的总结"><a href="#DDD-001-对一个未完成项目的总结" class="headerlink" title="DDD-001-对一个未完成项目的总结"></a>DDD-001-对一个未完成项目的总结</h1><h2 id="现公司（为了不和未来冲突，就简称ZXJY吧）技术架构所面临的问题"><a href="#现公司（为了不和未来冲突，就简称ZXJY吧）技术架构所面临的问题" class="headerlink" title="现公司（为了不和未来冲突，就简称ZXJY吧）技术架构所面临的问题"></a>现公司（为了不和未来冲突，就简称ZXJY吧）技术架构所面临的问题</h2>
+              <h1 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h1><p>本文是我个人博客的起点，故多说点废话。</p>
+<p>首先说点最近的个人经历吧，有关于我对目前想要探讨的问题在时间上有个脉络。</p>
+<ul>
+<li>我是在研究生一年级入学前开始学习大数据相关知识，如基本思潮、hdoop、spark等，当时在没有实践基础的情况下，主要的学习内容是相关工具/框架的搭建、编码使用以及技术细节。</li>
+<li>在研究生一年级学习中，又系统地学习了大数据相关更多的知识，如Hive、Hbas、Spark &amp; Spark Streaming、Zookeeper等等，所学内容与之前无异。</li>
+<li>与此同时，由于本人导师的原因，又接触到了许多工程/软件工程/敏捷相关的思想课程，如《精益创业》、看板、Scrum、极限编程等（有愧的是一直没有深入系统的去看过DevOps相关书籍，只是泛泛地看过大佬们的博客，就不当作学习吧）。</li>
+<li>再之后，即2019年上半年在上海的某家公司实习时，由于所处项目正在微服务化改造，故又去系统学习了微服务，主要书籍有《微服务架构设计模式》、《微服务设计》、《Spring 微服务实战》、Martin Flower等大佬们的各种博客，有了微服务，就总有一个绕不过去的坎–如何拆分为服务？之前的这些文章中，都或多或少的讲解过这个问题，也或明或暗的牵扯到了DDD、六边形架构、整洁架构等概念。</li>
+<li>我实习所处的产品组，做的事简单说就是「AI模型部署」，这个过程中涉及到的知识有云计算相关（k8s、网关、灰度/蓝绿/金丝雀部署、集群监控、集群报警）、DevOps相关。</li>
+<li>后续回到学校，又去研究了分布式相关的概念和知识，这里要重重的推荐一本书–《数据密集型应用系统设计》。</li>
+<li>研究生毕业后，我去某国企参加了他们电商项目的微服务化改造项目，与之前的实习相比，这次我去的早，真正的从0到1体验到了到了这个过程。</li>
+<li>工作一年不到，因为一些个人原因，跳槽到了一家互联网企业。在这里，除了日常的业务工作，我们开始了对之前微服务项目的整合（这个后续会细说，又是一个电商迁移项目，但整个公司所面对的问题简单说就是微服务一开始拆的太细了），项目结构是面向DDD的，整个开发过程中的设计策略也是DDD的那一套，我们按下不表。</li>
+</ul>
+<p>说了这么多细枝末节，连云计算和大数据都扯出来了，我这是要干嘛？其实我一直有一种糊涂的感觉，就是我觉得我刚才所说的这些知识，它们是有深刻联系的，在思想上、在技术上都有，我想要理清这个脉络，所以我需要按照一些方式去梳理他。所以我开启了我的博客行，旨在解决个人问题……^_^</p>
+<p>什么联系？</p>
+<p>细节不说，我所学习的大数据知识告诉我最重要的思想是「分而治之」，除此以外，我在学习大数据相关框架/工具的技术细节时，与之后学习分布式相关的知识不谋而合，或者说，大数据相关工具就是对这些分布式理论知识的实践（所以学习分布式时接受的也特别快～）。在微服务的整个学习过程中，分布式的影子无处不。，在思想层面，「分而治之」依旧影响着一切。至于底层的实现细节，微服务与分布式所面对的问题，也有了联系上。还是那个问题，如何拆分微服务？又引出了DDD、六边形架构等等，那么去看这些概念，「分而治之」再一次在另一个维度闪耀。</p>
+<p>这或许就是我目前所能写出的联系吧，但我觉得不止于此处，故现在开始我的学习之旅，在未来的一段时间，我想要探究以下问题。</p>
+<ul>
+<li>微服务、DDD、六边形等架构、DevOps、分布式之间的关系</li>
+<li>这些技术的历史发展</li>
+<li>这些技术的细节探究</li>
+<li>相关架构的研讨</li>
+</ul>
+<p>内容很多，路也很长，我一步一步走，就今年而言，重点放在以下两个系列。</p>
+<ul>
+<li>DDD 理论/实践总结</li>
+<li>以时间轴为视角，总结各架构核心理念（灵感来源）</li>
+</ul>
+<p>那，就开始吧。</p>
+
             </div>
             <hr>
             <div>
@@ -200,15 +228,15 @@
                   <article class="post-prev col-6">
                     
                     
+                      <a href="/Xzzz58372585.github.io/2021/08/19/DDD-001-%E5%AF%B9%E4%B8%80%E4%B8%AA%E6%9C%AA%E5%AE%8C%E6%88%90%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%80%BB%E7%BB%93/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">DDD-001-对一个未完成项目的总结</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
                   </article>
                   <article class="post-next col-6">
                     
-                    
-                      <a href="/Xzzz58372585.github.io/2021/08/19/GO-GO-GO/">
-                        <span class="hidden-mobile">GO!GO!GO!</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
                     
                   </article>
                 </div>

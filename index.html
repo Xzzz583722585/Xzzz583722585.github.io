@@ -76,6 +76,18 @@
             </li>
           
         
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
         
           <li class="nav-item" id="search-btn">
             <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
@@ -145,8 +157,9 @@
           
             
           
-          DDD-001-对一个未完成项目的总结ZXJY公司技术架构所面临的问题核心问题：微服务数量过多（充分说明了互联网公司与国企文化的不同，尤其当公司年轻人居多时，其大胆敢干的气质冲突凸显了出来）。
-ZXJY从2015年开始全面使用微服务架构后，服务的数量就开始飞涨。某些研发组甚至发展到了，一个业务功能一个微服务的程度（往往是按照数据库表来划分的）。在一开始感受到微服务带来的分工和模块化的优点之后，团队
+          DDD-001-对一个未完成项目的总结前言本文内容为ZXJY公司内部系统架构、代码、文章、讨论的归纳总结，以及本人对各问题的思考。因保密相关，涉及到敏感内容，会以网络普遍讨论的模型为例。
+ZXJY公司系统架构所面临的问题核心问题：微服务数量过多。
+ZXJY从2015年开始全面使用微服务架构后，服务的数量就开始飞涨。某些研发组甚至发展到了，一个业务功能一个微服务的程度（往往是按照数据库表来划分的，这
         </a>
       </p>
 
@@ -159,6 +172,13 @@ ZXJY从2015年开始全面使用微服务架构后，服务的数量就开始飞
             </time>
           </div>
         
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Domain-Driven-Design/">Domain Driven Design</a>
+            
+          </div>
         
         
       </div>
@@ -254,8 +274,59 @@ ZXJY从2015年开始全面使用微服务架构后，服务的数量就开始飞
      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
   </div>
   
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
 
   
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        京ICP证123456号
+      </a>
+    </span>
+    
+      
+        <span>
+          <a
+            href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+            rel="nofollow noopener"
+            class="beian-police"
+            target="_blank"
+          >
+            
+              <span style="visibility: hidden; width: 0">|</span>
+              <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+            
+            <span>京公网安备12345678号</span>
+          </a>
+        </span>
+      
+    
+  </div>
+
 
   
 </footer>
@@ -306,6 +377,8 @@ ZXJY从2015年开始全面使用微服务架构后，服务的数量就开始飞
   <script  src="/js/local-search.js" ></script>
 
 
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
 
 
 

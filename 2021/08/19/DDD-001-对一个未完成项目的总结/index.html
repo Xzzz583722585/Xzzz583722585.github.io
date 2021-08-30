@@ -372,19 +372,19 @@
 <p>微服务架构最大的好处是给出了非常清晰的模块边界。以前我们会让一个微服务来对应一个功能模块，导致粒度非常细。问题在于随着业务的变化，边界也是会随之变化的，如果我们过早通过微服务来实现边界，后续修改的成本是极高的。因此我们不应该再轻易独立出微服务，而是尽量在服务内部划分清晰的功能边界。</p>
 <p>目前我们的服务架构都是遵照三层架构，基本分为展示层、逻辑层、存储层，每一层内没有更多划分模块的规范。因为我们把系统功能拆分成为多个微服务，而且之前实践中往往把微服务拆的过小，因此一般逻辑都比较简单，每一层内不隔离问题也不大。不过之后每个微服务要处理相对完整的业务逻辑，粒度会变大，单个服务的复杂度会上升。因此简单的按层次来划分已经不够，此时的最佳实践应当是根据功能来划分。</p>
 <h2 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h2><p>下面剖析电商项目。</p>
-<h3 id="代码结构"><a href="#代码结构" class="headerlink" title="代码结构"></a>代码结构</h3><p><img src="/images/DDD-001/logic_view.png" srcset="/img/loading.gif" lazyload></p>
-<p><img src="/images/DDD-001/code_struct.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="代码结构"><a href="#代码结构" class="headerlink" title="代码结构"></a>代码结构</h3><p><img src="/images/DDD/001/logic_view.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/images/DDD/001/code_struct.png" srcset="/img/loading.gif" lazyload></p>
 <p>项目整体结构参考六边形架构，将业务逻辑隐藏在 backend 模块内，即六边形的内部。</p>
-<p><img src="/images/DDD-001/code_struct_admin.png" srcset="/img/loading.gif" lazyload></p>
-<p><img src="/images/DDD-001/code_struct_consumer.png" srcset="/img/loading.gif" lazyload></p>
-<p><img src="/images/DDD-001/code_struct_job.png" srcset="/img/loading.gif" lazyload></p>
-<p><img src="/images/DDD-001/code_struct_rpc.png" srcset="/img/loading.gif" lazyload></p>
-<p><img src="/images/DDD-001/code_struct_web.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/images/DDD/001/code_struct_admin.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/images/DDD/001/code_struct_consumer.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/images/DDD/001/code_struct_job.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/images/DDD/001/code_struct_rpc.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/images/DDD/001/code_struct_web.png" srcset="/img/loading.gif" lazyload></p>
 <p>admin、consumer、job、rpc、web 都属于接口，分别对应了web（B端与C端）、mq、定时任务、rpc这些系统可能的调用方，满足其需求。可以看出，接口相互之间互不影响，当需要满足新的调用方式时，只需要添加对应的模块，处理对应的请求即可，真正的业务逻辑永远保持在领域内。</p>
-<p><img src="/images/DDD-001/code_struct_client.png" srcset="/img/loading.gif" lazyload></p>
-<p><img src="/images/DDD-001/code_struct_common.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/images/DDD/001/code_struct_client.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/images/DDD/001/code_struct_common.png" srcset="/img/loading.gif" lazyload></p>
 <p>由于使用 thrift 作为 rpc 协议，故在 common 模块内定义 thrift schema，在 client 封装对于 thrift 借口的调用，方便调用方使用。而 rpc 请求真正的处理者，是前文所讲的 rpc 模块内的 rpc handler。</p>
-<p><img src="/images/DDD-001/code_struct_backend.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/images/DDD/001/code_struct_backend.png" srcset="/img/loading.gif" lazyload></p>
 <ul>
 <li><p>application</p>
 <p>application 层是对对外所暴露接口的实现，属于主适配器，有编排多个领域以及防腐层的职责。</p>

@@ -149,7 +149,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      3.2k 字
+      3.4k 字
     </span>
   
 
@@ -159,7 +159,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      35
+      36
        分钟
     </span>
   
@@ -260,9 +260,13 @@
 </ul>
 <p>有几个重要问题探讨一下。</p>
 <ul>
-<li>为什么部分系统的 view 模块，即负责数据展示，又负责提供用户输入入口？按照一开始的设计，这本应该由 view 和 controller 分别负责。</li>
-<li>为什么没有了消息广播机制？</li>
-<li>为什么 model 的更新消息不像之前一样，直接传递给 view，而是要经过 controller？</li>
+<li><p>为什么有些系统的 view 模块，即负责数据展示，又负责提供用户输入入口？按照一开始的设计，这本应该由 view 和 controller 分别负责。</p>
+<p>以 java web 项目为例，无论是前后端分离的项目，还是由 jsp 这类框架动态生成的 html 页面的项目，用户在这种 B/S 架构（留坑）下，读写操作所交互的对象都是浏览器页面。用户没有与后端系统直接交互的手段，用户的所有操作都需要经由浏览器页面，向后端系统发送 http 请求，再由后端系统返回给浏览器的 http 响应，向用户展示最新数据。</p>
+</li>
+<li><p>为什么没有了消息广播机制？</p>
+</li>
+<li><p>为什么 model 的更新消息不像之前一样，直接传递给 view，而是要经过 controller？</p>
+</li>
 </ul>
 <p>MVC 结构具有设计清晰、易于扩展、模块分离的特点，适用于多用户、可扩展、可维护、高交互性的系统，因此在构建 Web 应用中具有显著的优势。MVC 结构很好地表达了用户与系统的交互模式，以及整个系统的程序架构模式。MVC 结构可以很方便的用多个 view 来显示数据，从而可以使系统能方便的支持其它新的客户端类型。对于开发人员来讲，由于 MVC 分离了系统中的数据控制和数据表现 ,从而可以分清开发者的责任，后台开发人员可以专注业务的处理，前台开发人员专注于用户交互界面的设计，从而加快产品开发及推向市场的速度。</p>
 <h2 id="MVCS"><a href="#MVCS" class="headerlink" title="MVCS"></a>MVCS</h2><h2 id="MVP"><a href="#MVP" class="headerlink" title="MVP"></a>MVP</h2><h2 id="MVVM"><a href="#MVVM" class="headerlink" title="MVVM"></a>MVVM</h2><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a target="_blank" rel="noopener" href="https://folk.universitetetioslo.no/trygver/2007/MVC_Originals.pdf">Trygve Reenskaug.THING-MODEL-VIEW-EDITOR, 1979.</a></p>

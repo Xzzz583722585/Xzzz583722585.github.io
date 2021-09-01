@@ -267,18 +267,19 @@
                   
                 
                 
-  <div id="valine"></div>
+  <div id="gitalk-container"></div>
   <script type="text/javascript">
-    Fluid.utils.loadComments('#valine', function() {
-      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', function() {
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js', function() {
         var options = Object.assign(
-          {"appId":"SAmnq0afTzl9DvACTmD2ys0H-gzGzoHsz","appKey":"yxbky5wsCPQcibrgyi8HmBtm","placeholder":"少侠切磋切磋武艺吧...","path":"window.location.pathname","avatar":"retro","meta":["nick","mail"],"pageSize":10,"lang":"zh-CN","visitor":true,"highlight":true,"recordIP":true,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false,"requiredFields":[]},
+          {"clientID":"64e7a0af76ea907275e7","clientSecret":"58fc6a6232d3179936704144df3ddeef170c2fdd","repo":"bolg-comment","owner":"Xzzz583722585","admin":["Xzzz583722585"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
           {
-            el: "#valine",
-            path: window.location.pathname
+            id: 'aab0c5865707d05f8c7e440ebeb8784a'
           }
         )
-        new Valine(options);
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
       });
     });
   </script>

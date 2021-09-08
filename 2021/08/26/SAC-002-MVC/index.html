@@ -149,7 +149,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      4.3k 字
+      5.4k 字
     </span>
   
 
@@ -159,7 +159,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      46
+      59
        分钟
     </span>
   
@@ -256,7 +256,7 @@
 <p>与之对应的，负责应用程序逻辑的开发人员定义为开发角色，他们负责数据查询、验证、处理等。</p>
 </li>
 <li><p>view</p>
-<p>与之前基本一致，view 是 model 的外在表现。view 控制数据的显示方式以及。具体地说，view 负责用户图形界面管理，包括所有表单、按钮、图形元素和所有其他 HTML 元素。通过将应用程序的设计与应用程序的实现相分离，当设计人员决定通过更改表格来更改应用程序界面时，将大大降低出错的风险。 同时，开发人员的工作也大大减少，因为他不再需要查看 HTML 代码元素、设计元素和图形元素。一个 model 可以对应一个或者多个 view。</p>
+<p>与之前基本一致，view 是 model 的外在表现。view 控制数据的显示方式。具体地说，view 负责用户图形界面管理，包括所有表单、按钮、图形元素和所有其他 HTML 元素。通过将应用程序的设计与应用程序的实现相分离，当设计人员决定通过更改表格来更改应用程序界面时，将大大降低出错的风险。 同时，开发人员的工作也大大减少，因为他不再需要查看 HTML 代码元素、设计元素和图形元素。一个 model 可以对应一个或者多个 view。</p>
 <p><strong>与之前不同的是，部分系统的实现中，view 还负责与用户的交互方式。</strong>在这些系统中，view 具有与外界交互的功能，管理着应用系统与外界的接口。一方面，view 为外界提供输入功能，并触发业务逻辑运行；另一方面，view 又将业务逻辑运行的结果以某种形式显示给外界。</p>
 <p>与之对应的，负责应用程序外观和展示的开发人员定义为设计角色，他们负责显示从开发角色处获取的数据。</p>
 </li>
@@ -290,11 +290,42 @@
 </ul>
 <p>MVC 结构具有设计清晰、易于扩展、模块分离的特点，适用于多用户、可扩展、可维护、高交互性的系统，因此在构建 Web 应用中具有显著的优势。MVC 结构很好地表达了用户与系统的交互模式，以及整个系统的程序架构模式。MVC 结构可以很方便的用多个 view 来显示数据，从而可以使系统能方便的支持其它新的客户端类型。对于开发人员来讲，由于 MVC 分离了系统中的数据控制和数据表现 ,从而可以分清开发者的责任，后台开发人员可以专注业务的处理，前台开发人员专注于用户交互界面的设计，从而加快产品开发及推向市场的速度。</p>
 <p><strong>我认为，消息广播机制并不影响 MVC 核心思想–分治在具体系统上的应用，故对这种机制可做取舍。但是，读写分离是 view 与 controller 天生定义所带来的职责区别，所以，若是没有了读写分离，那就不应该叫 MVC 架构，而应该是 MVP 架构。</strong></p>
-<h2 id="MVCS"><a href="#MVCS" class="headerlink" title="MVCS"></a>MVCS</h2><p>网上关于 MVCS 架构的讨论比较少。我们在此不关注到底是 MVC 中分离出了 Service 还是 MVP 中分离出了 Service，</p>
+<h2 id="MVCS"><a href="#MVCS" class="headerlink" title="MVCS"></a>MVCS</h2><p>本节我们讨论 MVCS 架构，网上关于此架构的讨论较少。MVCS 中的 S 指的是 service 层。我们先不关注到底是 MVC 中分离出了 Service 还是 MVP 中分离出了 Service，从而形成了 MVCS 的架构（虽然看名字是 MVC 细分演化出来的 S），我们先来探讨下 service 的职责，以及细分出 service 的原因。</p>
+<p>我们模拟一个“茶柜”展示的业务，所要做的事就是在 html 页面上展示一个茶产品的列表。自然，“茶”就是我们抽象出来的业务对象，数据库也有一张 tea table。</p>
+<p>下面是以 spring mvc 为框架的 java web 常见的项目结构。简单介绍一下：</p>
+<ul>
+<li><p>controller</p>
+<p>这部分是 spring mvc 框架中 controller 的实现，下图是 spring mvc 框架的 http 请求处理流程图（读者可以简要感受其原理，深入探讨需学习 servlet + spring mvc 相关知识，本文不过多涉及）。</p>
+<p><img src="/images/SAC/MVC/spring_mvc1.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/images/SAC/MVC/spring_mvc2.jpeg" srcset="/img/loading.gif" lazyload></p>
+<p>spring mvc 流程简单说就是当 http 请求到达时，由 dispatcherServlet 根据 url、请求类型等条件选择由哪个 handler （例如 TeaController）处理请求，handler中调用实际的业务处理方（即本例中的 service）。业务处理方处理完成后，返回结果，由 handler 将结果封装为 modelAndView 对象，交由 viewResolver 处理，生出渲染对象返回给前端 web 浏览器显示。</p>
+<p>可以看出，整个 spring mvc 框架的职责对应 MVC 架构中的 controler 模块，负责协调 view 与 model 之间的关系，进行调度。</p>
+</li>
+<li><p>service + storage</p>
+<p>service 与 storage 其实是职责细分的结果。</p>
+<ul>
+<li><p>service 负责定义数据行为。</p>
+</li>
+<li><p>storage 负责数据存储访问。数据存储并不特定于具体的数据库，诸如 MySQL、Redis、HDFS，甚至是本地文件系统、第三方应用都可以。换言之，ORM 框架只是我们在编写服务端访问数据库代码的语法糖，即 ORM 框架不是数据存储模块本身，而是实现数据存储的工具之一。我们的“数据”仍然存储在各类数据库中，storage 负责服务端与数据库端的交互，数据与访问数据都是 model 模块的一部分。</p>
+</li>
+</ul>
+<p>entity 与 PO（persistant object） 的关系是怎么样的？在细分了 service 与 storage 后，这两者的关系是清晰的，即 entity 负责数据的业务逻辑抽象，PO 表示数据的逻辑存储。在没有细分 service 与 storage 的 MVC 架构中，可以区分 entity 与 PO 给予他们上述职责，但更多的可能是将entity 与 PO 混为一谈，即一个类负责了这两块职责，使得业务代码与数据库细节耦合在一起。但是无论怎么说，这些实现都依然属于 model 模块的定义，即负责数据与数据行为。</p>
+<p>贫血模型、充血模型影响到 model 模块了吗？贫血模型将数据与数据行为分开，充血模型将数据与部分数据行为放在一起，总言之，依然属于 model 模块的职责范围。</p>
+</li>
+<li><p>html + css + js</p>
+<p>这部分负责控制数据的显示方式，以及与用户的交互方式。故对应 MVC 中的 view 模块与 conrtoller 模块的部分职责。与之前所讲并无区别。</p>
+<p>目前流行的前后端分离框架中，使用较多的 vue、react 等语言，自有其官方推荐的文件组织结构，与此处所举例并无本质区别。在讲到 MVVM 架构之前，对这部分我们不做过多延展。但是，需要注意的是，正如之前所讲，可以看到，controller 模块的职责是协调 view 与 model 之间的关系，其实现是涉及到 B/S 架构中前后端两部分的，并不独立存在。</p>
+<p>像 jsp 这样的动态网页开发技术，其本质是使用 java 语言封装了 html 页面的生成过程。换言之，jsp 的作用就是生成 html 页面，但真正负责数据显示的仍然是 html + css + js 这些技术，故 jsp 应该视为 MVC 架构中的 controller 模块。</p>
+</li>
+</ul>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs markdown"><span class="hljs-bullet">-</span> controller<br>---- TeaController<br>---- QueryTeaController<br><span class="hljs-bullet">-</span> service<br>---- TeaService<br>---- impl<br>-------- TeaServiceImpl<br><span class="hljs-bullet">-</span> storage<br>---- TeaStorage<br>-------- TeaStorageImpl<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs markdown"><span class="hljs-bullet">-</span> html<br>---- teaList.html<br><span class="hljs-bullet">-</span> css<br>---- teaList.css<br><span class="hljs-bullet">-</span> js<br>---- teaList.js<br></code></pre></td></tr></table></figure>
+
+<p>经过探讨，笔者认为 MVCS 架构的核心是<strong>将数据的业务表达与存储表达区分开</strong>。即业务表达负责定义并实现数据行为，向上提供接口。存储表达负责管理数据存储实现交互细节，与业务脱钩。</p>
+<p>在基于这个定义的基础上，可以反思很多。例如，很多项目将部分业务逻辑实现在了 sql 语句上，这是错误的。正确做法是，首先思考 service 是否要提供该数据行为，在 service 需要提供的基础上，何种数据访问方式（可能是写 sql）能实现这一行为。</p>
 <h2 id="MVP"><a href="#MVP" class="headerlink" title="MVP"></a>MVP</h2><h2 id="MVVM"><a href="#MVVM" class="headerlink" title="MVVM"></a>MVVM</h2><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a target="_blank" rel="noopener" href="https://folk.universitetetioslo.no/trygver/2007/MVC_Originals.pdf">Trygve Reenskaug.THING-MODEL-VIEW-EDITOR, 1979.</a></p>
 <p><a target="_blank" rel="noopener" href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.388.2266&rep=rep1&type=pdf">Adele Goldberg.Smalltalk-80: The Interactive Programming Environment, 1984.</a></p>
-<p><a target="_blank" rel="noopener" href="http://heaveneverywhere.com/stp/PostScript/mvc.pdf">Glenn E. Krasner.A Description of the Model-View-Controller User Interface Paradigm in the Smalltalk-80 System, 1988.</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.ixueshu.com/document/81e5a832fcfc1019.html">路荣幸.J2EE 平台上 MVC 设计模式的研究与实现, 2003.</a></p>
 <p><a target="_blank" rel="noopener" href="https://pdf.sciencedirectassets.com/278653/1-s2.0-S1877705814X00020/1-s2.0-S187770581400352X/main.pdf?X-Amz-Security-Token=IQoJb3JpZ2luX2VjEH4aCXVzLWVhc3QtMSJGMEQCIHc8mQO8Xz3tRDpHYqSrP/Ry9jGIQ34lFez/rSuVfoseAiBlCNu+KUYZoXw0S1GL3pSQnxV02UzwETl0RXq/0nv1ASqDBAi2//////////8BEAQaDDA1OTAwMzU0Njg2NSIMDxrH7laEvfWEj51EKtcD1pVPGdkhPhPfFhxJxrIUDkQCkABfA1k97pShjs5vjQ1Mxzxjc+ikAAgzcw+17pF1HkVVrQcqWR7+Rl8WL0HDuLp8NfyQUmpxyD2gZsa8KkU/QovaQUGuMRAJCWlODemCspy7CHyhJXSxsbfRqO1Gnk6VklR1DwEP1lEOn3Oq1CRhI+PlJj2T/efZCJO+SwADMhtU9REQ5z8len68ckwKwdVSaMSVnH8cJ1lwpH5o8UKTZB9h9a7YZyZaxI24vrrCQQ1fhcjz58sx5Z8KDRIOYyLRoqlqk+vRx7H+cnndWI3vN63iK1qFrTXnFzJlvJF0TKULP63iFPZ6bgu3IXyzPqzZ83q646Xxw3IJMKEjgX8oFbqVu7w5THXnbtjxlVjxmyNWuAO/+9YUAgLOlNzP84+b1ZWUmj3d06cb2gUUEKnIF5kLpt/8zeFk+aYRZJgZzy4MYlHynbdMa4u9n93ETAi+jaxXvBzRMss1Z46t4tiSCQGx59rP6reT54SMaCkEiUdfqETLhq52abZ66GKwpoR5ci9aaW57wGRNq/NhTRl2J3xCprbQ8BOjMi9qbZVFpfZwMfXdwmf4WCnZP5OEQB3TCt13VkyL6gG6QoCnqVWRy1t3l9x5MLLVsYkGOqYBj36DquA2msyX9hmkNp9YdnEGxl9C3yVVNU+8qbgjxDBaQsPrG/0fiMupNzlNUvXFjcsuvFHyokR96xItOweKYbGOcc14H+KVp9U1wvkr9dAQ5IeNMgLosyS9JfQVy3VdWRF9G1AdWGtonkumFnrDhPnnGlhlrQcnIUXTZNUyXRTsdlG9zLdMGaRtDGqhOk1CYYeW1E1F4OF+TYLtvV5EpmAI7ZsUwA==&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20210830T061856Z&X-Amz-SignedHeaders=host&X-Amz-Expires=300&X-Amz-Credential=ASIAQ3PHCVTYWWRCNY73/20210830/us-east-1/s3/aws4_request&X-Amz-Signature=a14fbae4f5014af539585b0a560486fb97c5630a5ab72987b254ab5fb18ac730&hash=5902936a72d87db3275f4fe2aaa2a34bfa8a5f0a15cb91f81f8b039318205651&host=68042c943591013ac2b2430a89b270f6af2c76d8dfd086a07176afe7c76c2c61&pii=S187770581400352X&tid=spdf-9afc5b5d-6a90-40cc-a1e0-743a3a825bb8&sid=9315aae8544ba24f036a61d42bd1116b0a42gxrqa&type=client">Dragos-Paul Pop.Designing an MVC Model for Rapid Web Application Development, 2013.</a></p>
 
             </div>
@@ -322,6 +353,12 @@
                 <div class="post-prevnext">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2021/09/08/DDD-002-%E6%97%A5%E5%BF%97%E5%AE%9E%E8%B7%B5%E6%80%BB%E7%BB%93/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">DDD-002-日志实践总结</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">

@@ -149,7 +149,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      5.4k 字
+      5.6k 字
     </span>
   
 
@@ -159,7 +159,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      59
+      60
        分钟
     </span>
   
@@ -304,13 +304,14 @@
 <li><p>service + storage</p>
 <p>service 与 storage 其实是职责细分的结果。</p>
 <ul>
-<li><p>service 负责定义数据行为。</p>
+<li><p>service 负责定义业务领域上的数据行为。</p>
 </li>
-<li><p>storage 负责数据存储访问。数据存储并不特定于具体的数据库，诸如 MySQL、Redis、HDFS，甚至是本地文件系统、第三方应用都可以。换言之，ORM 框架只是我们在编写服务端访问数据库代码的语法糖，即 ORM 框架不是数据存储模块本身，而是实现数据存储的工具之一。我们的“数据”仍然存储在各类数据库中，storage 负责服务端与数据库端的交互，数据与访问数据都是 model 模块的一部分。</p>
+<li><p>storage 负责数据存储访问。数据存储并不特定于具体的数据库，诸如 MySQL、Redis、HDFS，甚至是本地文件系统、第三方应用都可以。ORM 框架只是我们在编写服务端访问数据库代码的语法糖，即 ORM 框架不是数据存储模块本身，而是实现数据存储的工具之一。我们的“数据”仍然存储在各类数据库中，storage 负责服务端与数据库端的交互。</p>
 </li>
 </ul>
-<p>entity 与 PO（persistant object） 的关系是怎么样的？在细分了 service 与 storage 后，这两者的关系是清晰的，即 entity 负责数据的业务逻辑抽象，PO 表示数据的逻辑存储。在没有细分 service 与 storage 的 MVC 架构中，可以区分 entity 与 PO 给予他们上述职责，但更多的可能是将entity 与 PO 混为一谈，即一个类负责了这两块职责，使得业务代码与数据库细节耦合在一起。但是无论怎么说，这些实现都依然属于 model 模块的定义，即负责数据与数据行为。</p>
-<p>贫血模型、充血模型影响到 model 模块了吗？贫血模型将数据与数据行为分开，充血模型将数据与部分数据行为放在一起，总言之，依然属于 model 模块的职责范围。</p>
+<p>一方面，在细分了 service 与 storage 后，entity 与 PO（persistant object）的关系是清晰的，即 entity 负责数据的业务逻辑抽象，PO 表示数据的逻辑格式。在没有细分 service 与 storage 的 MVC 架构中，可以区分 entity 与 PO 并给予他们上述职责，但更多的可能是将entity 与 PO 混为一谈，即一个类负责了这两块职责，使得业务代码与数据库细节耦合在一起。但是无论怎么说，这些实现都依然属于 model 模块的定义，即负责数据与数据行为。</p>
+<p>另一方面，贫血模型将数据与数据行为分开，充血模型将数据与部分数据行为放在一起。总言之，无论是使用贫血模型还是充血模型的 entity，整个 service + storage + entity + PO 依然属于 model 模块的职责范围。</p>
+<p>总结，service + entity 的组合定义了业务领域的数据与数据行为，storage + PO 定义了底层存储（当然不是指硬盘这样的底层）层面的数据格式和访问方式。数据与访问数据都是 model 模块的一部分。需要注意的是，按照这样的职责划分，service/entity 不应该依赖于 storage/PO，storage/PO 应该依赖于 service/entity。即 service/entity 是业务领域的概念，并不关心底层实现细节。</p>
 </li>
 <li><p>html + css + js</p>
 <p>这部分负责控制数据的显示方式，以及与用户的交互方式。故对应 MVC 中的 view 模块与 conrtoller 模块的部分职责。与之前所讲并无区别。</p>
@@ -322,7 +323,7 @@
 
 <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs markdown"><span class="hljs-bullet">-</span> html<br>---- teaList.html<br><span class="hljs-bullet">-</span> css<br>---- teaList.css<br><span class="hljs-bullet">-</span> js<br>---- teaList.js<br></code></pre></td></tr></table></figure>
 
-<p>经过探讨，笔者认为 MVCS 架构的核心是<strong>将数据的业务表达与存储表达区分开</strong>。即业务表达负责定义并实现数据行为，向上提供接口。存储表达负责管理数据存储实现交互细节，与业务脱钩。</p>
+<p>经过探讨，笔者认为 MVCS 架构的核心是<strong>将数据的业务表达与存储表达区分开</strong>。即业务表达负责定义并实现业务领域上的数据与数据行为，向上提供接口。存储表达负责管理数据存储，与业务脱钩。</p>
 <p>在基于这个定义的基础上，可以反思很多。例如，很多项目将部分业务逻辑实现在了 sql 语句上，这是错误的。正确做法是，首先思考 service 是否要提供该数据行为，在 service 需要提供的基础上，何种数据访问方式（可能是写 sql）能实现这一行为。</p>
 <h2 id="MVP"><a href="#MVP" class="headerlink" title="MVP"></a>MVP</h2><h2 id="MVVM"><a href="#MVVM" class="headerlink" title="MVVM"></a>MVVM</h2><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a target="_blank" rel="noopener" href="https://folk.universitetetioslo.no/trygver/2007/MVC_Originals.pdf">Trygve Reenskaug.THING-MODEL-VIEW-EDITOR, 1979.</a></p>
 <p><a target="_blank" rel="noopener" href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.388.2266&rep=rep1&type=pdf">Adele Goldberg.Smalltalk-80: The Interactive Programming Environment, 1984.</a></p>

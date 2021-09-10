@@ -149,7 +149,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      876 字
+      2.8k 字
     </span>
   
 
@@ -159,7 +159,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      16
+      37
        分钟
     </span>
   
@@ -202,21 +202,34 @@
             <div class="markdown-body">
               <p>暂时不知道说啥，但是要感谢 hgraca 的博客专栏<a target="_blank" rel="noopener" href="https://herbertograca.com/2017/07/03/the-software-architecture-chronicles/">《The Software Architecture Chronicles》</a>给予我灵感。</p>
 <p>暂定目标是：前期总结自己经历学习的架构知识，对一些模棱两可的概念深挖到底，尽力丰富自己的见识，并沉淀下来一些属于自己的感悟。</p>
+<p>A software architecture is an abstraction of the run-time elements of a software system during some phase of its operation.A system may be composed of many levels of abstraction and many phases of operation, each with its own software architecture.</p>
+<p><strong>软件体系结构</strong>是一个软件系统的运行时间的元素在其操作期间的某些阶段的抽象。一个系统可能由许多抽象层次和许多操作阶段组成，每个阶段都有自己的软件架构。</p>
+<p>软件架构的核心是抽象原则：通过封装隐藏系统的一些细节，以便更好地识别和维持其属性 。一个复杂的系统将包含许多抽象层次，每个层次都有自己的架构。架构代表该级别系统行为的抽象，因此架构元素由它们提供给该级别其他元素的抽象接口来描述 [ <a target="_blank" rel="noopener" href="https://www.ics.uci.edu/~fielding/pubs/dissertation/references.htm#ref_9">9</a>]。在每个元素中可以找到另一个体系结构，定义子元素系统，这些子元素实现由父元素的抽象接口表示的行为。架构的这种递归一直延续到最基本的系统元素：那些不能分解为较不抽象的元素的元素。</p>
+<p>除了架构的层次，一个软件系统通常会有多个操作阶段，如启动、初始化、正常处理、重新初始化和关闭。系统架构的整体描述不仅必须能够描述系统架构在每个阶段的操作行为，还必须能够描述阶段之间转换的架构。</p>
+<p>我们将软件架构的视图与源代码的视图分开，以便专注于独立于给定组件实现的软件运行时特性。因此，架构设计和源代码结构设计虽然密切相关，但却是独立的设计活动。</p>
+<p>A software architecture is defined by a configuration of architectural elements–components, connectors, and data–constrained in their relationships in order to achieve a desired set of architectural properties.</p>
+<p>软件架构是由架构元素（组件、连接器和数据）的配置定义的，这些元素在它们的关系中受到约束，以实现一组所需的架构属性。架构元素包括处理、数据和连接元素。形式是由元素的属性和元素之间的关系——即对元素的约束来定义的。通过捕捉选择建筑风格、选择元素和形式的动机，基本原理为建筑提供了潜在的基础。</p>
+<p>我对软件架构的定义是 Perry 和 Wolf [ <a target="_blank" rel="noopener" href="https://www.ics.uci.edu/~fielding/pubs/dissertation/references.htm#ref_105">105</a> ] 模型中定义的详细版本，除了我排除了基本原理。尽管基本原理是软件架构研究和架构描述的一个重要方面，但将其包含在软件架构的定义中将意味着设计文档是运行时系统的一部分。基本原理的存在与否可以影响架构的演变，但是，一旦构成，架构就独立于其存在的原因。反射系统 [ <a target="_blank" rel="noopener" href="https://www.ics.uci.edu/~fielding/pubs/dissertation/references.htm#ref_80">80</a>] 可以使用过去表现的特征来改变未来的行为，但这样做是用另一个较低级别的架构替换一个较低级别的架构，而不是在这些架构中包含基本原理。因此，我们对软件架构的定义包括架构属性，而不是基本原理。基本原理解释了这些属性，缺乏基本原理可能会导致架构随着时间的推移逐渐衰败或退化，但基本原理本身并不是架构的一部分。</p>
+<p>The architecture of a software system defines that system in terms of components and of interactions among those components.</p>
+<p>软件系统的体系结构根据组件和这些组件之间的交互来定义该系统。除了指定系统的结构和拓扑外，体系结构还显示了系统需求和所构建系统的元素之间的预期对应关系。这种模型无法充分描述基于网络的软件架构，因为系统内数据元素的性质、位置和移动通常是系统行为的最重要决定因素</p>
+<p>A component is an abstract unit of software instructions and internal state that provides a transformation of data via its interface.</p>
+<p>组件是软件指令和内部状态的抽象单元，通过其接口提供数据转换。每个组件的行为都是架构的一部分，只要该行为可以从另一个组件的角度观察或辨别 。换句话说，一个组件是由它的接口和它提供给其他组件的服务定义的，而不是由它在接口后面的实现来定义的</p>
+<p>A connector is an abstract mechanism that mediates communication, coordination, or cooperation among components.</p>
+<p>连接器是一种抽象机制，用于调解组件之间的通信、协调或合作。连接器通过将数据元素从一个接口传输到另一个接口而不更改数据来实现组件之间的通信。相比之下，组件可能（但并非总是）从外部角度转换数据。</p>
+<p>A datum is an element of information that is transferred from a component, or received by a component, via a connector.</p>
+<p>数据是通过连接器从组件传输或由组件接收的信息元素。示例包括字节序列、消息、编组参数和序列化对象，但不包括永久驻留或隐藏在组件中的信息。组件还可以生成数据，例如时钟或传感器的软件封装。</p>
+<p>A configuration is the structure of architectural relationships among components, connectors, and data during a period of system run-time.</p>
+<p>配置是系统运行期间组件、连接器和数据之间架构关系的结构。组件，它是计算的位置。连接器，定义组件之间的交互。配置，它们是交互组件和连接器的集合。</p>
+<p>An architectural style is a coordinated set of architectural constraints that restricts the roles/features of architectural elements and the allowed relationships among those elements within any architecture that conforms to that style.</p>
+<p>架构风格是一组协调的架构约束，它限制架构元素的角色/特征以及在符合该风格的任何架构中这些元素之间允许的关系。由于架构体现了功能性和非功能性属性，因此很难直接比较不同类型系统的架构，甚至是不同环境中设置的相同类型系统的架构。样式是一种对架构进行分类并定义其共同特征的机制 [ <a target="_blank" rel="noopener" href="https://www.ics.uci.edu/~fielding/pubs/dissertation/references.htm#ref_38">38</a> ]。每种风格都为组件的交互提供了一个抽象，通过忽略架构其余部分的附带细节来捕捉交互模式的本质 [ <a target="_blank" rel="noopener" href="https://www.ics.uci.edu/~fielding/pubs/dissertation/references.htm#ref_117">117</a> ]。架构风格封装了有关架构元素的重要决策，并强调了对元素及其关系的重要约束。此定义允许仅关注架构的连接器或组件接口的特定方面的样式。</p>
+<p>具体来说，架构风格决定了可在该风格实例中使用的组件和连接器的词汇，以及关于如何组合它们的一组约束 [ <a target="_blank" rel="noopener" href="https://www.ics.uci.edu/~fielding/pubs/dissertation/references.htm#ref_53">53</a> ]。这种对架构风格的限制性观点是他们对软件架构定义的直接结果——将架构视为一种正式的描述，而不是一个正在运行的系统，这导致了仅基于方框图和线图的共享模式的抽象。</p>
+<p>由于将一组命名的约束称为样式可以更容易地传达常见约束的特征，因此我们使用架构样式作为一种抽象方法，而不是作为个性化设计的指标。</p>
 <style>
     .cd-timeline.svelte-1t2uafz .svelte-1t2uafz,.cd-timeline.svelte-1t2uafz .svelte-1t2uafz::after,.cd-timeline.svelte-1t2uafz .svelte-1t2uafz::before{-webkit-box-sizing:border-box;box-sizing:border-box}.cd-timeline.svelte-1t2uafz{font-size:1.6rem;font-family:"Droid Serif", serif;color:#7f8c97;background-color:#e9f0f5}.cd-timeline.svelte-1t2uafz a{color:#acb7c0;text-decoration:none}.cd-timeline.svelte-1t2uafz img{max-width:100%}.cd-timeline.svelte-1t2uafz h1,h2{font-family:"Open Sans", sans-serif;font-weight:bold}.cd-timeline.svelte-1t2uafz{overflow:hidden;margin:2em auto}.cd-timeline__container.svelte-1t2uafz{position:relative;width:90%;max-width:1170px;margin:0 auto;padding:2em 0}.cd-timeline__container.svelte-1t2uafz::before{content:'';position:absolute;top:0;left:18px;height:100%;width:4px;background:#d7e4ed}@media only screen and (min-width: 1170px){.cd-timeline.svelte-1t2uafz{margin-top:3em;margin-bottom:3em}.cd-timeline__container.svelte-1t2uafz::before{left:50%;margin-left:-2px}}.cd-timeline__block.svelte-1t2uafz{position:relative;margin:2em 0}.cd-timeline__block.svelte-1t2uafz:after{content:"";display:table;clear:both}.cd-timeline__block.svelte-1t2uafz:first-child{margin-top:0}.cd-timeline__block.svelte-1t2uafz:last-child{margin-bottom:0}@media only screen and (min-width: 1170px){.cd-timeline__block.svelte-1t2uafz{margin:4em 0}}.cd-timeline__img.svelte-1t2uafz{position:absolute;top:0;left:0;width:40px;height:40px;border-radius:50%;-webkit-box-shadow:0 0 0 4px white, inset 0 2px 0 rgba(0, 0, 0, 0.08), 0 3px 0 4px rgba(0, 0, 0, 0.05);box-shadow:0 0 0 4px white, inset 0 2px 0 rgba(0, 0, 0, 0.08), 0 3px 0 4px rgba(0, 0, 0, 0.05)}.cd-timeline__img.svelte-1t2uafz{background:#75ce66}@media only screen and (min-width: 1170px){.cd-timeline__img.svelte-1t2uafz{width:60px;height:60px;left:50%;margin-left:-30px;-webkit-transform:translateZ(0);transform:translateZ(0)}}@-webkit-keyframes svelte-1t2uafz-cd-bounce-1{0%{opacity:0;-webkit-transform:scale(0.5);transform:scale(0.5)}60%{opacity:1;-webkit-transform:scale(1.2);transform:scale(1.2)}100%{-webkit-transform:scale(1);transform:scale(1)}}@keyframes svelte-1t2uafz-cd-bounce-1{0%{opacity:0;-webkit-transform:scale(0.5);transform:scale(0.5)}60%{opacity:1;-webkit-transform:scale(1.2);transform:scale(1.2)}100%{-webkit-transform:scale(1);transform:scale(1)}}.cd-timeline__content.svelte-1t2uafz{position:relative;margin-left:60px;background:white;border-radius:0.25em;padding:1em;-webkit-box-shadow:0 3px 0 #d7e4ed;box-shadow:0 3px 0 #d7e4ed}.cd-timeline__content.svelte-1t2uafz:after{content:"";display:table;clear:both}.cd-timeline__content.svelte-1t2uafz::before{content:'';position:absolute;top:16px;right:100%;height:0;width:0;border:7px solid transparent;border-right:7px solid white}.cd-timeline__content.svelte-1t2uafz h2.svelte-1t2uafz{color:#303e49}.cd-timeline__content.svelte-1t2uafz p,.cd-timeline__date.svelte-1t2uafz{font-size:1.3rem}.cd-timeline__content.svelte-1t2uafz p{margin:1em 0;line-height:1.6}.cd-timeline__date.svelte-1t2uafz{display:inline-block}.cd-timeline__date.svelte-1t2uafz{float:left;padding:.8em 0;opacity:.7}@media only screen and (min-width: 768px){.cd-timeline__content.svelte-1t2uafz h2.svelte-1t2uafz{font-size:2rem}.cd-timeline__content.svelte-1t2uafz p{font-size:1.6rem}.cd-timeline__date.svelte-1t2uafz{font-size:1.4rem}}@media only screen and (min-width: 1170px){.cd-timeline__content.svelte-1t2uafz{margin-left:0;padding:1.6em;width:45%;-webkit-transform:translateZ(0);transform:translateZ(0)}.cd-timeline__content.svelte-1t2uafz::before{top:24px;left:100%;border-color:transparent;border-left-color:white}.cd-timeline__date.svelte-1t2uafz{position:absolute;width:100%;left:122%;top:6px;font-size:1.6rem}.cd-timeline__block.svelte-1t2uafz:nth-child(even) .cd-timeline__content.svelte-1t2uafz{float:right}.cd-timeline__block.svelte-1t2uafz:nth-child(even) .cd-timeline__content.svelte-1t2uafz::before{top:24px;left:auto;right:100%;border-color:transparent;border-right-color:white}.cd-timeline__block.svelte-1t2uafz:nth-child(even) .cd-timeline__date.svelte-1t2uafz{left:auto;right:122%;text-align:right}}@-webkit-keyframes svelte-1t2uafz-cd-bounce-2{0%{opacity:0;-webkit-transform:translateX(-100px);transform:translateX(-100px)}60%{opacity:1;-webkit-transform:translateX(20px);transform:translateX(20px)}100%{-webkit-transform:translateX(0);transform:translateX(0)}}@keyframes svelte-1t2uafz-cd-bounce-2{0%{opacity:0;-webkit-transform:translateX(-100px);transform:translateX(-100px)}60%{opacity:1;-webkit-transform:translateX(20px);transform:translateX(20px)}100%{-webkit-transform:translateX(0);transform:translateX(0)}}@-webkit-keyframes svelte-1t2uafz-cd-bounce-2-inverse{0%{opacity:0;-webkit-transform:translateX(100px);transform:translateX(100px)}60%{opacity:1;-webkit-transform:translateX(-20px);transform:translateX(-20px)}100%{-webkit-transform:translateX(0);transform:translateX(0)}}@keyframes svelte-1t2uafz-cd-bounce-2-inverse{0%{opacity:0;-webkit-transform:translateX(100px);transform:translateX(100px)}60%{opacity:1;-webkit-transform:translateX(-20px);transform:translateX(-20px)}100%{-webkit-transform:translateX(0);transform:translateX(0)}}
     </style>
 <section class="cd-timeline js-cd-timeline svelte-1t2uafz">
     <div class="cd-timeline__container svelte-1t2uafz">
-        <div class="cd-timeline__block js-cd-block svelte-1t2uafz">
-            <div class="cd-timeline__img cd-timeline__img--movie js-cd-img svelte-1t2uafz">
-            </div>
-            <div class="cd-timeline__content js-cd-content svelte-1t2uafz">
-                <h2 class="svelte-1t2uafz">MVC</h2>
-                <p>...<a href="http://www.jonxzzz.xyz/2021/08/26/SAC-002-MVC/">link</a></p>
-
-                <span class="cd-timeline__date svelte-1t2uafz">1979</span>
-            </div>
-        </div>
+        
     </div>
 </section>
 
@@ -233,6 +246,13 @@
                     
                   </div>
                 
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/editing/">editing</a>
+                    
+                  </div>
                 
               </div>
               

@@ -149,7 +149,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      5.6k 字
+      6.2k 字
     </span>
   
 
@@ -159,7 +159,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      60
+      67
        分钟
     </span>
   
@@ -208,7 +208,7 @@
 <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs markdown">将应用程序划分为三种组件，模型 - 视图 - 控制器（MVC）设计定义它们之间的相互作用。<br><br><span class="hljs-bullet">*</span> 模型（Model） 用于封装与应用程序的业务逻辑相关的数据以及对数据的处理方法。“ Model ”有对数据直接访问的权力，例如对数据库的访问。“Model”不依赖“View”和“Controller”，也就是说， Model 不关心它会被如何显示或是如何被操作。但是 Model 中数据的变化一般会通过一种刷新机制被公布。为了实现这种机制，那些用于监视此 Model 的 View 必须事先在此 Model 上注册，从而，View 可以了解在数据 Model 上发生的改变。（比如：观察者模式）<br><br><span class="hljs-bullet">*</span> 视图（View）能够实现数据有目的的显示（理论上，这不是必需的）。在 View 中一般没有程序上的逻辑。为了实现 View 上的刷新功能，View 需要访问它监视的数据模型（Model），因此应该事先在被它监视的数据那里注册。<br><br><span class="hljs-bullet">*</span> 控制器（Controller）起到不同层面间的组织作用，用于控制应用程序的流程。它处理事件并作出响应。“事件”包括用户的行为和数据 Model 上的改变。<br></code></pre></td></tr></table></figure>
 
 <p>好像看起来这两个定义不是那么相同。那么，我想问的是，为什么会有这些差异？究竟什么是业务？维基百科所提到的刷新机制是什么？凡此种种，让我尝试给出 MVC 的严谨定义，再着眼于繁杂的工程领域实现。</p>
-<h2 id="THING-MODEL-VIEW-EDITOR"><a href="#THING-MODEL-VIEW-EDITOR" class="headerlink" title="THING-MODEL-VIEW-EDITOR"></a>THING-MODEL-VIEW-EDITOR</h2><p>我们从 wiki 公认的最早提出 MVC 概念的文章《THING-MODEL-VIEW-EDITOR》，以及同一时期的书籍《Smalltalk-80: The Interactive Programming Environment》出发。</p>
+<h2 id="1979-THING-MODEL-VIEW-EDITOR"><a href="#1979-THING-MODEL-VIEW-EDITOR" class="headerlink" title="1979 THING-MODEL-VIEW-EDITOR"></a>1979 THING-MODEL-VIEW-EDITOR</h2><p>我们从 wiki 公认的最早提出 MVC 概念的文章《THING-MODEL-VIEW-EDITOR》，以及同一时期的书籍《Smalltalk-80: The Interactive Programming Environment》出发。</p>
 <p>在 Smalltalk-80 系统早期版本的用户界面往往由四种元素组成：文本、文本列表（菜单）、按钮和图形（位图或像素图）。这些元素具有三种基本的用户交互方式：浏览、查看和编辑。故由 Smalltalk-80 系统提出的 MVC ，其核心目标就是定义可共享的用户界面组件。换句话说，MVC 架构就是一种系统模块化，它具有模块化的好处：将功能模块相互隔离，使其应用程序设计人员更容易了解和修改每个特定模块，而无需了解其他模块的一切。</p>
 <p>MVC 将系统分解为三部分：</p>
 <ul>
@@ -242,7 +242,7 @@
 </li>
 </ul>
 <p>可以看出，MVC 是一种解决用户控制复杂大型数据集问题的通用方案，让用户可以从多个角度控制他们的数据。MVC 有利于数据封装和代码复用。</p>
-<h2 id="MVC"><a href="#MVC" class="headerlink" title="MVC"></a>MVC</h2><p>参考几个不同时期的国内外论文，以及笔者的项目经验，看看 MVC 架构在实践中是什么样的。</p>
+<h2 id="MVC"><a href="#MVC" class="headerlink" title="MVC"></a>MVC</h2><p>随着软件不断发展，UI设计、交互方式、网络协议的不断创新，web 的普及等等事件的发生，传统的 MVC 架构已经不能很好的支持应用的发展，故出现了各种 MVC 变种。</p>
 <p><img src="/images/SAC/MVC/mvc1.png" srcset="/img/loading.gif" lazyload></p>
 <p><img src="/images/SAC/MVC/mvc2.png" srcset="/img/loading.gif" lazyload></p>
 <p><img src="/images/SAC/MVC/mvc_flow_chart2.png" srcset="/img/loading.gif" lazyload></p>
@@ -251,17 +251,17 @@
 <p>从功能职责的角度，MVC 明确了数据访问与处理的一般流程，从数据存储、数据处理、请求处理、数据展示这一链路出发，将系统划分为 model、view、controller 三块。这不仅简化了项目结构，使得后续开发类似项目（如 CRUD 类型的管理平台）有迹可循，而且明确了团队分工，降低企业成本，增加沟通效率。</p>
 <p>我们再一次对 MVC 进行定义：</p>
 <ul>
-<li><p>model</p>
+<li><p><strong>model–领域逻辑</strong></p>
 <p>与之前基本一致，model 是利用面向对象方法，将现实世界问题域中的对象抽象为应用程序对象。在这些抽象对象中封装了业务属性和业务逻辑（需要注意的是，这里并不是说一定要用充血模型甚至胀血模型，因为可以将数据和方法封装在不同的对象中）。<a name="model_work">model 管理与数据相关的所有任务：数据验证、控制会话状态、控制数据源结构（数据库）。</a>  model 拥有与不同数据源交互的方法。</p>
 <p>与之对应的，负责应用程序逻辑的开发人员定义为开发角色，他们负责数据查询、验证、处理等。</p>
 </li>
-<li><p>view</p>
+<li><p><strong>view–展示逻辑</strong></p>
 <p>与之前基本一致，view 是 model 的外在表现。view 控制数据的显示方式。具体地说，view 负责用户图形界面管理，包括所有表单、按钮、图形元素和所有其他 HTML 元素。通过将应用程序的设计与应用程序的实现相分离，当设计人员决定通过更改表格来更改应用程序界面时，将大大降低出错的风险。 同时，开发人员的工作也大大减少，因为他不再需要查看 HTML 代码元素、设计元素和图形元素。一个 model 可以对应一个或者多个 view。</p>
-<p><strong>与之前不同的是，部分系统的实现中，view 还负责与用户的交互方式。</strong>在这些系统中，view 具有与外界交互的功能，管理着应用系统与外界的接口。一方面，view 为外界提供输入功能，并触发业务逻辑运行；另一方面，view 又将业务逻辑运行的结果以某种形式显示给外界。</p>
+<p><strong>与之前不同的是，部分系统的实现中，view 还负责与用户的交互方式。</strong>在这些系统中，view 具有与外界交互的功能，管理着应用系统与外界的接口。一方面，view 为外界提供输入功能，并触发业务逻辑运行（这里若是换一种理解方式，仅仅将 view 视为用户行为事件的触发器或低级事件，在做出简单处理后向 controller 发送高级事件；而 controller 则提供了处理该高级事件的接口，并作出响应，这样就没有了所带来的职责混淆的问题，但无论如何，对于 view 和 controller 职责的定义在此没有发生变化）；另一方面，view 又将业务逻辑运行的结果以某种形式显示给外界。</p>
 <p>与之对应的，负责应用程序外观和展示的开发人员定义为设计角色，他们负责显示从开发角色处获取的数据。</p>
 </li>
-<li><p>controller</p>
-<p>与之前基本一致，controller 管理 view 和 model 之间的关系。controller 负责响应用户请求，与 model 交互并决定应该由哪个 view 显示结果。controller 还负责为用户提供输入入口。</p>
+<li><p><strong>controller–应用程序逻辑</strong></p>
+<p>与之前基本一致，controller 管理 view 和 model 之间的关系。controller 负责响应用户请求，与 model 交互并决定应该由哪个 view 显示结果，即将 view 传递的事件转换为对 model 的操作。controller 还负责为用户提供输入入口。</p>
 <p><strong>与之前不同的是，部分系统的实现中，controller 使用 view 传输进来的外部信息，对 model 进行更新；同时，model 的更新与修改也将通过 controller 来通知 view，从而保持 view 与 model 的一致。</strong></p>
 <p>与之对应的，负责前两个角色的工作粘合起来的开发人员定义为集成角色。</p>
 </li>
@@ -288,8 +288,9 @@
 <p>不是所有业务都需要这样的消息通知机制去实时的同步数据，而且考虑到实现这种机制所带来的成本增加，放弃也就不难理解了。</p>
 </li>
 </ul>
-<p>MVC 结构具有设计清晰、易于扩展、模块分离的特点，适用于多用户、可扩展、可维护、高交互性的系统，因此在构建 Web 应用中具有显著的优势。MVC 结构很好地表达了用户与系统的交互模式，以及整个系统的程序架构模式。MVC 结构可以很方便的用多个 view 来显示数据，从而可以使系统能方便的支持其它新的客户端类型。对于开发人员来讲，由于 MVC 分离了系统中的数据控制和数据表现 ,从而可以分清开发者的责任，后台开发人员可以专注业务的处理，前台开发人员专注于用户交互界面的设计，从而加快产品开发及推向市场的速度。</p>
-<p><strong>我认为，消息广播机制并不影响 MVC 核心思想–分治在具体系统上的应用，故对这种机制可做取舍。但是，读写分离是 view 与 controller 天生定义所带来的职责区别，所以，若是没有了读写分离，那就不应该叫 MVC 架构，而应该是 MVP 架构。</strong></p>
+<p>总结一下，MVC 结构具有设计清晰、易于扩展、模块分离的特点，适用于多用户、可扩展、可维护、高交互性的系统，因此在构建 Web 应用中具有显著的优势。MVC 结构很好地表达了用户与系统的交互模式，以及整个系统的程序架构模式。MVC 结构可以很方便的用多个 view 来显示数据，从而可以使系统能方便的支持其它新的客户端类型。对于开发人员来讲，由于 MVC 分离了系统中的数据控制和数据表现 ,从而可以分清开发者的责任，后台开发人员可以专注业务的处理，前台开发人员专注于用户交互界面的设计，从而加快产品开发及推向市场的速度。</p>
+<p><strong>我认为，消息广播机制并不影响 MVC 核心思想–分治在具体系统上的应用，故对这种机制可做取舍。但是，读写分离是 view 与 controller 天生定义所带来的职责区别，所以，若是没有了读写分离，那就不应该是传统 MVC 架构，而应该是拓展 MVC 架构。</strong></p>
+<p><strong>MVC 的核心是通过“分治”的思想划分出职责明确的各个模块，并确定数据在模块间的通信、同步过程。</strong></p>
 <h2 id="MVCS"><a href="#MVCS" class="headerlink" title="MVCS"></a>MVCS</h2><p>本节我们讨论 MVCS 架构，网上关于此架构的讨论较少。MVCS 中的 S 指的是 service 层。我们先不关注到底是 MVC 中分离出了 Service 还是 MVP 中分离出了 Service，从而形成了 MVCS 的架构（虽然看名字是 MVC 细分演化出来的 S），我们先来探讨下 service 的职责，以及细分出 service 的原因。</p>
 <p>我们模拟一个“茶柜”展示的业务，所要做的事就是在 html 页面上展示一个茶产品的列表。自然，“茶”就是我们抽象出来的业务对象，数据库也有一张 tea table。</p>
 <p>下面是以 spring mvc 为框架的 java web 常见的项目结构。简单介绍一下：</p>
@@ -325,9 +326,16 @@
 
 <p>经过探讨，笔者认为 MVCS 架构的核心是<strong>将数据的业务表达与存储表达区分开</strong>。即业务表达负责定义并实现业务领域上的数据与数据行为，向上提供接口。存储表达负责管理数据存储，与业务脱钩。</p>
 <p>在基于这个定义的基础上，可以反思很多。例如，很多项目将部分业务逻辑实现在了 sql 语句上，这是错误的。正确做法是，首先思考 service 是否要提供该数据行为，在 service 需要提供的基础上，何种数据访问方式（可能是写 sql）能实现这一行为。</p>
-<h2 id="MVP"><a href="#MVP" class="headerlink" title="MVP"></a>MVP</h2><h2 id="MVVM"><a href="#MVVM" class="headerlink" title="MVVM"></a>MVVM</h2><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a target="_blank" rel="noopener" href="https://folk.universitetetioslo.no/trygver/2007/MVC_Originals.pdf">Trygve Reenskaug.THING-MODEL-VIEW-EDITOR, 1979.</a></p>
+<h2 id="1996-MVP"><a href="#1996-MVP" class="headerlink" title="1996 MVP"></a>1996 MVP</h2><p><em>确保任何操作演示文稿的代码只操作演示文稿，将所有域和数据源逻辑推送到程序的明确分开的区域。</em></p>
+<p>这种模式是一种分层形式，我们将表示代码和域代码保存在单独的层中，域代码不知道表示代码。</p>
+<p>表示代码将操纵富客户端应用程序中的 GUI 小部件和结构、Web 应用程序中的 HTTP 标头和 HTML，或命令行应用程序中的命令行参数和打印语句。然后我们将应用程序划分为两个逻辑模块，所有表示代码在一个模块中，其余的在另一个模块中。</p>
+<p>进一步分层通常用于将数据源代码与域（业务逻辑）分开，并使用<a target="_blank" rel="noopener" href="https://www.martinfowler.com/eaaCatalog/serviceLayer.html">服务层</a>将域分开。出于分离表示的目的， 我们可以忽略这些进一步的层，将所有这些都称为“领域层”。请记住，域层的进一步分层是可能的。</p>
+<p>除了分隔之外，还有一个严格的可见性规则。演示文稿能够调用域，但反之则不行。这可以作为构建的一部分使用依赖项检查工具进行检查。这里的重点是域应该完全不知道可以使用哪些演示文稿。这既有助于将关注点分开，也支持使用具有相同域代码的多个演示文稿。</p>
+<p>尽管域无法调用演示文稿，但如果发生任何更改，域通常需要通知演示文稿。<a target="_blank" rel="noopener" href="http://www.amazon.com/exec/obidos/tg/detail/-/0201633612">Observer</a>是解决这个问题的常用方法。域触发一个事件，通过演示观察到该事件，然后演示根据需要从域中重新读取数据。</p>
+<h2 id="MVVM"><a href="#MVVM" class="headerlink" title="MVVM"></a>MVVM</h2><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a target="_blank" rel="noopener" href="https://folk.universitetetioslo.no/trygver/2007/MVC_Originals.pdf">Trygve Reenskaug.THING-MODEL-VIEW-EDITOR, 1979.</a></p>
 <p><a target="_blank" rel="noopener" href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.388.2266&rep=rep1&type=pdf">Adele Goldberg.Smalltalk-80: The Interactive Programming Environment, 1984.</a></p>
 <p><a target="_blank" rel="noopener" href="https://pdf.sciencedirectassets.com/278653/1-s2.0-S1877705814X00020/1-s2.0-S187770581400352X/main.pdf?X-Amz-Security-Token=IQoJb3JpZ2luX2VjEH4aCXVzLWVhc3QtMSJGMEQCIHc8mQO8Xz3tRDpHYqSrP/Ry9jGIQ34lFez/rSuVfoseAiBlCNu+KUYZoXw0S1GL3pSQnxV02UzwETl0RXq/0nv1ASqDBAi2//////////8BEAQaDDA1OTAwMzU0Njg2NSIMDxrH7laEvfWEj51EKtcD1pVPGdkhPhPfFhxJxrIUDkQCkABfA1k97pShjs5vjQ1Mxzxjc+ikAAgzcw+17pF1HkVVrQcqWR7+Rl8WL0HDuLp8NfyQUmpxyD2gZsa8KkU/QovaQUGuMRAJCWlODemCspy7CHyhJXSxsbfRqO1Gnk6VklR1DwEP1lEOn3Oq1CRhI+PlJj2T/efZCJO+SwADMhtU9REQ5z8len68ckwKwdVSaMSVnH8cJ1lwpH5o8UKTZB9h9a7YZyZaxI24vrrCQQ1fhcjz58sx5Z8KDRIOYyLRoqlqk+vRx7H+cnndWI3vN63iK1qFrTXnFzJlvJF0TKULP63iFPZ6bgu3IXyzPqzZ83q646Xxw3IJMKEjgX8oFbqVu7w5THXnbtjxlVjxmyNWuAO/+9YUAgLOlNzP84+b1ZWUmj3d06cb2gUUEKnIF5kLpt/8zeFk+aYRZJgZzy4MYlHynbdMa4u9n93ETAi+jaxXvBzRMss1Z46t4tiSCQGx59rP6reT54SMaCkEiUdfqETLhq52abZ66GKwpoR5ci9aaW57wGRNq/NhTRl2J3xCprbQ8BOjMi9qbZVFpfZwMfXdwmf4WCnZP5OEQB3TCt13VkyL6gG6QoCnqVWRy1t3l9x5MLLVsYkGOqYBj36DquA2msyX9hmkNp9YdnEGxl9C3yVVNU+8qbgjxDBaQsPrG/0fiMupNzlNUvXFjcsuvFHyokR96xItOweKYbGOcc14H+KVp9U1wvkr9dAQ5IeNMgLosyS9JfQVy3VdWRF9G1AdWGtonkumFnrDhPnnGlhlrQcnIUXTZNUyXRTsdlG9zLdMGaRtDGqhOk1CYYeW1E1F4OF+TYLtvV5EpmAI7ZsUwA==&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20210830T061856Z&X-Amz-SignedHeaders=host&X-Amz-Expires=300&X-Amz-Credential=ASIAQ3PHCVTYWWRCNY73/20210830/us-east-1/s3/aws4_request&X-Amz-Signature=a14fbae4f5014af539585b0a560486fb97c5630a5ab72987b254ab5fb18ac730&hash=5902936a72d87db3275f4fe2aaa2a34bfa8a5f0a15cb91f81f8b039318205651&host=68042c943591013ac2b2430a89b270f6af2c76d8dfd086a07176afe7c76c2c61&pii=S187770581400352X&tid=spdf-9afc5b5d-6a90-40cc-a1e0-743a3a825bb8&sid=9315aae8544ba24f036a61d42bd1116b0a42gxrqa&type=client">Dragos-Paul Pop.Designing an MVC Model for Rapid Web Application Development, 2013.</a></p>
+<p><a target="_blank" rel="noopener" href="https://stefanoborini.com/book-modelviewcontroller/">Stefano Borini.Understanding Model-View-Controller.2019</a></p>
 
             </div>
             <hr>
@@ -341,6 +349,13 @@
                     
                   </div>
                 
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/editing/">editing</a>
+                    
+                  </div>
                 
               </div>
               

@@ -229,7 +229,7 @@
 <ul>
 <li>字符串增长时<ul>
 <li>空间预分配：sds不仅仅申请刚刚可用的新空间，他还会额外申请一些预留空间，以减少重新进行内存分配的次数</li>
-<li><img src="/Users/xiaoqizong/Desktop/%E9%A1%B9%E7%9B%AE/redis/sds%E4%BF%AE%E6%94%B9.png" srcset="/img/loading.gif" lazyload alt="sds修改"></li>
+<li><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/redis/sds_edit.png" srcset="/img/loading.gif" lazyload></li>
 </ul>
 </li>
 <li>字符串减短时<ul>
@@ -264,7 +264,7 @@
 <p>另外，此处的链表不是双向链表，所以采用头插法快速添加新节点（多嘴说一句，并发环境下，头插法可能产生循环链表问题，jdk8前后的解决方法并不相同，感兴趣的小伙伴可以搜一搜，但是单线程的redis并不存在这个问题）</p>
 <h3 id="3-3-如何维护hash冲突的概率？"><a href="#3-3-如何维护hash冲突的概率？" class="headerlink" title="3.3.如何维护hash冲突的概率？"></a>3.3.如何维护hash冲突的概率？</h3><p>介绍一个概念：负载因子=桶已被使用的大小/桶总大小，可以看出，若负载因子过大，则产生hash冲突的可能性就更高，若负载因子过小，则空间利用率就变低。因此，根据负载因子大小，在合适的时机调整桶大小就变的尤为重要。</p>
 <p>下面是redis执行的rehash的具体步骤：</p>
-<p><img src="/Users/xiaoqizong/Desktop/%E9%A1%B9%E7%9B%AE/%E6%9C%AA%E5%91%BD%E5%90%8D%E6%96%87%E4%BB%B6%E5%A4%B9/rehash.png" srcset="/img/loading.gif" lazyload alt="rehash"></p>
+<p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/redis/rehash.png" srcset="/img/loading.gif" lazyload></p>
 <ul>
 <li>负载因子过大：<ul>
 <li>服务器没有执行 <a target="_blank" rel="noopener" href="https://www.runoob.com/redis/server-bgsave.html">BGSAVE</a> 或 <a target="_blank" rel="noopener" href="https://www.runoob.com/redis/server-bgrewriteaof.html">BGREWRITEAOF</a> 命令时，&gt;=1，这是因为这些命令都会采取写时复制的手段来优化子进程的执行效率，那么就需要降低非必要的内存写入操作</li>
@@ -282,14 +282,14 @@
 <p>很明显，在rehash期间，插入操作会直接在ht[1]桶上完成（保证ht[0]只减不增，另外，先插入到ht[0]再rehash到ht[1]也太傻了），删除、更改、查询操作都会先检索ht[0]，数据不存在时再检索ht[1]得到最终结果</p>
 <h2 id="4-跳表"><a href="#4-跳表" class="headerlink" title="4.跳表"></a>4.跳表</h2><p>鉴于大学的数据结构课本或者《算法导论》这样的书上都没有跳表的内容，所以我们得先介绍下跳表这种数据结构（这里奉上原始论文，感兴趣的同学可以看看<a target="_blank" rel="noopener" href="https://15721.courses.cs.cmu.edu/spring2018/papers/08-oltpindexes1/pugh-skiplists-cacm1990.pdf%EF%BC%89%E3%80%82">https://15721.courses.cs.cmu.edu/spring2018/papers/08-oltpindexes1/pugh-skiplists-cacm1990.pdf）。</a></p>
 <p>这是一个链表：</p>
-<p><img src="/Users/xiaoqizong/Desktop/%E9%A1%B9%E7%9B%AE/redis/skiplist1.png" srcset="/img/loading.gif" lazyload alt="skiplist1"></p>
+<p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/redis/skiplist1.png" srcset="/img/loading.gif" lazyload></p>
 <p>我们给他加一点索引，用来加快检索速度：</p>
-<p><img src="/Users/xiaoqizong/Desktop/%E9%A1%B9%E7%9B%AE/redis/skiplist2.png" srcset="/img/loading.gif" lazyload alt="skiplist2"></p>
+<p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/redis/skiplist2.png" srcset="/img/loading.gif" lazyload></p>
 <p>当数据量特别大的时候，我们可能需要多层索引，获取更好的检索速度：</p>
-<p><img src="/Users/xiaoqizong/Desktop/%E9%A1%B9%E7%9B%AE/redis/skiplist3.png" srcset="/img/loading.gif" lazyload alt="skiplist3"></p>
+<p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/redis/skiplist3.png" srcset="/img/loading.gif" lazyload></p>
 <p>好了，我们可以做一个优化，即相同元素（初始元素及该元素代表的索引）只使用一个节点即可。</p>
 <p>这就是跳表，我们来看下跳表如何检索一个元素（下述跳表中查找71）：</p>
-<p><img src="/Users/xiaoqizong/Desktop/%E9%A1%B9%E7%9B%AE/redis/skiplist4.png" srcset="/img/loading.gif" lazyload alt="skiplist4"></p>
+<p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/redis/skiplist4.png" srcset="/img/loading.gif" lazyload></p>
 <p>其时间复杂度 = 索引的高度 * 每层索引遍历元素的个数，假设每两个结点会抽出一个结点作为上一级索引的结点，原始的链表有n个元素，则一级索引有n/2 个元素、二级索引有 n/4 个元素、k级索引就有 n/2k个元素。那么跳表的总高度 h = log2n。并且，上层两个索引中间对应的下层索引个数最多为3，即时间复杂度=O(log2n)。</p>
 <p>空间复杂度显然等于 n/2+n/4+…+n/h=O(n)。</p>
 <p>那么，接下来的问题就变成了，随着元素的插入/删除，我们应该如何去维护跳表的索引，以使其保持优良的性能？</p>
@@ -297,14 +297,14 @@
 <p>另一种方案，即跳表天才的设计，用概率来维护索引。即每个元素都有1/2的概率建立上层索引，当数据量足够大时，我们有理由相信这种概率建立起来的索引是离散的，即所有元素不会堆积在一起。</p>
 <p>那么，我们来看一下跳表如何插入元素。假设在我们插入元素时，有一个函数randomLevel(x)，其返回值表示应该为这个元素新建几层索引。例如，randomLevel(x)=2，则新建1层索引。我们保证，randomLevel(x)函数有1/2的概率返回1，有1/4的概率返回2，以此类推。有的小伙伴会问，为什么不是randomLevel(x)=1新建一层索引呢？这是因为，只要randomLevel(x)&gt;1那么就会新建第一层的索引，那么randomLevel(x)=1的概率为1/2，就等同于第一层索引不被建立的概率等于1/2，那么，只要randomLevel(x)=2我们再开始建立索引就可以了。</p>
 <p>我们举一个插入87的例子，randomLevel(87)=3，</p>
-<p><img src="/Users/xiaoqizong/Desktop/%E9%A1%B9%E7%9B%AE/redis/skiplist5.png" srcset="/img/loading.gif" lazyload alt="skiplist5"></p>
+<p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/redis/skiplist5.png" srcset="/img/loading.gif" lazyload></p>
 <p>最后看一眼删除（删除87），我们只需要该元素整个删除即可（包括该元素代表的索引）：</p>
-<p><img src="/Users/xiaoqizong/Desktop/%E9%A1%B9%E7%9B%AE/redis/skiplist6.png" srcset="/img/loading.gif" lazyload alt="skiplist6"></p>
+<p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/redis/skiplist6.png" srcset="/img/loading.gif" lazyload></p>
 <p>至此，我们可以介绍下redis的跳表了。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SkipList</span> </span>&#123;<br>  <span class="hljs-comment">// 指向跳表头节点</span><br>  <span class="hljs-comment">// 头节点不是实际的元素节点，即不计算在level、length内</span><br>  SkipListNode header;<br>  <span class="hljs-comment">// 指向跳表尾节点</span><br>  <span class="hljs-comment">// 尾节点是实际的元素节点</span><br>  SkipListNode tail;<br>  <span class="hljs-comment">// 层数最大的节点的层数</span><br>  <span class="hljs-keyword">int</span> level;<br>  <span class="hljs-comment">// 节点个数</span><br>  <span class="hljs-keyword">int</span> length;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SkipListNode</span> </span>&#123;<br>  <span class="hljs-comment">// 分数，redis跳表通过分数作为元素插入位置的依据</span><br>  <span class="hljs-comment">// 分数按从小到大的顺序排列</span><br>  <span class="hljs-comment">// 不同元素分数可以相同，但是对象不能相同。相同分数的不同对象按照字典序排列。</span><br>  <span class="hljs-keyword">double</span> score;<br>  <span class="hljs-comment">// 对象指针</span><br>  Object obj;<br>  <span class="hljs-comment">// 后退指针，指向紧邻的前一个元素。注意，后退指针不参与跳表的索引结构，就像B+树的叶子结点链表一样，将所有的元素节点连接起来。方便检索范围内的所有数据。</span><br>  SkipListNode backward;<br>  <span class="hljs-comment">// 层（上述的各层索引）</span><br>  <span class="hljs-comment">// Level1-Level32，L1可以看做之前讲的基础数据，L2-L32可以看做索引</span><br>  SkipListLevel[] level;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SkipListLevel</span> </span>&#123;<br>  <span class="hljs-comment">// 前进指针，指向拥有同层索引的下一个节点</span><br>  SkipListNode forward;<br>  <span class="hljs-comment">// 跨度，注意，跨度并不参与实际的检索过程（有疑惑的抛开redis再看看前面的跳表介绍），只是用于计算同层两个节点间的元素个数</span><br>  uint32 span;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>最后，我们看一下redis如何实现前述的randomLevel(x)函数的：</p>
-<p><img src="/Users/xiaoqizong/Desktop/%E9%A1%B9%E7%9B%AE/redis/randomLevel.png" srcset="/img/loading.gif" lazyload alt="randomLevel"></p>
+<p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/redis/randomLevel.png" srcset="/img/loading.gif" lazyload></p>
 <p>上述代码等同于</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function">func <span class="hljs-keyword">int</span> <span class="hljs-title">randomLevel</span><span class="hljs-params">()</span> </span>&#123;<br>  <span class="hljs-keyword">int</span> level = <span class="hljs-number">1</span>;<br>  <span class="hljs-comment">// 当 level &lt; MAX_LEVEL，且随机数小于设定的晋升概率时，level+1</span><br>  <span class="hljs-keyword">while</span> (Math.random() &lt; SKIPLIST_P &amp;&amp; level &lt; MAX_LEVEL) &#123;<br>    level += <span class="hljs-number">1</span>;<br>  &#125;<br>  <span class="hljs-keyword">return</span> level;<br>&#125;<br></code></pre></td></tr></table></figure>
 
@@ -312,7 +312,7 @@
 <h2 id="5-整数集合"><a href="#5-整数集合" class="headerlink" title="5.整数集合"></a>5.整数集合</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">IntSet</span> </span>&#123;<br>  <span class="hljs-comment">// 编码方式（注意与之后对象结构内的编码方式区分）</span><br>  <span class="hljs-comment">// 目前支持：int16、int32、int64</span><br>  uint32 encoding;<br>  <span class="hljs-comment">// 集合长度，即元素个数</span><br>  uint32 length;<br>  <span class="hljs-comment">// 具体数据，不会有重复值，按值大小从小往大排列</span><br>  <span class="hljs-comment">// 需要注意，具体数据类型与编码格式相关，并不是int8类型</span><br>  int8[] contents;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>插入元素的执行步骤：</p>
-<p><img src="/Users/xiaoqizong/Desktop/%E9%A1%B9%E7%9B%AE/redis/intsetAdd.png" srcset="/img/loading.gif" lazyload alt="intsetAdd"></p>
+<p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/redis/intsetAdd.png" srcset="/img/loading.gif" lazyload></p>
 <p>整数数组的特点是：</p>
 <ul>
 <li>灵活：支持不同类型的整数</li>
@@ -505,14 +505,14 @@
 <li>只对命令绑定的对象类型生效</li>
 </ol>
 <p>对于第二种类型命令，redis会根据obj.type字段，在执行命令前主动检查：</p>
-<p><img src="/Users/xiaoqizong/Desktop/%E9%A1%B9%E7%9B%AE/redis/checkobject.png" srcset="/img/loading.gif" lazyload alt="checkobject"></p>
+<p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/redis/checkobject.png" srcset="/img/loading.gif" lazyload></p>
 <h2 id="2-命令多态实现"><a href="#2-命令多态实现" class="headerlink" title="2.命令多态实现"></a>2.命令多态实现</h2><ul>
 <li>基于类型的多态：可以对任意对象类型生效的命令，会根据value对象具体类型，做不同处理</li>
 <li>基于编码的多态：作用到具体对象上的命令，会根据对象编码，调用对应数据结构API实现命令</li>
 </ul>
 <h2 id="3-内存回收机制"><a href="#3-内存回收机制" class="headerlink" title="3.内存回收机制"></a>3.内存回收机制</h2><p>c语言不像java，java虚拟机会帮助程序员管理对象占用的内存，在对象不被使用时自动释放内存。redis使用引用计数算法实现了一套内存管理机制，现简单介绍。</p>
 <p>首先了解下redis对象生命周期</p>
-<p><img src="/Users/xiaoqizong/Desktop/%E9%A1%B9%E7%9B%AE/redis/objectlife.png" srcset="/img/loading.gif" lazyload alt="objectlife"></p>
+<p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/redis/objectlife.png" srcset="/img/loading.gif" lazyload></p>
 <p>与之对应的，之前说到的obj.refcount值是这样变化的：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 在创建一个对象时，refcount初始化为1，因为不论有无key对象，服务器都需要持有这个对象</span><br>Object obj = <span class="hljs-keyword">new</span> StringObject();<br><br><span class="hljs-comment">// 对象被新程序使用时，调用incrRefCount(obj)函数，obj.refcount++</span><br><span class="hljs-comment">// 对象不再被新程序使用时，调用decrRefCount(obj)函数，obj.refcount--</span><br>...<br>  <br><span class="hljs-comment">// 最终，调用decrRefCount(obj)函数，将obj.refcount减为0，会导致该对象被redis服务器回收，内存被释放</span><br>decrRefCount(obj);<br></code></pre></td></tr></table></figure>
 
@@ -550,6 +550,13 @@
             <div>
               <div class="post-metas mb-3">
                 
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/redis/">redis</a>
+                    
+                  </div>
                 
               </div>
               

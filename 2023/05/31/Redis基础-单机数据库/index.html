@@ -149,7 +149,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      857 字
+      907 字
     </span>
   
 
@@ -159,7 +159,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      9
+      10
        分钟
     </span>
   
@@ -201,9 +201,11 @@
             
             <div class="markdown-body">
               <h1 id="Redis基础-单机数据库"><a href="#Redis基础-单机数据库" class="headerlink" title="Redis基础 - 单机数据库"></a>Redis基础 - 单机数据库</h1><p>Redis 服务器内会保存服务器信息与客户端信息，所以如无特殊说明，下文涉及的服务端状态指服务端保存的服务器的信息（保存在redis.h/RedisServer结构内），客户端状态指服务端保存的客户器的信息（保存在redis.h/RedisClientr结构内）。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RedisServer</span> </span>&#123;<br>    <span class="hljs-comment">// 保存所有数据库具体信息的数组</span><br>    RedisDb[] db;<br>    <span class="hljs-comment">// 数据库数量</span><br>    <span class="hljs-keyword">int</span> dbnum;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RedisClient</span> </span>&#123;<br>    <span class="hljs-comment">//当前客户端选择使用的数据库</span><br>    RedisDb db;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RedisServer</span> </span>&#123;<br>    <span class="hljs-comment">// 保存所有数据库具体信息的数组</span><br>    RedisDb[] db;<br>    <span class="hljs-comment">// 数据库数量</span><br>    <span class="hljs-keyword">int</span> dbnum;<br>    <span class="hljs-comment">// 距离上次持久化之后，所有数据库的修改次数</span><br>    <span class="hljs-keyword">long</span> dirty;<br>    <span class="hljs-comment">// 为防止持久化失败，在持久化之前复制dirty值，用于恢复</span><br>    <span class="hljs-keyword">long</span> dirtyBeforeBgsave;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RedisClient</span> </span>&#123;<br>    <span class="hljs-comment">//当前客户端选择使用的数据库</span><br>    RedisDb db;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<h2 id="一-数据库"><a href="#一-数据库" class="headerlink" title="一.数据库"></a>一.数据库</h2><h3 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h3><p>类似于其他的数据库，如Mysql或Oracle等，一个服务端往往有多个数据库，Redis也是一样。服务器状态里的RedisServer.db保存了所有数据库的指针，RedisServer.dbnum当前的数据库数量（默认值为16，即Redis服务器默认创建16个数据库，默认值由配置文件里的database决定）。不同数据库之间的数据是独立的。</p>
+<h2 id="一-数据库"><a href="#一-数据库" class="headerlink" title="一.数据库"></a>一.数据库</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RedisDb</span> </span>&#123;<br>    <span class="hljs-comment">// 键空间，保存了当前数据库的所有键值对</span><br>    Hash dict;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h3><p>类似于其他的数据库，如Mysql或Oracle等，一个服务端往往有多个数据库，Redis也是一样。服务器状态里的RedisServer.db保存了所有数据库的指针，RedisServer.dbnum当前的数据库数量（默认值为16，即Redis服务器默认创建16个数据库，默认值由配置文件里的database决定）。不同数据库之间的数据是独立的。</p>
 <p>RedisDb就是具体某个数据库的信息。</p>
 <p>客户端状态里的RedisClient.db表示当前客户端正在使用的数据库，可以通过SELECT命令切换。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 切换到1号数据库，数据库下标从0开始（数组下标）</span><br>SELECT <span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
@@ -231,13 +233,14 @@
 <li>读写键之后，服务器会根据键是否存在，更新当前数据库的hit（键命中次数）、miss（键未命中次数）值</li>
 <li>读写键之后，服务器会更新键对象的lru时间</li>
 <li>读写键值之前，若键已经过期，服务器会删除键，然后执行剩余操作</li>
-<li>如果有某个客户端监视了当前键（WATCH命令），那么当这个键被修改（增删改）后，服务器会将这个键对象标记为dirty，从而事务程序扫描时会注意到这个键</li>
-<li>修改（增删改）键之后，服务器的脏键计数器加1（dirtyCount++），这个脏键计数器会触发服务器的持久化及复制操作</li>
+<li>修改（增删改）键之后，服务器会修改监视了当前键（WATCH命令）的客户端状态，表示其事务被破坏</li>
+<li>修改（增删改）键之后，服务器的脏键计数器加1（RedisServer.dirty++），这个脏键计数器会触发服务器的持久化及复制操作</li>
 <li>修改（增删改）键之后，若服务器开启了通知功能，那么服务器将按照配置发送相应通知</li>
 </ul>
 <h3 id="键的生存周期"><a href="#键的生存周期" class="headerlink" title="键的生存周期"></a>键的生存周期</h3><p><strong>todo list</strong></p>
 <ul>
 <li><input disabled="" type="checkbox"> 图完善</li>
+<li><input disabled="" type="checkbox"> 源码解读</li>
 <li><input disabled="" type="checkbox"> 最新版本Redis由获取客户端目标数据库的命令了吗？</li>
 <li><input disabled="" type="checkbox"> 为什么Redis不允许对象类型嵌套使用？</li>
 </ul>

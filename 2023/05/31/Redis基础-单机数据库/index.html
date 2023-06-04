@@ -149,7 +149,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      907 字
+      1.5k 字
     </span>
   
 
@@ -159,7 +159,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      10
+      16
        分钟
     </span>
   
@@ -200,10 +200,10 @@
             <h1 style="display: none">Redis基础-单机数据库</h1>
             
             <div class="markdown-body">
-              <h1 id="Redis基础-单机数据库"><a href="#Redis基础-单机数据库" class="headerlink" title="Redis基础 - 单机数据库"></a>Redis基础 - 单机数据库</h1><p>Redis 服务器内会保存服务器信息与客户端信息，所以如无特殊说明，下文涉及的服务端状态指服务端保存的服务器的信息（保存在redis.h/RedisServer结构内），客户端状态指服务端保存的客户器的信息（保存在redis.h/RedisClientr结构内）。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RedisServer</span> </span>&#123;<br>    <span class="hljs-comment">// 保存所有数据库具体信息的数组</span><br>    RedisDb[] db;<br>    <span class="hljs-comment">// 数据库数量</span><br>    <span class="hljs-keyword">int</span> dbnum;<br>    <span class="hljs-comment">// 距离上次持久化之后，所有数据库的修改次数</span><br>    <span class="hljs-keyword">long</span> dirty;<br>    <span class="hljs-comment">// 为防止持久化失败，在持久化之前复制dirty值，用于恢复</span><br>    <span class="hljs-keyword">long</span> dirtyBeforeBgsave;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RedisClient</span> </span>&#123;<br>    <span class="hljs-comment">//当前客户端选择使用的数据库</span><br>    RedisDb db;<br>&#125;<br></code></pre></td></tr></table></figure>
+              <p>Redis 服务器内会保存服务器信息与客户端信息，所以如无特殊说明，下文涉及的服务端状态指服务端保存的服务器的信息（保存在redis.h/RedisServer结构内），客户端状态指服务端保存的客户器的信息（保存在redis.h/RedisClientr结构内）。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RedisServer</span> </span>&#123;<br>    <span class="hljs-comment">// 保存所有数据库具体信息的数组</span><br>    RedisDb[] db;<br>    <span class="hljs-comment">// 数据库数量</span><br>    <span class="hljs-keyword">int</span> dbnum;<br>    <span class="hljs-comment">// 距离上次持久化之后，所有数据库的修改次数</span><br>    <span class="hljs-keyword">long</span> dirty;<br>    <span class="hljs-comment">// 为防止持久化失败，在持久化之前复制dirty值，用于恢复</span><br>    <span class="hljs-keyword">long</span> dirtyBeforeBgsave;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RedisClient</span> </span>&#123;<br>    <span class="hljs-comment">// 当前客户端的状态</span><br>    <span class="hljs-comment">// CLIENT_DIRTY_CAS表示事务被破坏</span><br>    <span class="hljs-keyword">int</span> flags;<br>    <span class="hljs-comment">// 当前客户端选择使用的数据库</span><br>    RedisDb db;<br>    <span class="hljs-comment">// 监视的所有键</span><br>    list&lt;string&gt; watchedKeys;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<h2 id="一-数据库"><a href="#一-数据库" class="headerlink" title="一.数据库"></a>一.数据库</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RedisDb</span> </span>&#123;<br>    <span class="hljs-comment">// 键空间，保存了当前数据库的所有键值对</span><br>    Hash dict;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="一-数据库"><a href="#一-数据库" class="headerlink" title="一.数据库"></a>一.数据库</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RedisDb</span> </span>&#123;<br>    <span class="hljs-comment">// 键空间，保存了当前数据库的所有键值对</span><br>    Hash dict;<br>    <span class="hljs-comment">// 当前数据库被监听的所有键及监视他们的client</span><br>    <span class="hljs-comment">// key=键</span><br>    <span class="hljs-comment">// value=list&lt;client&gt;</span><br>    Hash watchedKeys;<br>    <span class="hljs-comment">// 保存本数据库中所有设置过过期时间的键及其过期时间戳</span><br>    <span class="hljs-comment">// key=键</span><br>    <span class="hljs-comment">// value=过期时间戳（精度：毫秒）</span><br>    Hash expires;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h3 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h3><p>类似于其他的数据库，如Mysql或Oracle等，一个服务端往往有多个数据库，Redis也是一样。服务器状态里的RedisServer.db保存了所有数据库的指针，RedisServer.dbnum当前的数据库数量（默认值为16，即Redis服务器默认创建16个数据库，默认值由配置文件里的database决定）。不同数据库之间的数据是独立的。</p>
 <p>RedisDb就是具体某个数据库的信息。</p>
@@ -237,7 +237,27 @@
 <li>修改（增删改）键之后，服务器的脏键计数器加1（RedisServer.dirty++），这个脏键计数器会触发服务器的持久化及复制操作</li>
 <li>修改（增删改）键之后，若服务器开启了通知功能，那么服务器将按照配置发送相应通知</li>
 </ul>
-<h3 id="键的生存周期"><a href="#键的生存周期" class="headerlink" title="键的生存周期"></a>键的生存周期</h3><p><strong>todo list</strong></p>
+<h3 id="键的生存周期"><a href="#键的生存周期" class="headerlink" title="键的生存周期"></a>键的生存周期</h3><p>redisDb.expires字典保存了本数据中所有设置过过期时间的键，及其过期时间戳，称之为过期字典。其中，字典key是键指针，字典value是这个键的过期时间戳，单位毫秒。</p>
+<p><strong>设置过期时间</strong></p>
+<p>Redis中设置键过期的命令有</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java">EXPIRE key n	<span class="hljs-comment">// 设置键n秒后过期</span><br>PEXPIRE key n	<span class="hljs-comment">// 设置键n毫秒后过期</span><br>EXPIREAT key n	<span class="hljs-comment">// 设置键某个时间戳过期，单位：秒</span><br>PEXPIREAT key n	<span class="hljs-comment">// 设置键某个时间戳过期，单位：毫秒</span><br></code></pre></td></tr></table></figure>
+
+<p>在Redis底层实现里，上述四个命令，最终都会转换成<em>PEXPIREAT</em>命令实现，不难想象，该命令的实现原理就是往redisDb.expires字典中插入数据。</p>
+<p>我们单独讨论一下<em>SETEX</em>命令及Redis实现分布式锁的原理：</p>
+<p><strong>删除过期时间</strong></p>
+<p>Redis中删除键过期的命令有</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">PRESIST key		<span class="hljs-comment">// 删除该键之前设置过的过期时间</span><br></code></pre></td></tr></table></figure>
+
+<p>该命令的实现原理就是删除redisDb.expires字典中对应数据。</p>
+<p><strong>获取过期时间</strong></p>
+<p>Redis中查询键还有多久过期的命令有</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java">TTL key		<span class="hljs-comment">// 返回键的剩余生存时间（time to live，TTL），单位：秒</span><br>PTTL key	<span class="hljs-comment">// 返回键的剩余生存时间（time to live，TTL），单位：毫秒</span><br></code></pre></td></tr></table></figure>
+
+<p>该命令的实现原理就是查询redisDb.expires字典中该键的过期时间戳，返回当前时间戳与过期时间戳的差值。</p>
+<p><strong>判断键是否过期</strong></p>
+<p>其实通过上述TTL、PTTL的实现已经可以用来判断一个键是否过期了，但是对于Redis内部而言，调用一个命令的成本肯定要大于自己重新写一段代码。Redis判断一个键是否过期，就是对比当前时间戳和过期时间戳的大小。</p>
+<p><strong>过期键删除策略</strong></p>
+<p><strong>todo list</strong></p>
 <ul>
 <li><input disabled="" type="checkbox"> 图完善</li>
 <li><input disabled="" type="checkbox"> 源码解读</li>
@@ -277,6 +297,12 @@
                 <div class="post-prevnext">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2023/06/04/Redis%E5%BA%94%E7%94%A8-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Redis应用-分布式锁</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">

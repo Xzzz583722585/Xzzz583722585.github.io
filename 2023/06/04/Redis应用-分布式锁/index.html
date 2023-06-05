@@ -149,7 +149,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      213 字
+      314 字
     </span>
   
 
@@ -159,7 +159,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      2
+      3
        分钟
     </span>
   
@@ -211,7 +211,14 @@
 <p>同理，认识另外一对命令：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 和上面命令的区别是，单位：毫秒</span><br>PEXPIRE key TTL;<br>PSETEX key TTL value;<br></code></pre></td></tr></table></figure>
 
-<h2 id="分布式锁简介"><a href="#分布式锁简介" class="headerlink" title="分布式锁简介"></a>分布式锁简介</h2><h2 id="Redis实现分布式锁"><a href="#Redis实现分布式锁" class="headerlink" title="Redis实现分布式锁"></a>Redis实现分布式锁</h2><h2 id="与其他分布式锁实现对比"><a href="#与其他分布式锁实现对比" class="headerlink" title="与其他分布式锁实现对比"></a>与其他分布式锁实现对比</h2>
+<h2 id="如何获取到锁超时通知"><a href="#如何获取到锁超时通知" class="headerlink" title="如何获取到锁超时通知"></a>如何获取到锁超时通知</h2><p>之前我们介绍过Redis通知机制，此时就可以派上用场：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">SUBSCRIBE __keyevent@&#123;dbid&#125;__:expired<br></code></pre></td></tr></table></figure>
+
+<p>如此一来当数据库{dbid}中的数据发生过期要被清理时，Redis就会发送通知，客户端就可以接收到通知了。</p>
+<h2 id="分布式锁简介"><a href="#分布式锁简介" class="headerlink" title="分布式锁简介"></a>分布式锁简介</h2><h2 id="Redis实现分布式锁"><a href="#Redis实现分布式锁" class="headerlink" title="Redis实现分布式锁"></a>Redis实现分布式锁</h2><h2 id="与其他分布式锁实现对比"><a href="#与其他分布式锁实现对比" class="headerlink" title="与其他分布式锁实现对比"></a>与其他分布式锁实现对比</h2><h3 id="todolist"><a href="#todolist" class="headerlink" title="todolist"></a>todolist</h3><ul>
+<li>客户端接收通知的实现方式，主动？被动？长连接？短链接？</li>
+</ul>
+
             </div>
             <hr>
             <div>

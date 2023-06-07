@@ -149,7 +149,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      314 字
+      398 字
     </span>
   
 
@@ -159,7 +159,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      3
+      4
        分钟
     </span>
   
@@ -200,14 +200,19 @@
             <h1 style="display: none">Redis应用-分布式锁</h1>
             
             <div class="markdown-body">
-              <h2 id="SETEX命令简介"><a href="#SETEX命令简介" class="headerlink" title="SETEX命令简介"></a>SETEX命令简介</h2><p>下面两个命令熟不熟？</p>
+              <h2 id="分布式锁简介"><a href="#分布式锁简介" class="headerlink" title="分布式锁简介"></a>分布式锁简介</h2><h2 id="如何获取锁"><a href="#如何获取锁" class="headerlink" title="如何获取锁"></a>如何获取锁</h2><p>首先我们解决“锁”的问题，即前一个请求通过Redis加了一把锁，后面的请求再想加一把同样的锁就不可以了。我们通过SETNX命令实现。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 语义：set if not exists，即key不存在时设置key/value成功，否则失败</span><br>SETNX KEY VALUE<br></code></pre></td></tr></table></figure>
+
+
+
+<p>下面两个命令熟不熟？</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 设置string对象，键为key，值为value</span><br>SET key value;<br><span class="hljs-comment">// 设置对象的TTL（time to live，存活时间，单位：秒）</span><br><span class="hljs-comment">// 含义是该对象还可以存活TTL秒</span><br>EXPIRE key TTL;<br></code></pre></td></tr></table></figure>
 
-<p>关于过期时间的细节，请看这里：<a target="_blank" rel="noopener" href="http://www.jonxzzz.com/2023/05/31/Redis%E5%9F%BA%E7%A1%80-%E5%8D%95%E6%9C%BA%E6%95%B0%E6%8D%AE%E5%BA%93/">Redis基础-单机数据库</a></p>
+<p>关于设置键过期时间的细节，请看这里：<a target="_blank" rel="noopener" href="http://www.jonxzzz.com/2023/05/31/Redis%E5%9F%BA%E7%A1%80-%E5%8D%95%E6%9C%BA%E6%95%B0%E6%8D%AE%E5%BA%93/">Redis基础-单机数据库</a></p>
 <p>介绍我们的主角，SETEX命令：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 设置string对象，键为key，值为value</span><br><span class="hljs-comment">// 同时设置该对象的TTL（单位：秒）</span><br>SETEX key TTL value;<br></code></pre></td></tr></table></figure>
 
-<p>可以看到，<em>SETEX</em>其实是一条复合命令：SET+EXPIRE，好处就是Redis帮你保证其原子性。除此以外，没有什么特别的。</p>
+<p>可以看到，<em>SETEX</em>其实是一条复合命令：SET+EXPIRE，好处就是Redis通过事务帮你保证其原子性。除此以外，没有什么特别的。</p>
 <p>同理，认识另外一对命令：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 和上面命令的区别是，单位：毫秒</span><br>PEXPIRE key TTL;<br>PSETEX key TTL value;<br></code></pre></td></tr></table></figure>
 
@@ -215,7 +220,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">SUBSCRIBE __keyevent@&#123;dbid&#125;__:expired<br></code></pre></td></tr></table></figure>
 
 <p>如此一来当数据库{dbid}中的数据发生过期要被清理时，Redis就会发送通知，客户端就可以接收到通知了。</p>
-<h2 id="分布式锁简介"><a href="#分布式锁简介" class="headerlink" title="分布式锁简介"></a>分布式锁简介</h2><h2 id="Redis实现分布式锁"><a href="#Redis实现分布式锁" class="headerlink" title="Redis实现分布式锁"></a>Redis实现分布式锁</h2><h2 id="与其他分布式锁实现对比"><a href="#与其他分布式锁实现对比" class="headerlink" title="与其他分布式锁实现对比"></a>与其他分布式锁实现对比</h2><h3 id="todolist"><a href="#todolist" class="headerlink" title="todolist"></a>todolist</h3><ul>
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2><h2 id="Redis实现分布式锁"><a href="#Redis实现分布式锁" class="headerlink" title="Redis实现分布式锁"></a>Redis实现分布式锁</h2><h2 id="与其他分布式锁实现对比"><a href="#与其他分布式锁实现对比" class="headerlink" title="与其他分布式锁实现对比"></a>与其他分布式锁实现对比</h2><h3 id="todolist"><a href="#todolist" class="headerlink" title="todolist"></a>todolist</h3><ul>
 <li>客户端接收通知的实现方式，主动？被动？长连接？短链接？</li>
 </ul>
 

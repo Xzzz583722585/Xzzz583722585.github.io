@@ -200,7 +200,7 @@
             <h1 style="display: none">Redis基础-基本数据结构与对象</h1>
             
             <div class="markdown-body">
-              <h1 id="Redis基础-基本数据结构与对象"><a href="#Redis基础-基本数据结构与对象" class="headerlink" title="Redis基础 - 基本数据结构与对象"></a>Redis基础 - 基本数据结构与对象</h1><p>我们使用redis时，最直观接触到的就是redis对象及其命令。那我们今天就一起了解下这些对象的实现细节。</p>
+              <p>我们使用redis时，最直观接触到的就是redis对象及其命令。那我们今天就一起了解下这些对象的实现细节。</p>
 <h1 id="一-基本数据结构"><a href="#一-基本数据结构" class="headerlink" title="一.基本数据结构"></a>一.基本数据结构</h1><h2 id="1-简单动态字符串-SDS"><a href="#1-简单动态字符串-SDS" class="headerlink" title="1.简单动态字符串 SDS"></a>1.简单动态字符串 SDS</h2><p>redis是用C语言实现的，我们需要先认识一下C语言里面的字符串（以下简称C字符串）。</p>
 <p>“Redis\0”这是一个C语言字符串，它具有以下特点：</p>
 <ul>

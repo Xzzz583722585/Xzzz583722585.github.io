@@ -149,7 +149,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      3.9k 字
+      4.5k 字
     </span>
   
 
@@ -159,7 +159,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      43
+      49
        分钟
     </span>
   
@@ -333,7 +333,23 @@
 <img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/load-rdb.png" srcset="/img/loading.gif" lazyload width="50%">
 
 <p>RDB载入期间，服务器暂不提供任何服务，即一直处于阻塞状态，直到载入工作完成。</p>
-<h2 id="3-RDB文件结构"><a href="#3-RDB文件结构" class="headerlink" title="3.RDB文件结构"></a>3.RDB文件结构</h2><h2 id="五-AOF持久化"><a href="#五-AOF持久化" class="headerlink" title="五.AOF持久化"></a>五.AOF持久化</h2><h2 id="六-事件"><a href="#六-事件" class="headerlink" title="六.事件"></a>六.事件</h2><p><strong>todo list</strong></p>
+<h2 id="3-RDB文件结构"><a href="#3-RDB文件结构" class="headerlink" title="3.RDB文件结构"></a>3.RDB文件结构</h2><p>RDB文件格式是非常紧凑的二进制格式，默认经过LZF算法压缩。如果不在乎最终的RDB文件大小，更关心RDB创建时的CPU消耗，那么可以通过配置文件的rdbcompression参数控制开关是否压缩。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 开启RDB文件压缩功能</span><br>rdbcompression yes<br></code></pre></td></tr></table></figure>
+
+<p>另外还有配置参数rdbchecksum，用来控制创建和载入RDB文件时是否校验文件是否损坏。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 开启RDB文件损坏校验功能</span><br>rdbchecksum yes<br></code></pre></td></tr></table></figure>
+
+<h2 id="4-关键细节"><a href="#4-关键细节" class="headerlink" title="4.关键细节"></a>4.关键细节</h2><p>虽然BGSAVE命令采用子进程执行持久化工作，大大减少了主进程的阻塞时间，但是，为了创建出子进程，fork()操作本身也会阻塞主进程。主要原因是fork()出来的子进程需要拷贝进程必要的数据，如内存页表。以内存页表为例，它的作用是记录虚拟内存与物理内存的映射关系（详情请翻看操作系统课本的内存分页、分段、段页相关篇章），那么，当我们的内存特别大时，这个页表也相应的很大，可想而知拷贝工作会消耗大量CPU，从而增大fork()阻塞时间。</p>
+<p>另外，真正的内存数据在fork()时反而不会被立即拷贝，这主要是操作系统的写时复制（Copy on Write）机制。</p>
+<h2 id="5-RDB持久化的优缺点"><a href="#5-RDB持久化的优缺点" class="headerlink" title="5.RDB持久化的优缺点"></a>5.RDB持久化的优缺点</h2><h3 id="5-1-优点"><a href="#5-1-优点" class="headerlink" title="5.1.优点"></a>5.1.优点</h3><ul>
+<li>RDB文件的内容为二进制的数据，占用内存更小，更紧凑，可以更快的传输到远程服务器进行服务恢复，更适合做为备份文件。压缩后更是如此。</li>
+<li>BGSAVE命令可以更大程度的提高Redis服务器的运行速度，因为每次持久化时主进程都会fork() 一个子进程，由子进程进行数据持久化工作，主进程并不会执行磁盘I/O等操作。</li>
+</ul>
+<h3 id="5-2-缺点"><a href="#5-2-缺点" class="headerlink" title="5.2.缺点"></a>5.2.缺点</h3><ul>
+<li>因为RDB文件只能保存某个时间间隔的数据，如果中途服务被意外终止了，则会丢失一段时间内的数据;</li>
+<li>fork() 本身会造成阻塞，如果数据集很大且CPU性能不佳，则可能导致Redis服务器停止为客户端服务几毫秒甚至一秒钟。</li>
+</ul>
+<h2 id="五-AOF持久化"><a href="#五-AOF持久化" class="headerlink" title="五.AOF持久化"></a>五.AOF持久化</h2><h2 id="六-事件"><a href="#六-事件" class="headerlink" title="六.事件"></a>六.事件</h2><p><strong>todo list</strong></p>
 <ul>
 <li><input disabled="" type="checkbox"> 图完善</li>
 <li><input disabled="" type="checkbox"> 源码解读</li>
@@ -342,6 +358,7 @@
 <li><input disabled="" type="checkbox"> Redis最新的时间事件实现</li>
 <li><input disabled="" type="checkbox"> 新版本Redis实现的notifyKeyspaceEvent，有采样机制，会导致大量key过期时阻塞</li>
 <li><input disabled="" type="checkbox"> RDB文件结构及解析工具</li>
+<li><input disabled="" type="checkbox"> 详细说copy on write机制</li>
 </ul>
 
             </div>

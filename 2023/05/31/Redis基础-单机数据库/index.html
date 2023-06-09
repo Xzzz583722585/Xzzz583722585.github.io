@@ -149,7 +149,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      4.5k 字
+      4.4k 字
     </span>
   
 
@@ -318,7 +318,9 @@
 </li>
 </ol>
 <p>另外，若先执行BGREWRITEAOF命令，则会拒绝执行BGSAVE命令，原因也是同时进行大量磁盘读写操作不利于性能。</p>
-<h3 id="1-2-自动定期执行"><a href="#1-2-自动定期执行" class="headerlink" title="1.2.自动定期执行"></a>1.2.自动定期执行</h3><p>Redis周期函数会定期检查数据库，将其与服务器配置的save选项作比较，只要配置的条件中有一条被满足，就会触发执行BGSAVE命令。下面是默认的save配置：</p>
+<h3 id="1-2-关键细节"><a href="#1-2-关键细节" class="headerlink" title="1.2.关键细节"></a>1.2.关键细节</h3><p>虽然BGSAVE命令采用子进程执行持久化工作，大大减少了主进程的阻塞时间，但是，为了创建出子进程，fork()操作本身也会阻塞主进程。主要原因是fork()出来的子进程需要拷贝进程必要的数据，如内存页表。以内存页表为例，它的作用是记录虚拟内存与物理内存的映射关系，那么，当我们的内存特别大时，这个页表也相应的很大，可想而知拷贝工作会消耗大量CPU，从而增大fork()阻塞时间。</p>
+<p>另外，真正的内存数据在fork()时反而不会被立即拷贝，这主要是操作系统的写时复制（Copy on Write）机制。详情请看<a href="/2023/06/09/fork%E5%87%BD%E6%95%B0%E4%BB%A5%E5%8F%8ACopy-On-Write%E6%9C%BA%E5%88%B6/" title="[fork函数以及Copy-On-Write机制]">[fork函数以及Copy-On-Write机制]</a></p>
+<h3 id="1-3-自动定期执行"><a href="#1-3-自动定期执行" class="headerlink" title="1.3.自动定期执行"></a>1.3.自动定期执行</h3><p>Redis周期函数会定期检查数据库，将其与服务器配置的save选项作比较，只要配置的条件中有一条被满足，就会触发执行BGSAVE命令。下面是默认的save配置：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 服务器在900秒之内，对数据库至少进行了1次修改</span><br>save <span class="hljs-number">900</span> <span class="hljs-number">1</span><br><span class="hljs-comment">// 服务器在300秒之内，对数据库至少进行了10次修改</span><br>save <span class="hljs-number">300</span> <span class="hljs-number">10</span><br><span class="hljs-comment">// 服务器在60秒之内，对数据库至少进行了10000次修改</span><br>save <span class="hljs-number">60</span> <span class="hljs-number">10000</span><br></code></pre></td></tr></table></figure>
 
 <p>该配置在Redis启动时会被读取写入到redisServer对象中：</p>
@@ -339,13 +341,11 @@
 <p>另外还有配置参数rdbchecksum，用来控制创建和载入RDB文件时是否校验文件是否损坏。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 开启RDB文件损坏校验功能</span><br>rdbchecksum yes<br></code></pre></td></tr></table></figure>
 
-<h2 id="4-关键细节"><a href="#4-关键细节" class="headerlink" title="4.关键细节"></a>4.关键细节</h2><p>虽然BGSAVE命令采用子进程执行持久化工作，大大减少了主进程的阻塞时间，但是，为了创建出子进程，fork()操作本身也会阻塞主进程。主要原因是fork()出来的子进程需要拷贝进程必要的数据，如内存页表。以内存页表为例，它的作用是记录虚拟内存与物理内存的映射关系（详情请翻看操作系统课本的内存分页、分段、段页相关篇章），那么，当我们的内存特别大时，这个页表也相应的很大，可想而知拷贝工作会消耗大量CPU，从而增大fork()阻塞时间。</p>
-<p>另外，真正的内存数据在fork()时反而不会被立即拷贝，这主要是操作系统的写时复制（Copy on Write）机制。</p>
-<h2 id="5-RDB持久化的优缺点"><a href="#5-RDB持久化的优缺点" class="headerlink" title="5.RDB持久化的优缺点"></a>5.RDB持久化的优缺点</h2><h3 id="5-1-优点"><a href="#5-1-优点" class="headerlink" title="5.1.优点"></a>5.1.优点</h3><ul>
+<h2 id="4-RDB持久化的优缺点"><a href="#4-RDB持久化的优缺点" class="headerlink" title="4.RDB持久化的优缺点"></a>4.RDB持久化的优缺点</h2><h3 id="4-1-优点"><a href="#4-1-优点" class="headerlink" title="4.1.优点"></a>4.1.优点</h3><ul>
 <li>RDB文件的内容为二进制的数据，占用内存更小，更紧凑，可以更快的传输到远程服务器进行服务恢复，更适合做为备份文件。压缩后更是如此。</li>
 <li>BGSAVE命令可以更大程度的提高Redis服务器的运行速度，因为每次持久化时主进程都会fork() 一个子进程，由子进程进行数据持久化工作，主进程并不会执行磁盘I/O等操作。</li>
 </ul>
-<h3 id="5-2-缺点"><a href="#5-2-缺点" class="headerlink" title="5.2.缺点"></a>5.2.缺点</h3><ul>
+<h3 id="4-2-缺点"><a href="#4-2-缺点" class="headerlink" title="4.2.缺点"></a>4.2.缺点</h3><ul>
 <li>因为RDB文件只能保存某个时间间隔的数据，如果中途服务被意外终止了，则会丢失一段时间内的数据;</li>
 <li>fork() 本身会造成阻塞，如果数据集很大且CPU性能不佳，则可能导致Redis服务器停止为客户端服务几毫秒甚至一秒钟。</li>
 </ul>

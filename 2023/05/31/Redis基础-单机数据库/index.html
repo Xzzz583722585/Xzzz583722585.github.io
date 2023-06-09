@@ -330,7 +330,7 @@
 
 <h2 id="2-RDB载入"><a href="#2-RDB载入" class="headerlink" title="2.RDB载入"></a>2.RDB载入</h2><p>RDB文件的载入工作没有专门的命令，因为其是在服务器启动时自动执行的。</p>
 <p>结合之后要讲的AOF持久化，Redis载入数据的过程是这样的：</p>
-<img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/load-rdb.png" srcset="/img/loading.gif" lazyload width="50%">
+<img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/redis/load-rdb.png" srcset="/img/loading.gif" lazyload width="50%">
 
 <p>RDB载入期间，服务器暂不提供任何服务，即一直处于阻塞状态，直到载入工作完成。</p>
 <h2 id="3-RDB文件结构"><a href="#3-RDB文件结构" class="headerlink" title="3.RDB文件结构"></a>3.RDB文件结构</h2><p>RDB文件格式是非常紧凑的二进制格式，默认经过LZF算法压缩。如果不在乎最终的RDB文件大小，更关心RDB创建时的CPU消耗，那么可以通过配置文件的rdbcompression参数控制开关是否压缩。</p>

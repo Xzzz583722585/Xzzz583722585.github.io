@@ -149,7 +149,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      4.4k 字
+      5.3k 字
     </span>
   
 
@@ -159,7 +159,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      49
+      58
        分钟
     </span>
   
@@ -201,7 +201,7 @@
             
             <div class="markdown-body">
               <p>Redis 服务器内会保存服务器信息与客户端信息，所以如无特殊说明，下文涉及的服务端状态指服务端保存的服务器的信息（保存在redis.h/RedisServer结构内），客户端状态指服务端保存的客户器的信息（保存在redis.h/RedisClientr结构内）。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RedisServer</span> </span>&#123;<br>    <span class="hljs-comment">// 保存所有数据库具体信息的数组</span><br>    RedisDb[] db;<br>    <span class="hljs-comment">// 数据库数量</span><br>    <span class="hljs-keyword">int</span> dbnum;<br>    <span class="hljs-comment">// 距离上次持久化之后，所有数据库的修改次数</span><br>    <span class="hljs-keyword">long</span> dirty;<br>    <span class="hljs-comment">// 为防止持久化失败，在持久化之前复制dirty值，用于恢复</span><br>    <span class="hljs-keyword">long</span> dirtyBeforeBgsave;<br>    <span class="hljs-comment">// 上次执行SAVE或BGSAVE命令的时间戳</span><br>    <span class="hljs-keyword">long</span> lastsave;<br>    <span class="hljs-comment">// 是否可以执行RDB持久化的判断条件</span><br>    SaveParam[] saveParams;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RedisClient</span> </span>&#123;<br>    <span class="hljs-comment">// 当前客户端的状态</span><br>    <span class="hljs-comment">// CLIENT_DIRTY_CAS表示事务被破坏</span><br>    <span class="hljs-keyword">int</span> flags;<br>    <span class="hljs-comment">// 当前客户端选择使用的数据库</span><br>    RedisDb db;<br>    <span class="hljs-comment">// 监视的所有键</span><br>    list&lt;string&gt; watchedKeys;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RedisServer</span> </span>&#123;<br>    <span class="hljs-comment">// 保存所有数据库具体信息的数组</span><br>    RedisDb[] db;<br>    <span class="hljs-comment">// 数据库数量</span><br>    <span class="hljs-keyword">int</span> dbnum;<br>    <span class="hljs-comment">// 距离上次持久化之后，所有数据库的修改次数</span><br>    <span class="hljs-keyword">long</span> dirty;<br>    <span class="hljs-comment">// 为防止持久化失败，在持久化之前复制dirty值，用于恢复</span><br>    <span class="hljs-keyword">long</span> dirtyBeforeBgsave;<br>    <span class="hljs-comment">// 上次执行SAVE或BGSAVE命令的时间戳</span><br>    <span class="hljs-keyword">long</span> lastsave;<br>    <span class="hljs-comment">// 是否可以执行RDB持久化的判断条件</span><br>    SaveParam[] saveParams;<br>    <span class="hljs-comment">// AOF缓冲区</span><br>    <span class="hljs-comment">// sds实现的动态字符串</span><br>    String aofBuf;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RedisClient</span> </span>&#123;<br>    <span class="hljs-comment">// 当前客户端的状态</span><br>    <span class="hljs-comment">// CLIENT_DIRTY_CAS表示事务被破坏</span><br>    <span class="hljs-keyword">int</span> flags;<br>    <span class="hljs-comment">// 当前客户端选择使用的数据库</span><br>    RedisDb db;<br>    <span class="hljs-comment">// 监视的所有键</span><br>    list&lt;string&gt; watchedKeys;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h1 id="一-数据库"><a href="#一-数据库" class="headerlink" title="一.数据库"></a>一.数据库</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RedisDb</span> </span>&#123;<br>    <span class="hljs-comment">// 键空间，保存了当前数据库的所有键值对</span><br>    Hash dict;<br>    <span class="hljs-comment">// 当前数据库被监听的所有键及监视他们的client</span><br>    <span class="hljs-comment">// key=键</span><br>    <span class="hljs-comment">// value=list&lt;client&gt;</span><br>    Hash watchedKeys;<br>    <span class="hljs-comment">// 保存本数据库中所有设置过过期时间的键及其过期时间戳</span><br>    <span class="hljs-comment">// key=键</span><br>    <span class="hljs-comment">// value=过期时间戳（精度：毫秒）</span><br>    Hash expires;<br>&#125;<br></code></pre></td></tr></table></figure>
 
@@ -349,7 +349,43 @@
 <li>因为RDB文件只能保存某个时间间隔的数据，如果中途服务被意外终止了，则会丢失一段时间内的数据;</li>
 <li>fork() 本身会造成阻塞，如果数据集很大且CPU性能不佳，则可能导致Redis服务器停止为客户端服务几毫秒甚至一秒钟。</li>
 </ul>
-<h2 id="五-AOF持久化"><a href="#五-AOF持久化" class="headerlink" title="五.AOF持久化"></a>五.AOF持久化</h2><h2 id="六-事件"><a href="#六-事件" class="headerlink" title="六.事件"></a>六.事件</h2><p><strong>todo list</strong></p>
+<h1 id="五-AOF持久化"><a href="#五-AOF持久化" class="headerlink" title="五.AOF持久化"></a>五.AOF持久化</h1><p>AOF（Append Only File）是通过保存Redis 服务器所执行的<strong>写命令</strong>来记录数据库状态的，被写入AOF文件的命令都是以Redis的命令请求协议格式保存的，即是纯文本格式（不同于RDB文件的二进制文本格式）。服务器在启动时，可以通过加载并执行AOF文件内的所有命令来还原服务器被关闭前的数据库状态。</p>
+<h2 id="5-1-AOF生成"><a href="#5-1-AOF生成" class="headerlink" title="5.1.AOF生成"></a>5.1.AOF生成</h2><p>AOF持久化功能依次分为三部分：</p>
+<ol>
+<li>命令追加：当服务器的AOF持久化功能处于打开状态时，服务器在执行完一个写命令后，会以命令请求协议的格式被追加到redisServer.aofBuf缓冲区内。</li>
+<li>文件写入 -&gt; 文件同步：每次事件循环函数处理完所有事件之后，都会调用flushAppendOnlyFile()函数，根据条件，考虑是否将redisServer.aofBuf缓冲区内的数据写入到内存中的AOF文件内，以及是否将内存AOF文件同步到磁盘AOF文件。<ol>
+<li>服务器配置appendfsync决定了何时进行文件同步：<ol>
+<li>always：由主进程立即将redisServer.aofBuf缓冲区内的所有数据写入内存AOF文件，并同步到磁盘AOF文件。</li>
+<li>everysec：将redisServer.aofBuf缓冲区内的所有数据写入内存AOF文件，如果上次文件同步距今时间已超过一秒，那么由子线程负责将内存AOF文件同步到磁盘AOF文件中。</li>
+<li>no：将redisServer.aofBuf缓冲区内的所有数据写入内存AOF文件，何时将内存AOF文件同步到磁盘AOF文件中，以及具体操作，均由操作系统决定并执行，Redis服务器什么也不做。</li>
+</ol>
+</li>
+<li>这三种配置的优缺点分别是：<ol>
+<li>always<ol>
+<li>优点：最安全，即使服务器被关闭，也只会都是一条命令</li>
+<li>缺点：每次执行写命令都需要写入磁盘，写入命令执行效率最低</li>
+</ol>
+</li>
+<li>everysec<ol>
+<li>优点：折中方案，安全性尚可，只会丢失一秒内的命令</li>
+<li>缺点：写入命令执行效率足够快</li>
+</ol>
+</li>
+<li>no<ol>
+<li>优点：写入命令执行效率最高</li>
+<li>缺点：风险最高，丢失的命令数量取决于操作系统的设置</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<p>至于为什么会出现文件写入与文件同步这两个阶段，也是出于效率考虑，现代操作系统做出的优化。操作系统通常会将写入磁盘的文件数据先暂存在一个内存缓冲区中，等到缓冲区满或超过了时间限制后，才真正地将缓冲区内的文件数据写入到磁盘。但正如前所述，这样做也带来了文件数据丢失的风险。</p>
+<h2 id="5-2-AOF载入与数据还原"><a href="#5-2-AOF载入与数据还原" class="headerlink" title="5.2.AOF载入与数据还原"></a>5.2.AOF载入与数据还原</h2><h2 id="5-3-AOF重写"><a href="#5-3-AOF重写" class="headerlink" title="5.3.AOF重写"></a>5.3.AOF重写</h2><h1 id="六-事件"><a href="#六-事件" class="headerlink" title="六.事件"></a>六.事件</h1><p>Redis服务器主进程就是一个事件循环处理函数，依次处理文件事件与时间事件，</p>
+<p>文件事件负责接受客户端的命令请求，以及向客户端发送命令回复。</p>
+<p>时间事件负责处理像serverCron()函数这样需要定时运行的函数。</p>
+<h1 id="七-客户端"><a href="#七-客户端" class="headerlink" title="七.客户端"></a>七.客户端</h1><h1 id="八-服务端"><a href="#八-服务端" class="headerlink" title="八.服务端"></a>八.服务端</h1><p><strong>todo list</strong></p>
 <ul>
 <li><input disabled="" type="checkbox"> 图完善</li>
 <li><input disabled="" type="checkbox"> 源码解读</li>

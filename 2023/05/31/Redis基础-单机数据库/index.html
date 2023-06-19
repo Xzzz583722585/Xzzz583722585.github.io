@@ -149,7 +149,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      5.3k 字
+      7.2k 字
     </span>
   
 
@@ -159,7 +159,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      58
+      81
        分钟
     </span>
   
@@ -382,7 +382,65 @@
 </li>
 </ol>
 <p>至于为什么会出现文件写入与文件同步这两个阶段，也是出于效率考虑，现代操作系统做出的优化。操作系统通常会将写入磁盘的文件数据先暂存在一个内存缓冲区中，等到缓冲区满或超过了时间限制后，才真正地将缓冲区内的文件数据写入到磁盘。但正如前所述，这样做也带来了文件数据丢失的风险。</p>
-<h2 id="5-2-AOF载入与数据还原"><a href="#5-2-AOF载入与数据还原" class="headerlink" title="5.2.AOF载入与数据还原"></a>5.2.AOF载入与数据还原</h2><h2 id="5-3-AOF重写"><a href="#5-3-AOF重写" class="headerlink" title="5.3.AOF重写"></a>5.3.AOF重写</h2><h1 id="六-事件"><a href="#六-事件" class="headerlink" title="六.事件"></a>六.事件</h1><p>Redis服务器主进程就是一个事件循环处理函数，依次处理文件事件与时间事件，</p>
+<h2 id="5-2-AOF载入与数据还原"><a href="#5-2-AOF载入与数据还原" class="headerlink" title="5.2.AOF载入与数据还原"></a>5.2.AOF载入与数据还原</h2><p>步骤如下：</p>
+<ol>
+<li>由于Redis命令只能在客户端上下文中执行，所以创建一个不带网络连接的伪客户端，通过读取AOF文件中的命令代替本来由网络连接传输过来的命令，然后执行。其执行效果与带网络连接的普通客户端完全一样。</li>
+<li>从AOF中读取一条写命令。</li>
+<li>使用伪客户端执行被读取出来的写命令。</li>
+<li>重复执行步骤2和3，直到AOF文件中的所有写命令都被处理完。</li>
+</ol>
+<p>至此，就通过AOF文件还原出了数据库状态。</p>
+<h2 id="5-3-AOF重写"><a href="#5-3-AOF重写" class="headerlink" title="5.3.AOF重写"></a>5.3.AOF重写</h2><p><strong>为什么会有AOF重写？</strong>因为随着服务器不断执行接收到的一条条写命令，AOF文件的内容会越来越多，不仅对Redis服务器，甚至会对宿主机造成影响。并且，载入AOF所需要的时间也会越来越久。更要命的是，这里面还包含了大量的冗余指令。例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java">RPUSH list <span class="hljs-string">&quot;A&quot;</span> <span class="hljs-string">&quot;B&quot;</span><br>RPUSH list <span class="hljs-string">&quot;C&quot;</span> <span class="hljs-string">&quot;D&quot;</span><br>RPUSH list <span class="hljs-string">&quot;E&quot;</span> <span class="hljs-string">&quot;F&quot;</span><br>LPOP list<br>LPOP list<br></code></pre></td></tr></table></figure>
+
+<p>上面的6条指令可以帮助我们还原list的最终状态，但是，我们真的需要这六条指令吗？换个角度想，我们只是需要记录下当前的数据库状态，即想要通过一条指令可以还原出[“C”, “D”, “E”, “F”]这个list，那么下面这条指令的含义是不是等于上面6条之和：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">RPUSH list <span class="hljs-string">&quot;C&quot;</span> <span class="hljs-string">&quot;D&quot;</span> <span class="hljs-string">&quot;E&quot;</span> <span class="hljs-string">&quot;F&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>这就是AOF重写的原理，即通过特定指令读取数据库当前状态，以替换原有的AOF文件，达到最小化AOF文件的效果。特点是：</p>
+<ul>
+<li>新老两份AOF文件表达的数据库状态完全一致</li>
+<li>完全与原有的AOF文件无关，只与数据库当前状态有关</li>
+</ul>
+<p>整个AOF重写的过程用伪代码表达如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">aofRewrite</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-comment">// 创建新AOF文件</span><br>    File file = createFile();<br>    <br>    <span class="hljs-keyword">for</span> (RedisDb db: redisServer.db) &#123;<br>        <span class="hljs-comment">// 忽略空数据库</span><br>        <span class="hljs-keyword">if</span> (db.isEmpty()) &#123;<br>            <span class="hljs-keyword">continue</span>;<br>        &#125;<br>        <br>        <span class="hljs-comment">// 写入db选择命令</span><br>        f.writeCommand(SELECT, db.id);<br>        <br>        <span class="hljs-keyword">for</span> (String key: db.keys()) &#123;<br>            <span class="hljs-comment">// 忽略已经过期的key</span><br>            <span class="hljs-keyword">if</span> (key.isExpire) &#123;<br>                <span class="hljs-keyword">continue</span>;<br>            &#125;<br>            <br>            <span class="hljs-keyword">switch</span> (key.type) &#123;<br>                    STRING: rewriteString(file, key);<br>                    LIST: rewriteList(file, key);<br>                    SET: rewriteSet(file, key);<br>                    ZSET: rewriteZset(file, key);<br>                    HASH: rewriteHash(file, key);<br>            &#125;<br>            <br>            <span class="hljs-comment">// 写入key的过期时间</span><br>            <span class="hljs-keyword">if</span> (key.hasExpireTime()) &#123;<br>                rewriteExpireTime(key)<br>            &#125;<br>        &#125;<br>    &#125;<br>    <br>    <span class="hljs-comment">// 新文件写入完毕，关闭</span><br>    file.close();<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">rewriteString</span><span class="hljs-params">(File file, String key)</span> </span>&#123;<br>    <span class="hljs-comment">// 使用GET命令获取value</span><br>    String value = GET(key);<br>    <span class="hljs-comment">// 使用SET命令重写</span><br>    f.writeCommand(SET, key, value);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">rewriteList</span><span class="hljs-params">(File file, String key)</span> </span>&#123;<br>    <span class="hljs-comment">// 使用LRANGE命令获取所有values</span><br>    String[] values = LRANGE(key, <span class="hljs-number">0</span>, -<span class="hljs-number">1</span>);<br>    <span class="hljs-comment">// 使用RPUSH命令重写</span><br>    f.writeCommand(RPUSH, key, values);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">rewriteSet</span><span class="hljs-params">(File file, String key)</span> </span>&#123;<br>    <span class="hljs-comment">// 使用SMEMBERS命令获取所有values</span><br>    String[] values = SMEMBERS(key);<br>    <span class="hljs-comment">// 使用SET命令重写</span><br>    f.writeCommand(SADD, key, values);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">rewriteZset</span><span class="hljs-params">(File file, String key)</span> </span>&#123;<br>    <span class="hljs-comment">// 使用GET命令获取所有values、scores</span><br>    String[] valueAndScores = ZRANGE(key, <span class="hljs-number">0</span>, -<span class="hljs-number">1</span>, <span class="hljs-string">&quot;WITHSCORES&quot;</span>);<br>    <span class="hljs-comment">// 使用SET命令重写</span><br>    f.writeCommand(ZADD, key, valueAndScores);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">rewriteHash</span><span class="hljs-params">(File file, String key)</span> </span>&#123;<br>    <span class="hljs-comment">// 使用HGETALL命令获取所有values</span><br>    String[] value = HGETALL(key);<br>    <span class="hljs-comment">// 使用HMSET命令重写</span><br>    f.writeCommand(HMSET, key, values);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">rewriteExpireTime</span><span class="hljs-params">(File file, String key)</span> </span>&#123;<br>    <span class="hljs-comment">// 获取过期时间戳timestamp，单位：毫秒</span><br>    <span class="hljs-keyword">long</span> timestamp = getExpireTime(key);<br>    <span class="hljs-comment">// 使用PEXPIREAT命令重写</span><br>    f.writeCommand(PEXPIREAT, key, timestamp);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在处理集合类型的数据时，为了防止单个key多包含的元素过多，造成客户端缓冲区aofBuf溢出，会循环分批处理这个key中的元素（默认配置64个元素），即最终效果是写入多条命令。</p>
+<p>之前我们提到过，写入AOF时，如果key已经过期，但还没有被删除，那么依然会将其写入到AOF文件内，等到它真正被删除时，再往AOF文件内追加一条DEL删除命令。之所以这样。是因为可以在不会影响AOF文件所表达出的数据库状态的情况下，保持AOF写入原则，忠实地记录写命令的执行情况。</p>
+<p>另外，对于AOF写入，它所想要的效果是用最少的命令表达当前数据库的状态，很显然就不需要写入过期键到AOF重写文件内了。</p>
+<p>触发AOF重写有两种方式：</p>
+<ul>
+<li>执行BGREWRITEAOF命令</li>
+<li>serverCron周期扫描，检查是否符合条件，若符合所有条件则执行AOF重写<ul>
+<li>没有子进程运行（RDB saving、AOF rewriting、其他）</li>
+<li>当前AOF内存文件大小大于阈值，并且，当前AOF内存文件大小与最后一次AOF重写时的文件大小的比值，大于阈值时可以重写</li>
+</ul>
+</li>
+</ul>
+<h2 id="5-4-AOF后台执行重写"><a href="#5-4-AOF后台执行重写" class="headerlink" title="5.4.AOF后台执行重写"></a>5.4.AOF后台执行重写</h2><p>为了不让AOF这类日志操作影响正常的命令处理，Redis决定将AOF重写功能交由子进程执行（fork操作与前文同理），这样做的好处是：</p>
+<ul>
+<li>子进程处理AOF重写期间，主进程还可以继续响应命令</li>
+<li>由于fork会写时复制父进程的当前数据，所以避免了父子进程的数据访问冲突，即在不加锁的情况下保证了数据安全</li>
+</ul>
+<p>如果父进程在AOF期间修改了数据，那么对子进程是不可见的，即产生了数据的不一致性。解决方案是，当Redis fork出子进程准备进入AOF重写时，会在主进程设置一个AOF重写缓冲区，专门记录子进程运行期间产生的不可见的数据更改。此时服务器处理命令的行为是：</p>
+<ol>
+<li>执行客户端命令</li>
+<li>将命令追加到AOF缓冲区（前文介绍的，用于生成AOF文件，不要和AOF重写弄混）</li>
+<li>将命令追加到AOF重写缓冲区</li>
+</ol>
+<p>当子进程处理完重写操作，生成好了新的AOF文件时，会发送一个信号给父进程，父进程在接收到这个信号后，会阻塞命令处理，进行以下行为：</p>
+<ol>
+<li>将AOF重写缓冲区的所有命令追加到新AOF文件末尾，这样一来，新的AOF文件就与当前数据库状态完全一致了</li>
+<li>对新文件进行改名，原子地覆盖现有AOF文件</li>
+</ol>
+<p>至此，AOF重写大功告成。我们还需要回答几个问题：</p>
+<p><strong>为什么不能用AOF缓冲区，要新开辟一片AOF重写缓冲区？</strong></p>
+<p>一，目的不同。AOF缓冲区的目的是伴随着命令的处理，不断地追加AOF文件的。AOF重写缓冲区的目的是解决子进程AOF重写期间造成的数据不一致。</p>
+<p>二，使用方式不同。前文说过，AOF缓冲区会根据具体策略，选择不同时机写入磁盘。AOF重写缓冲区是在子进程处理完成后，一次性追加到新的AOF文件末尾的。</p>
+<p>三，“内容不一致”。AOF缓冲区会根据策略选择不同时机写入磁盘，意味着有可能出现缓冲区内容不断变化。极端一点，有可能在子进程AOF重写期间，AOF缓冲区就因为不断地写入内存，而产生变化。反观AOF重写缓冲区，他的职责是记录所有子进程处理期间的命令，所以不会发生上述情况。</p>
+<p><strong>为什么不直接重写原AOF文件，而是等重写的最后再用生成好的新文件替换原AOF文件？</strong></p>
+<p>一，子进程复用原AOF文件，必然会在某些时候和父进程产生争抢，从而影响父进程性能，这和我们一开始用子进程负责AOF重写的初衷不符。</p>
+<p>二，若AOF重写过程中失败，复用原文件会对其产生污染，导致AOF功能不可用。</p>
+<h1 id="六-事件"><a href="#六-事件" class="headerlink" title="六.事件"></a>六.事件</h1><p>Redis服务器主进程就是一个事件循环处理函数，依次处理文件事件与时间事件，</p>
 <p>文件事件负责接受客户端的命令请求，以及向客户端发送命令回复。</p>
 <p>时间事件负责处理像serverCron()函数这样需要定时运行的函数。</p>
 <h1 id="七-客户端"><a href="#七-客户端" class="headerlink" title="七.客户端"></a>七.客户端</h1><h1 id="八-服务端"><a href="#八-服务端" class="headerlink" title="八.服务端"></a>八.服务端</h1><p><strong>todo list</strong></p>
@@ -395,6 +453,7 @@
 <li><input disabled="" type="checkbox"> 新版本Redis实现的notifyKeyspaceEvent，有采样机制，会导致大量key过期时阻塞</li>
 <li><input disabled="" type="checkbox"> RDB文件结构及解析工具</li>
 <li><input disabled="" type="checkbox"> 详细说copy on write机制</li>
+<li><input disabled="" type="checkbox"> aof延迟</li>
 </ul>
 
             </div>

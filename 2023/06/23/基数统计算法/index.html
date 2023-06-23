@@ -18,9 +18,25 @@
   <meta name="author" content="Jon Xzzz">
   <meta name="keywords" content="">
   
-  <title>归档 - Jon Xzzz</title>
+  <title>基数统计算法 - Jon Xzzz</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
 
 
 
@@ -48,7 +64,7 @@
 
 
 <body>
-  <header style="height: 60vh;">
+  <header style="height: 70vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -111,9 +127,54 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="归档">
+            <span class="h2" id="subtitle" title="基数统计算法">
               
             </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2023-06-23 20:46" pubdate>
+        2023年6月23日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      1
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        浏览 <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
 
             
           </div>
@@ -126,73 +187,102 @@
 
   <main>
     
-      <div class="container nopadding-x-md">
-        <div class="py-5" id="board"
-          >
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                
-
-<div class="list-group">
-  <p class="h4">共计 6 篇文章</p>
-  <hr>
-  
-  
-    
       
-      <p class="h5">2023</p>
-    
-    <a href="/2023/06/23/%E5%9F%BA%E6%95%B0%E7%BB%9F%E8%AE%A1%E7%AE%97%E6%B3%95/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">基数统计算法</span>
-      <time style="float: right;">06-23</time>
-    </a>
-  
-    
-    <a href="/2023/06/09/fork%E5%87%BD%E6%95%B0%E4%BB%A5%E5%8F%8ACopy-On-Write%E6%9C%BA%E5%88%B6/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">fork函数以及Copy-On-Write机制</span>
-      <time style="float: right;">06-09</time>
-    </a>
-  
-    
-    <a href="/2023/06/04/Redis%E5%BA%94%E7%94%A8-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Redis应用-分布式锁</span>
-      <time style="float: right;">06-04</time>
-    </a>
-  
-    
-    <a href="/2023/05/31/Redis%E5%9F%BA%E7%A1%80-%E5%8D%95%E6%9C%BA%E6%95%B0%E6%8D%AE%E5%BA%93/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Redis基础-单机数据库</span>
-      <time style="float: right;">05-31</time>
-    </a>
-  
-    
-    <a href="/2023/05/30/Redis%E5%9F%BA%E7%A1%80-%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E5%AF%B9%E8%B1%A1/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Redis基础-基本数据结构与对象</span>
-      <time style="float: right;">05-30</time>
-    </a>
-  
-    
-      
-      <p class="h5">2021</p>
-    
-    <a href="/2021/09/08/SAC-003-REST/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">SAC-003-REST</span>
-      <time style="float: right;">09-08</time>
-    </a>
-  
-</div>
 
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">基数统计算法</h1>
+            
+            <div class="markdown-body">
+              <p>1</p>
 
-
-
-
-              </div>
             </div>
-          </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/06/09/fork%E5%87%BD%E6%95%B0%E4%BB%A5%E5%8F%8ACopy-On-Write%E6%9C%BA%E5%88%B6/">
+                        <span class="hidden-mobile">fork函数以及Copy-On-Write机制</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"64e7a0af76ea907275e7","clientSecret":"58fc6a6232d3179936704144df3ddeef170c2fdd","repo":"bolg-comment","owner":"Xzzz583722585","admin":["Xzzz583722585"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '106061a846c00854889bd9859c09e0de'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
         </div>
       </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
     
 
     
@@ -324,9 +414,15 @@
 
 
 
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
 
 
 
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
 
 
 

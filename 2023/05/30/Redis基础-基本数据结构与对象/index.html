@@ -149,7 +149,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      8.4k 字
+      9.3k 字
     </span>
   
 
@@ -159,7 +159,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      94
+      104
        分钟
     </span>
   
@@ -546,7 +546,17 @@
 <td>基于概率的算法，存在误差</td>
 </tr>
 </tbody></table>
-<h2 id="3-GEO"><a href="#3-GEO" class="headerlink" title="3.GEO"></a>3.GEO</h2><h1 id="三-自定义数据结构"><a href="#三-自定义数据结构" class="headerlink" title="三.自定义数据结构"></a>三.自定义数据结构</h1><h1 id="四-对象"><a href="#四-对象" class="headerlink" title="四.对象"></a>四.对象</h1><p>首先，redis数据库中的数据都是通过键值对（字典）的形式组织的。其中，键key永远是字符串对象。</p>
+<h2 id="3-GEO"><a href="#3-GEO" class="headerlink" title="3.GEO"></a>3.GEO</h2><p>GEO经常用于LBS，即基于位置的服务，指的是使用地理数据信息向用户提供服务的软件应用，例如附近美食、打车等。众所周知，我们可以使用一组经纬度信息唯一表达地理位置信息。如北京的经纬度坐标是(39.9042, 116.4074)，含义是北京处于北纬39.9042度，东经116.4074度。</p>
+<h3 id="3-1-GEOHash编码"><a href="#3-1-GEOHash编码" class="headerlink" title="3.1.GEOHash编码"></a>3.1.GEOHash编码</h3><p>在Redis中，正是将经纬度信息作为有序集合Sorted Set的score，将业务数据作为value进行存储。但是，数组并不能直接作为score存储，需要将其转换为浮点类型数字，这就是GEOHash编码了。</p>
+<p>经纬度信息的范围都是[-180, 180]，我们可以通过二分查找的方式不断接近真实的经纬度，还是以北京(39.9042, 116.4074)为例：</p>
+<p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/redis/geohash1.png" srcset="/img/loading.gif" lazyload></p>
+<p>如图所示，维度39.9042经过三次二分最终落在区间[0, 45)内，从根节点到叶子节点的路径编码是100，也就是说，我们通过编码100就知道北京的维度在区间[0, 45)内。可想而知，随着上述二叉树的高度不断增高，即叶子节点区间更加精细，我们通过编码得到的经纬度误差也就越低。</p>
+<p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/redis/geohash2.png" srcset="/img/loading.gif" lazyload></p>
+<p>同理，北京的经度编码为110。</p>
+<p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/redis/geohash3.jpg" srcset="/img/loading.gif" lazyload></p>
+<p>至此，我们实际上是将整个地球的表面切割为一个个小方块，编码位数越长，每个小方块越小，即小方块所代表的经纬度精度越高。</p>
+<p>然后将经纬度的编码进行整合，经度编码全部放在偶数位，纬度编码全部放在奇数位，那北京的最终编码为：111000。如此一来，一般情况下，经纬度相邻的位置，其小方格也相邻，即地理位置也是相邻的。但是，对于一些临界值，经纬度相邻，小方格可能差的很远，所以我们一般通过查询给定小方格四周4到8个小方格来查找相邻地理位置。</p>
+<h1 id="三-对象"><a href="#三-对象" class="headerlink" title="三.对象"></a>三.对象</h1><p>首先，redis数据库中的数据都是通过键值对（字典）的形式组织的。其中，键key永远是字符串对象。</p>
 <p>其次，redis中只有字符串对象可以被嵌套使用，其余对象（list、set、zset、hash对象）都不可以互相嵌套使用。例如，[“a”, “b”]是允许的，但[{“k1”: “v1”}, {“k2”: “v2”}]是不允许的。</p>
 <p>下面是redis对象的结构：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RedisObject</span> </span>&#123;<br>  <span class="hljs-comment">// 类型</span><br>  uint4 type;<br>  <span class="hljs-comment">// 具体的数据结构</span><br>  uint4 encoding;<br>  <span class="hljs-comment">// 引用计数</span><br>  <span class="hljs-keyword">int</span> refcount;<br>  <span class="hljs-comment">// 对象最后一次被命令程序访问的时间点</span><br>  <span class="hljs-keyword">int</span> lru;<br>  <span class="hljs-comment">// 指针，指向具体对象</span><br>  Object ptr;<br>&#125;<br><br><span class="hljs-comment">// 查看key对应的value.type</span><br>TYPE &#123;key&#125;<br><span class="hljs-comment">// 查看key对应的value.encoding</span><br>OBJECT ENCODING &#123;key&#125;<br></code></pre></td></tr></table></figure>
@@ -645,6 +655,34 @@
 <p>字典键等于数据元素（string类型），字典值等于score（double类型），即该字典的作用时从元素映射到对应score。</p>
 <p>为什么需要跳表+字典两个数据结构？速度。如前所述，跳表可以提供优秀的范围查找能力，字典做不到。字典可以O(1) 地查看元素分值，跳表做不到（需要遍历找到节点）。</p>
 <p>最后一点，跳表与字典对应的底层数据对象，是共用的，这是为了节约空间。</p>
+<h1 id="四-自定义数据结构"><a href="#四-自定义数据结构" class="headerlink" title="四.自定义数据结构"></a>四.自定义数据结构</h1><h2 id="1-自定义新数据类型的底层结构"><a href="#1-自定义新数据类型的底层结构" class="headerlink" title="1.自定义新数据类型的底层结构"></a>1.自定义新数据类型的底层结构</h2><p>我们开发一个新数据类型：单链表。使用singlelist.h文件保存单链表的基本定义。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SingleList</span> </span>&#123;<br>    SingleListNode head;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SingleListNode</span> </span>&#123;<br>    String value;<br>    SingleListNode next;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="2-增加新数据类型的全局定义"><a href="#2-增加新数据类型的全局定义" class="headerlink" title="2.增加新数据类型的全局定义"></a>2.增加新数据类型的全局定义</h2><p>在server.h文件中新增单链表的全局定义。</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs arduino">...<br><span class="hljs-comment">// 数字7是根据现有枚举值追加的</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> OBJ_SINGLE_LIST 7</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="3-开发新数据类型的构造和析构函数"><a href="#3-开发新数据类型的构造和析构函数" class="headerlink" title="3.开发新数据类型的构造和析构函数"></a>3.开发新数据类型的构造和析构函数</h2><p>根据Redis规范，新建t_singlelist.c文件保存单链表的各种操作，如构造函数：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function">SingleList <span class="hljs-title">newSingleList</span><span class="hljs-params">()</span> </span>&#123;<br>    SingleList list = zmalloc(sizeof());<br>    list.head = <span class="hljs-keyword">null</span>;<br>    <span class="hljs-keyword">return</span> list;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在object.c文件中增加新数据结构的全局创建函数：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function">robj <span class="hljs-title">createSingleList</span><span class="hljs-params">()</span> </span>&#123;<br>    SingleList list = newSingleList();<br>    robj o = createObject(OBJ_SINGLE_LIST, list);<br>    <span class="hljs-keyword">return</span> o;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>createObject函数是Redis提供的创建Redis对象的函数：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function">robj <span class="hljs-title">createObject</span><span class="hljs-params">(<span class="hljs-keyword">int</span> type, Object ptr)</span> </span>&#123;<br>    robj o = zmalloc(sizeof());<br>    o.type = type;<br>    o.ptr = ptr;<br>    ...<br>    <span class="hljs-keyword">return</span> o;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>析构函数创建过程类似。</p>
+<h2 id="4-开发新数据类型的命令操作"><a href="#4-开发新数据类型的命令操作" class="headerlink" title="4.开发新数据类型的命令操作"></a>4.开发新数据类型的命令操作</h2><p>我们新增一个往单链表末尾插入元素的命令：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">SLINSERT key value<br></code></pre></td></tr></table></figure>
+
+<p>首先，在t_singlelist.c文件中实现该操作的函数：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">slinsertCommand</span><span class="hljs-params">(RedisClient c)</span> </span>&#123;<br>    ...<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>然后，在server.h文件中声明这个函数，以便在server.c文件中可以引用它。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">slinsertCommand</span><span class="hljs-params">(RedisClient c)</span></span><br></code></pre></td></tr></table></figure>
+
+<p>最后，在server.c文件中将命令与实现函数关联起来：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java">redisCommandTable[] = [<br>    ...<br>    &#123;<span class="hljs-string">&quot;SLINSERT&quot;</span>, slinsertCommand, <span class="hljs-number">2</span>, <span class="hljs-string">&quot;m&quot;</span>, ....&#125;<br>]<br></code></pre></td></tr></table></figure>
+
 <h1 id="五-对象其他细节"><a href="#五-对象其他细节" class="headerlink" title="五.对象其他细节"></a>五.对象其他细节</h1><h2 id="1-命令类型检查"><a href="#1-命令类型检查" class="headerlink" title="1.命令类型检查"></a>1.命令类型检查</h2><p>大体上可以将redis的操作键的命令分为两类</p>
 <ol>
 <li>可以对任意对象类型生效</li>
@@ -696,6 +734,8 @@
 <li><input disabled="" type="checkbox"> 源码解读</li>
 <li><input disabled="" type="checkbox"> 指令及对应数据结构操作</li>
 <li><input disabled="" type="checkbox"> 新版本数据结构</li>
+<li><input disabled="" type="checkbox"> 布隆过滤器</li>
+<li><input disabled="" type="checkbox"> Stream</li>
 </ul>
 
             </div>

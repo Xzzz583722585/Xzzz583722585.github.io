@@ -18,7 +18,7 @@
   <meta name="author" content="Jon Xzzz">
   <meta name="keywords" content="">
   
-  <title>Redis应用-分布式锁 - Jon Xzzz</title>
+  <title>java面试题 - Jon Xzzz</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
 
@@ -127,7 +127,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="Redis应用-分布式锁">
+            <span class="h2" id="subtitle" title="java面试题">
               
             </span>
 
@@ -137,8 +137,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2023-06-04 22:01" pubdate>
-        2023年6月4日 晚上
+      <time datetime="2023-08-01 22:38" pubdate>
+        2023年8月1日 晚上
       </time>
     </span>
   
@@ -149,7 +149,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      398 字
+      1.3k 字
     </span>
   
 
@@ -159,7 +159,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      4
+      14
        分钟
     </span>
   
@@ -197,31 +197,196 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Redis应用-分布式锁</h1>
+            <h1 style="display: none">java面试题</h1>
             
             <div class="markdown-body">
-              <h2 id="分布式锁简介"><a href="#分布式锁简介" class="headerlink" title="分布式锁简介"></a>分布式锁简介</h2><h2 id="如何获取锁"><a href="#如何获取锁" class="headerlink" title="如何获取锁"></a>如何获取锁</h2><p>首先我们解决“锁”的问题，即前一个请求通过Redis加了一把锁，后面的请求再想加一把同样的锁就不可以了。我们通过SETNX命令实现。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 语义：set if not exists，即key不存在时设置key/value成功，否则失败</span><br>SETNX KEY VALUE<br></code></pre></td></tr></table></figure>
-
-
-
-<p>下面两个命令熟不熟？</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 设置string对象，键为key，值为value</span><br>SET key value;<br><span class="hljs-comment">// 设置对象的TTL（time to live，存活时间，单位：秒）</span><br><span class="hljs-comment">// 含义是该对象还可以存活TTL秒</span><br>EXPIRE key TTL;<br></code></pre></td></tr></table></figure>
-
-<p>关于设置键过期时间的细节，请看这里：<a target="_blank" rel="noopener" href="http://www.jonxzzz.com/2023/05/31/Redis%E5%9F%BA%E7%A1%80-%E5%8D%95%E6%9C%BA%E6%95%B0%E6%8D%AE%E5%BA%93/">Redis基础-单机数据库</a></p>
-<p>介绍我们的主角，SETEX命令：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 设置string对象，键为key，值为value</span><br><span class="hljs-comment">// 同时设置该对象的TTL（单位：秒）</span><br>SETEX key TTL value;<br></code></pre></td></tr></table></figure>
-
-<p>可以看到，<em>SETEX</em>其实是一条复合命令：SET+EXPIRE，好处就是Redis通过事务帮你保证其原子性。除此以外，没有什么特别的。</p>
-<p>同理，认识另外一对命令：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 和上面命令的区别是，单位：毫秒</span><br>PEXPIRE key TTL;<br>PSETEX key TTL value;<br></code></pre></td></tr></table></figure>
-
-<h2 id="如何获取到锁超时通知"><a href="#如何获取到锁超时通知" class="headerlink" title="如何获取到锁超时通知"></a>如何获取到锁超时通知</h2><p>之前我们介绍过Redis通知机制，此时就可以派上用场：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">SUBSCRIBE __keyevent@&#123;dbid&#125;__:expired<br></code></pre></td></tr></table></figure>
-
-<p>如此一来当数据库{dbid}中的数据发生过期要被清理时，Redis就会发送通知，客户端就可以接收到通知了。</p>
-<h2 id=""><a href="#" class="headerlink" title=""></a></h2><h2 id="Redis实现分布式锁"><a href="#Redis实现分布式锁" class="headerlink" title="Redis实现分布式锁"></a>Redis实现分布式锁</h2><h2 id="与其他分布式锁实现对比"><a href="#与其他分布式锁实现对比" class="headerlink" title="与其他分布式锁实现对比"></a>与其他分布式锁实现对比</h2><h3 id="todolist"><a href="#todolist" class="headerlink" title="todolist"></a>todolist</h3><ul>
-<li>客户端接收通知的实现方式，主动？被动？长连接？短链接？</li>
+              <h1 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h1><h2 id="java-容器"><a href="#java-容器" class="headerlink" title="java 容器"></a>java 容器</h2><ul>
+<li>Collection<ul>
+<li>List<ul>
+<li>ArrayList<ul>
+<li>动态数组实现</li>
+<li>优点：读速度快，随机搜索</li>
+<li>缺点：写速度慢，涉及移动大量数组元素</li>
+</ul>
+</li>
+<li>Vector<ul>
+<li>synchronized实现的ArrayList的线程安全版本</li>
+</ul>
+</li>
+<li>CopyOnWriteArrayList<ul>
+<li>synchronized实现的线程安全列表</li>
+<li>为了增加并发度，读写分离，写数据时会copy一份新数组，在新数组上修改，修改完后用新数组代替原数组。读数据总在原数组执行</li>
+</ul>
+</li>
+<li>LinkedList<ul>
+<li>双向链表实现，但实际使用中与ArrayList性能区别不大</li>
+<li>优点：写速度快，O(1)</li>
+<li> 缺点：读速度慢，只能顺序搜索</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Queue<ul>
+<li>LinkedList</li>
+<li>PriorityQueue：堆</li>
+<li>BlockingQueue：阻塞队列，用于线程池。当线程处理完队列中的任务时，会进行等待，当有新任务加入队列时，队列会将线程唤醒</li>
+</ul>
+</li>
+<li>Set<ul>
+<li>TreeSet：TreeMap</li>
+<li>HashSet：HashMap</li>
+<li>LinkedHashSet：LinkedHashMap</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Map<ul>
+<li>TreeMap：红黑树，有序</li>
+<li>HashMap<ul>
+<li>插入：hash()取模获得桶下标，利用拉链法解决hash冲突</li>
+<li>查询：hash()取模获得桶下标，遍历下标对应的链表或红黑树，利用equals()找到目标元素</li>
+<li>链表长度为8转红黑树，红黑树长度为6时转链表<ul>
+<li>目的是优化查询速率，但又避免维护复杂数据结构</li>
+<li>6与8是为了避免在临界值频繁转换数据结构</li>
+</ul>
+</li>
+<li>桶大小为 2^n<ul>
+<li>方便二进制取模 x &amp; (size-1)</li>
+<li>方便扩容时快速计算新下标，例如现桶大小为2^5，扩容为2^6，那么判断元素第5位为1，新下标就是现下标*2，为0就等于现下标</li>
+</ul>
+</li>
+<li>版本改进<ul>
+<li>JDK 1.7<ul>
+<li>链表</li>
+<li>头插法：并发环境会造成环</li>
+</ul>
+</li>
+<li>JDK 1.8<ul>
+<li>链表 + 红黑树</li>
+<li>尾插法：但是并发环境依然建议使用 ConcurrentHashMap</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>LinkedHashMap<ul>
+<li>利用双向链表维护了元素顺序<ul>
+<li>FIFO</li>
+<li>LRU</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>HashTable<ul>
+<li>synchronized实现的HashMap的线程安全版本</li>
+<li>对整个集合上锁</li>
+</ul>
+</li>
+<li>ConcurrentHashMap<ul>
+<li>1.8前<ul>
+<li>先分组segment，每组有独立的桶</li>
+<li>每个segment都是ReetrantLock的实现，对整个桶上锁</li>
+</ul>
+</li>
+<li>1.8后<ul>
+<li>类似于HashMap，但是添加元素时，若下标为null，则利用CAS加锁，若下标后面有链表或红黑树，则利用synchronized对头节点加锁</li>
+<li>实际上也是分了组</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>WeakHashMap<ul>
+<li>弱引用实现的HashMap，里面的元素可能在下次gc时被回收</li>
+<li>应用：tomcat的ConcurrentCache缓存<ul>
+<li>分代存储<ul>
+<li>新生代数据利用WeakHashMap维护，可能会被回收</li>
+<li>老年代数据利用ConcurrentHashMap维护，不会被回收</li>
+<li>新加入的数据放进新生代，被读取后放入老年代</li>
+<li>老年代空间不足都会被放回新生代，然后会回收</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="fail-fast-与-fail-safe"><a href="#fail-fast-与-fail-safe" class="headerlink" title="fail-fast 与 fail-safe"></a>fail-fast 与 fail-safe</h2><ul>
+<li>fail-fast：遍历集合时，若同时修改集合，则会立即抛异常</li>
+<li>fail-safe：修改集合会复制一份数据进行修改，不会影响查询</li>
+</ul>
+<h1 id="I-O"><a href="#I-O" class="headerlink" title="I/O"></a>I/O</h1><p>I/O操作步骤：</p>
+<ol>
+<li>将数据从I/O设备读取到内核缓冲区</li>
+<li>将数据从内核缓冲区拷贝到用户态应用程序缓冲区</li>
+<li>应用程序从用户态应用程序缓冲区中直接使用数据</li>
+</ol>
+<h2 id="普通-BIO"><a href="#普通-BIO" class="headerlink" title="普通 BIO"></a>普通 BIO</h2><ul>
+<li>第一步、第二步阻塞</li>
+<li>面向流</li>
+<li>优点<ul>
+<li>程序简单</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>吞吐量低</li>
+</ul>
+</li>
+</ul>
+<h2 id="NIO"><a href="#NIO" class="headerlink" title="NIO"></a>NIO</h2><ul>
+<li>第一步非阻塞，第二步阻塞</li>
+<li>面向块</li>
+<li> I/O 多路复用</li>
+<li>优点<ul>
+<li>第一步非阻塞，吞吐量高较好</li>
+<li> I/O 多路复用可以同时处理多个I/O设备请求</li>
+<li> 使用到零拷贝</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>面向块编程，程序复杂 </li>
+<li>I/O 多路复用轮询消耗CPU资源</li>
+<li>第二步依然阻塞</li>
+</ul>
+</li>
+</ul>
+<h2 id="AIO"><a href="#AIO" class="headerlink" title="AIO"></a>AIO</h2><ul>
+<li><p>第一步、第二步非阻塞</p>
+</li>
+<li><p>优点</p>
+<ul>
+<li>吞吐量高</li>
+</ul>
+</li>
+<li><p>缺点</p>
+<ul>
+<li>程序复杂 </li>
+<li>1.7后才开始支持，底层操作系统支持也不普及</li>
+</ul>
+</li>
+</ul>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><h2 id="为什么byte、short、boolean、char都使用int来存储"><a href="#为什么byte、short、boolean、char都使用int来存储" class="headerlink" title="为什么byte、short、boolean、char都使用int来存储"></a>为什么byte、short、boolean、char都使用int来存储</h2><p>由于java虚拟机的操作码只有一字节长，所以如果每种与数据类型相关的指令都需要支持所有运行时数据类型的话，会远远超出一字节所能表示的数量范围。因此，编译器会在编译期或运行期将byte、short、boolean、char类型数据都拓展为int类型数据存储，从而直接使用int类型的字节码指令。</p>
+<h2 id="泛型与类型擦除"><a href="#泛型与类型擦除" class="headerlink" title="泛型与类型擦除"></a>泛型与类型擦除</h2><ul>
+<li>C#实现的泛型基于类型膨胀，是真实泛型：List&lt;Integer&gt;和List&lt;String&gt;就是两个类型，在系统运行期间，有自己的虚方法表和类型数据</li>
+<li>Java实现的泛型基于类型擦除，是伪泛型：List&lt;Integer&gt;和List&lt;String&gt;都是List&lt;Object&gt;类型，在系统运行期间，在相应的使用位置加上强制转型</li>
+</ul>
+<h2 id="自动拆装箱"><a href="#自动拆装箱" class="headerlink" title="自动拆装箱"></a>自动拆装箱</h2><p>转化为对应的包装与还原方法</p>
+<h2 id="循环遍历"><a href="#循环遍历" class="headerlink" title="循环遍历"></a>循环遍历</h2><p>还原为迭代器实现</p>
+<h2 id="变长参数"><a href="#变长参数" class="headerlink" title="变长参数"></a>变长参数</h2><p>数据类型参数</p>
+<h2 id="java-排序算法"><a href="#java-排序算法" class="headerlink" title="java 排序算法"></a>java 排序算法</h2><p>优化方向：</p>
+<ul>
+<li>稳定性考虑<ul>
+<li>基本类型不考虑稳定性，使用快速排序</li>
+<li>引用类型因为不清楚具体业务场景，考虑稳定性，使用归并排序</li>
+</ul>
+</li>
+<li>利用 O(logN) 和 O(n^2) 各自的优势<ul>
+<li>O(logN) 适合大数据量</li>
+<li>O(n^2) 适合大数据量</li>
+</ul>
+</li>
 </ul>
 
             </div>
@@ -229,20 +394,6 @@
             <div>
               <div class="post-metas mb-3">
                 
-                  <div class="post-meta mr-3">
-                    <i class="iconfont icon-category"></i>
-                    
-                      <a class="hover-with-bg" href="/categories/redis/">redis</a>
-                    
-                  </div>
-                
-                
-                  <div class="post-meta">
-                    <i class="iconfont icon-tags"></i>
-                    
-                      <a class="hover-with-bg" href="/tags/editing/">editing</a>
-                    
-                  </div>
                 
               </div>
               
@@ -252,6 +403,29 @@
                   
                 </p>
               
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/08/09/java%E5%B9%B6%E5%8F%91/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">java并发</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/07/30/JVM%E9%9D%A2%E8%AF%95%E9%A2%98/">
+                        <span class="hidden-mobile">JVM面试题</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
               
             </div>
 
@@ -270,7 +444,7 @@
         var options = Object.assign(
           {"clientID":"64e7a0af76ea907275e7","clientSecret":"58fc6a6232d3179936704144df3ddeef170c2fdd","repo":"bolg-comment","owner":"Xzzz583722585","admin":["Xzzz583722585"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
           {
-            id: '8184eb92264c374b7ff04016779901be'
+            id: '395e01db5a30e6f2250ba45c974c0a48'
           }
         )
         var gitalk = new Gitalk(options);

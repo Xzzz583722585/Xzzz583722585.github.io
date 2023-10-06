@@ -18,7 +18,7 @@
   <meta name="author" content="Jon Xzzz">
   <meta name="keywords" content="">
   
-  <title>基数统计算法 - Jon Xzzz</title>
+  <title>设计模式 - Jon Xzzz</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
 
@@ -127,7 +127,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="基数统计算法">
+            <span class="h2" id="subtitle" title="设计模式">
               
             </span>
 
@@ -137,8 +137,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2023-06-23 20:46" pubdate>
-        2023年6月23日 晚上
+      <time datetime="2023-08-12 13:56" pubdate>
+        2023年8月12日 下午
       </time>
     </span>
   
@@ -149,7 +149,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      924 字
+      592 字
     </span>
   
 
@@ -159,7 +159,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      10
+      7
        分钟
     </span>
   
@@ -197,37 +197,49 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">基数统计算法</h1>
+            <h1 style="display: none">设计模式</h1>
             
             <div class="markdown-body">
-              <p>基数指的是一个集合中不重复的元素的个数。例如集合{2,1,1,3,2,1}，其基数集合就是{1,2,3}的长度，即3。基数计数，或称基数统计，指的就是计算出集合的基数。常见的基数统计的使用场景就是统计网站访问UV。</p>
-<p>下面介绍几种基数估计的算法。</p>
-<h1 id="LogLog-Counting"><a href="#LogLog-Counting" class="headerlink" title="LogLog Counting"></a>LogLog Counting</h1><p>回顾一些高中知识。我们假设抛出一枚硬币，其正面朝上的概率是1/2，反面朝上的概率也是1/2，不存在其他情况。显然，每次抛硬币都是相互独立的。那么如果我们一直抛硬币k次都为正面，这个事件出现的概率就是1/2^k。但是，如果我们真的抛硬币k次，一定会发生上述事件吗？很明显不一定，但是根据概率论，只要我们的样本足够大，那么出现这个事件的概率就趋近于1/2^k。既然该事件出现的概率是1/2^k，那么就可以说，如果我们至少抛2^k次硬币，一定会发生该事件。</p>
-<p>假设我们的集合是一个二进制数组，类似[0,0,…,1,0,1,…]这样，那么我们就可以将这个数据从左往右视作抛硬币的过程。我们假设0代表硬币反面，1代表硬币正面，如果从左往右连续出现了k个1，那么出现这种数据情况的概率是多少呢？如前所述，是1/2^k。即这个数字的出现，就代表了我们进行了2^k次抛硬币的行为。如果我们将基数集合中的每个元素，视作一次抛硬币，那么我们就可以说基数为2^k个。</p>
-<p>我们再假设，我们有一个固定长度的二进制数组，长度为n，初始全为0。我们还有一个很牛的Hash函数，可以将数据很分散的映射到这个数组上，使其置为1，并且Hash还是还能保证每一位出现0、1的概率都是1/2。那么，当这个数据的基数远远大于n时，一定会出现数组全为1的情况。换言之，我们就可以通过数组中1的个数来推断基数了。这等同于，我们查找数组中最右边的1，并将其左边所有位都视为1来估计基数。</p>
-<p>至此，我们就可以讲讲LLC算法了。</p>
-<p>LLC将数据依次通过Hash函数转成固定长度L的二进制串a，Hash函数保证每一位出现0、1的概率都为1/2，并且相同元素产生的二进制串相同，那么我们记a中最左边的1的下标为ia。最终，我们会得到imax=max(ia, ib, …, in)，那么根据之前的介绍，我们就估计出不同元素的个数为2^imax。</p>
-<p>显然，这个过程会因为数据特性产生很多意外情况，于是LLC将二进制串进行分桶，各个桶分别计算自己的imax，即各自的基数，最终结果为这些技术的几何平均数。</p>
-<h1 id="HyperLogLog"><a href="#HyperLogLog" class="headerlink" title="HyperLogLog"></a>HyperLogLog</h1><p>其原理与LLC一致，只是最终使用调和平均数代替几何平均数。原因是调和平均数具有更优秀的抗干扰能力，会忽略一些尖刺数据的影响。</p>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a target="_blank" rel="noopener" href="https://algo.inria.fr/flajolet/Publications/FlFuGaMe07.pdf">HyperLogLog: the analysis of a near-optimal cardinality estimation algorithm</a></p>
-<p><a target="_blank" rel="noopener" href="http://antirez.com/news/75"><a target="_blank" rel="noopener" href="http://antirez.com/news/75">Redis new data structure: the HyperLogLog</a></a></p>
-<p><a target="_blank" rel="noopener" href="https://engineering.fb.com/2018/12/13/data-infrastructure/hyperloglog/">HyperLogLog in Presto: A significantly faster way to handle cardinality estimation</a></p>
-<p><a target="_blank" rel="noopener" href="https://agkn.wordpress.com/2012/10/25/sketch-of-the-day-hyperloglog-cornerstone-of-a-big-data-infrastructure/">Sketch of the Day: HyperLogLog — Cornerstone of a Big Data Infrastructure</a></p>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/271186546">基数估计算法</a></p>
-<p><a target="_blank" rel="noopener" href="https://seeing-theory.brown.edu/cn.html">看见统计</a></p>
+              <h1 id="创建型"><a href="#创建型" class="headerlink" title="创建型"></a>创建型</h1><h2 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h2><h3 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h3><p>确保一个类只有一个实例，并提供该实例的全局访问点。</p>
+<h3 id="类图"><a href="#类图" class="headerlink" title="类图"></a>类图</h3><p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/design-pattern/Singleton.png" srcset="/img/loading.gif" lazyload></p>
+<p>使用一个私有构造函数、一个私有静态变量以及一个公有静态函数来实现。</p>
+<p>私有构造函数保证了不能通过构造函数来创建对象实例，只能通过公有静态函数返回唯一的私有静态变量。</p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><ul>
+<li><p>懒汉式 - 线程不安全</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Singleton</span> </span>&#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> Singleton uniqueInstance;<br><br>    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-title">Singleton</span><span class="hljs-params">()</span> </span>&#123;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Singleton <span class="hljs-title">getUniqueInstance</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">if</span> (uniqueInstance == <span class="hljs-keyword">null</span>) &#123;<br>            uniqueInstance = <span class="hljs-keyword">new</span> Singleton();<br>        &#125;<br>        <span class="hljs-keyword">return</span> uniqueInstance;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li><p>懒汉式 - 线程安全</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Singleton</span> </span>&#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> Singleton uniqueInstance;<br><br>    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-title">Singleton</span><span class="hljs-params">()</span> </span>&#123;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">synchronized</span> Singleton <span class="hljs-title">getUniqueInstance</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">if</span> (uniqueInstance == <span class="hljs-keyword">null</span>) &#123;<br>            uniqueInstance = <span class="hljs-keyword">new</span> Singleton();<br>        &#125;<br>        <span class="hljs-keyword">return</span> uniqueInstance;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
+<p>加锁范围过大，影响直接获取，性能问题，不推荐使用</p>
+</li>
+<li><p>懒汉式 - 双重锁校验 - 线程安全</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Singleton</span> </span>&#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">volatile</span> <span class="hljs-keyword">static</span> Singleton uniqueInstance;<br><br>    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-title">Singleton</span><span class="hljs-params">()</span> </span>&#123;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Singleton <span class="hljs-title">getUniqueInstance</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">if</span> (uniqueInstance == <span class="hljs-keyword">null</span>) &#123;<br>            <span class="hljs-keyword">synchronized</span> (Singleton.class) &#123;<br>                <span class="hljs-keyword">if</span> (uniqueInstance == <span class="hljs-keyword">null</span>) &#123;<br>                    uniqueInstance = <span class="hljs-keyword">new</span> Singleton();<br>                &#125;<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> uniqueInstance;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>由于 new Singleton() 会涉及指令重排，导致可能会有线程获取未初始化完成的对象，所以需要加 volatile 关键字，避免指令重排。</p>
+<p>实现复杂，不推荐使用。</p>
+</li>
+<li><p>饿汉式 - 线程安全</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Singleton</span> </span>&#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> Singleton uniqueInstance = <span class="hljs-keyword">new</span> Singleton();<br><br>    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-title">Singleton</span><span class="hljs-params">()</span> </span>&#123;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Singleton <span class="hljs-title">getUniqueInstance</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> uniqueInstance;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>丢失了延迟实例化带来的好处</p>
+</li>
+<li><p>静态内部类实现</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Singleton</span> </span>&#123;<br><br>    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-title">Singleton</span><span class="hljs-params">()</span> </span>&#123;<br>    &#125;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SingletonHolder</span> </span>&#123;<br>        <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> Singleton INSTANCE = <span class="hljs-keyword">new</span> Singleton();<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Singleton <span class="hljs-title">getUniqueInstance</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> SingletonHolder.INSTANCE;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>当 Singleton 类被加载时，静态内部类不会被加载进内存。只有当调用静态内部类的方法，从而触发静态内部类被加载，此时才会初始化单例对象，并且 JVM 能确保只被实例化一次。</p>
+<p>这种方式不仅具有延迟初始化的好处，而且由 JVM 提供了对线程安全的支持。</p>
+</li>
+<li><p>枚举实现</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">Singleton</span> </span>&#123;<br>    INSTANCE;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>  上述方法中只有枚举实现可以防止反射攻击，并且是线程安全的。枚举实现在多次序列化和序列化之后，不会得到多个实例。而其它实现需要使用 transient 修饰所有字段，并且实现序列化和反序列化的方法。</p>
+</li>
+</ul>
+<h1 id="行为型"><a href="#行为型" class="headerlink" title="行为型"></a>行为型</h1><h1 id="结构型"><a href="#结构型" class="headerlink" title="结构型"></a>结构型</h1>
             </div>
             <hr>
             <div>
               <div class="post-metas mb-3">
                 
-                
-                  <div class="post-meta">
-                    <i class="iconfont icon-tags"></i>
-                    
-                      <a class="hover-with-bg" href="/tags/finish/">finish</a>
-                    
-                  </div>
                 
               </div>
               
@@ -242,9 +254,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/07/30/JVM%E9%9D%A2%E8%AF%95%E9%A2%98/">
+                      <a href="/2023/08/12/spring%E9%9D%A2%E8%AF%95%E9%A2%98/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">JVM面试题</span>
+                        <span class="hidden-mobile">spring面试题</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -252,8 +264,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/06/09/fork%E5%87%BD%E6%95%B0%E4%BB%A5%E5%8F%8ACopy-On-Write%E6%9C%BA%E5%88%B6/">
-                        <span class="hidden-mobile">fork函数以及Copy-On-Write机制</span>
+                      <a href="/2023/08/09/java%E5%B9%B6%E5%8F%91/">
+                        <span class="hidden-mobile">java并发</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -278,7 +290,7 @@
         var options = Object.assign(
           {"clientID":"64e7a0af76ea907275e7","clientSecret":"58fc6a6232d3179936704144df3ddeef170c2fdd","repo":"bolg-comment","owner":"Xzzz583722585","admin":["Xzzz583722585"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
           {
-            id: '106061a846c00854889bd9859c09e0de'
+            id: 'fffbcd364e7a9506eccf1f05f7162337'
           }
         )
         var gitalk = new Gitalk(options);

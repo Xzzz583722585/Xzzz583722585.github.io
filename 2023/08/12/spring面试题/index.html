@@ -1,0 +1,858 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="Jon Xzzz">
+  <meta name="keywords" content="">
+  
+  <title>spring面试题 - Jon Xzzz</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"www.jonxzzz.xyz","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"SAmnq0afTzl9DvACTmD2ys0H-gzGzoHsz","app_key":"yxbky5wsCPQcibrgyi8HmBtm","server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Jon Xzzz</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="spring面试题">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2023-08-12 16:39" pubdate>
+        2023年8月12日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      5k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      53
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        浏览 <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">spring面试题</h1>
+            
+            <div class="markdown-body">
+              <h1 id="Spring-IoC"><a href="#Spring-IoC" class="headerlink" title="Spring IoC"></a>Spring IoC</h1><h2 id="什么是-IoC-和-DI"><a href="#什么是-IoC-和-DI" class="headerlink" title="什么是 IoC 和 DI"></a>什么是 IoC 和 DI</h2><p>IoC 控制反转，不是一种具体技术，而是一种设计思想，能指导我们如何设计出松耦合的程序。指的是将我们需要使用的对象交给 IOC 容器进行管理控制，由容器进行注入依赖对象。而不是传统的在类内部主动创建依赖对象并进行组合、管理。</p>
+<p>DI 依赖注入，指的是组件之间依赖关系由容器在运行期决定，形象的说，即由容器动态的将某个依赖关系注入到组件之中。通过依赖注入机制，我们只需要通过简单的配置，而无需任何代码就可指定需要的资源，完成自身的业务逻辑，而不需要关心具体的资源来自何处，由谁实现。所以说控制反转是通过依赖注入实现的，其实它们是同一个概念的不同角度的描述。通俗来说就是 IoC是设计思想，DI是实现方式。</p>
+<h2 id="IoC-bean-的配置方式"><a href="#IoC-bean-的配置方式" class="headerlink" title="IoC bean 的配置方式"></a>IoC bean 的配置方式</h2><ul>
+<li>xml</li>
+<li>@Configuration</li>
+<li>注解<ul>
+<li>@Component</li>
+<li>@Controller</li>
+<li>@Service</li>
+<li>@Repository</li>
+</ul>
+</li>
+</ul>
+<h2 id="依赖注入方式"><a href="#依赖注入方式" class="headerlink" title="依赖注入方式"></a>依赖注入方式</h2><ul>
+<li><p>setter 方式</p>
+<ul>
+<li>需要默认构造器</li>
+<li>需要 setter 方法</li>
+</ul>
+</li>
+<li><p>构造器方式（推荐）</p>
+<ul>
+<li>需要对应的构造器</li>
+<li>优点<ul>
+<li>依赖不可变：final关键字</li>
+<li>依赖不为空</li>
+<li>完全初始化的状态：向构造器传参之前，要确保注入的内容不为空，那么肯定要调用依赖组件的构造方法完成实例化。而在Java类加载实例化的过程中，构造方法是最后一步，所以返回来的都是初始化之后的状态。</li>
+<li>没有循环依赖问题：启动时会报错</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>注解方式</p>
+<ul>
+<li><p>实现</p>
+<ul>
+<li><p>@Autowired</p>
+<ul>
+<li>Spring 自带的注解</li>
+<li>可以作用在构造函数、方法、方法参数、字段、枚举的常量、注解上</li>
+<li>默认根据类型（byType ）进行自动装配的，如果需要按名称进行装配，则需要配合 @Qualifier</li>
+</ul>
+</li>
+<li><p>@Resource</p>
+<ul>
+<li>在 javax.annotation 包下</li>
+<li>可以作用在接口、类、枚举、注解、方法、字段、枚举的常量上</li>
+<li>默认根据属性名称进行自动装配的，只有当找不到与名称匹配的bean才会按照类型来装配注入</li>
+</ul>
+</li>
+<li><p>@Inject</p>
+<ul>
+<li>在 javax.inject.Inject 包下</li>
+</ul>
+<p>2、可以作用在构造函数、方法、字段、枚举的常量上</p>
+<p>3、默认根据类型（byType ）进行自动装配的，如果需要按名称进行装配，则需要配合 @Named</p>
+</li>
+</ul>
+</li>
+<li><p>缺点</p>
+<ul>
+<li>循环依赖问题</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="IoC初始化流程"><a href="#IoC初始化流程" class="headerlink" title="IoC初始化流程"></a>IoC初始化流程</h2><p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/spring-ioc/init.png" srcset="/img/loading.gif" lazyload></p>
+<ol>
+<li>设置资源解析器和环境</li>
+<li>设置配置路径</li>
+<li>IoC容器对Bean定义资源的载入是从 refresh() 函数开始的：<ol>
+<li>初始化 BeanFactory：在创建 BeanFactory 容器前，如果已经有 BeanFactory 存在，则需要把已有的 BeanFactory 销毁和关闭，以保证在 refresh 之后使用的是新建的 BeanFactory 容器。</li>
+<li>读取 Bean 定义资源</li>
+<li>加载 Bean 定义资源</li>
+<li>解析 Bean 定义资源生成 BeanDefinition</li>
+<li>在IoC容器中注册解析后的 BeanDefinition，本质就是一个 ConcurrentHashMap。至此，配置中的 Bean 已经注册到 IoC 容器中，被容器管理起来了。现在 IoC 容器中已经拥有了所有 Bean 的配置信息。这些配置信息是 IoC 容器控制反转的基础，正是有了这些注册的数据，容器才可以进行依赖注入。</li>
+</ol>
+</li>
+</ol>
+<h2 id="如何解决循环依赖问题"><a href="#如何解决循环依赖问题" class="headerlink" title="如何解决循环依赖问题"></a>如何解决循环依赖问题</h2><ul>
+<li>单例模式下的属性依赖<ul>
+<li>获取单例对象的流程（三级缓存）<ul>
+<li>首先从一级缓存 singletonObjects 中获取，里面存储的是已经实例化并且完成属性赋值的成熟对象；</li>
+<li>如果一级缓存获取不到，并且对象正在创建中，就再从二级缓存 earlySingletonObjects 中获取，里面存储的是已经实例化但尚未完成属性赋值的半成品对象。创建中指的就是半成品对象。</li>
+<li>如果二级缓存获取不到，且允许从三级缓存中获取半成品对象，就从三级缓存 singletonFactory 中获取。若是三级缓存获取到了，则将单例对象从三级缓存提高到二级缓存中。</li>
+<li>三级缓存中的对象，是在单例对象被实例化后，初始化完成前，被塞入到三级缓存内的。原理就是（A对象属性依赖B对象，B对象属性依赖A对象）：<ul>
+<li>A 首先完成了实例化，而且将自身提早曝光到三级缓存中</li>
+<li>此时 A 进行初始化的第二步，发现本身依赖对象 B，此时就尝试去get(B)，发现 B 还没有被创建，因此去走流程创建 B</li>
+<li>B 在初始化时发现自身依赖对象 A，因而尝试get(A)。尝试一级缓存没有，因为 A 还没初始化完成。尝试二级缓存也没有。尝试三级缓存，由于 A 已经实例化后将自身提早曝光了，因此B可以通过三级缓存拿到A对象的半成品。</li>
+<li>B 拿到A对象后顺利完成初始化，将自身放入到一级缓存中。</li>
+<li>此时返回继续初始化 A，A 此时通过一级缓存能拿到 B 对象，顺利初始化，最终A也完成了初始化，将自身放入到一级缓存中。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>其他情况<ul>
+<li>多实例<ul>
+<li>多实例Bean是每次调用一次getBean都会执行一次构造方法并且给属性赋值，根本没有三级缓存，因此不能解决循环依赖。</li>
+<li>把bean改成单例解决</li>
+</ul>
+</li>
+<li>构造器依赖<ul>
+<li>beanB需要在beanA的构造函数中完成初始化，beanA也需要在beanB的构造函数中完成初始化，这种情况的结果就是两个bean都不能完成初始化，循环依赖难以解决。Spring解决循环依赖主要是依赖三级缓存，但是的在调用构造方法之前还未将其放入三级缓存之中，因此后续的依赖调用构造方法的时候并不能从三级缓存中获取到依赖的Bean，因此不能解决。</li>
+<li>使用@Lazy注解解决</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="Bean-作用域"><a href="#Bean-作用域" class="headerlink" title="Bean 作用域"></a>Bean 作用域</h2><ul>
+<li>singleton<ul>
+<li>默认</li>
+<li> IoC容器仅存在一个Bean实例，并一直保存引用</li>
+</ul>
+</li>
+<li>prototype<ul>
+<li>每次从容器中调用Bean时，都会返回一个新的实例</li>
+<li>范围是每次获取Bean直至调用者自行销毁，容器创建好交给使用者之后则不会再管理后续的生命周期。</li>
+</ul>
+</li>
+<li>request<ul>
+<li>每次HTTP请求都会创建一个新的Bean</li>
+<li>范围是每次发起http请求直至请求结束</li>
+</ul>
+</li>
+<li>session<ul>
+<li>首次http请求创建一个实例</li>
+<li>范围是首次发起http请求直至session失效</li>
+</ul>
+</li>
+<li>globalsession</li>
+</ul>
+<h2 id="Bean-生命周期"><a href="#Bean-生命周期" class="headerlink" title="Bean 生命周期"></a>Bean 生命周期</h2><p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/spring-ioc/bean-life.png" srcset="/img/loading.gif" lazyload></p>
+<ol>
+<li>一些拓展接口的方法，如 BeanFactoryPostProcessor、InstantiationAwareBeanPostProcessor</li>
+<li>根据配置情况调用 Bean 构造方法实例化 Bean</li>
+<li>利用依赖注入完成 Bean 中所有属性值的配置注入</li>
+<li>一些拓展接口的方法</li>
+<li>调用xxxAware接口 (上图只是给了几个例子) <ul>
+<li>第一类Aware接口：BeanNameAware、BeanClassLoaderAware、BeanFactoryAware</li>
+<li>第二类Aware接口：EnvironmentAware、EmbeddedValueResolverAware、ApplicationContextAware</li>
+<li>其他</li>
+</ul>
+</li>
+<li>一些拓展接口的方法，如 BeanPostProcessor （与 AOP 有关）</li>
+<li>执行 @PostConstruct 注解的方法</li>
+<li>执行配置的 init-method 初始化方法</li>
+<li>一些拓展接口的方法</li>
+<li>单例 bean 则将该 Bean 放入 IoC 的缓存池中，触发 Spring 对该 Bean 的生命周期管理。多例 bean 则将该 Bean 交给调用者，调用者管理该 Bean 的生命周期，Spring 不再管理该 Bean。</li>
+<li>执行 @PreDestro注解的方法</li>
+<li>执行配置的 destory-method 销毁方法</li>
+</ol>
+<h1 id="Spring-AOP"><a href="#Spring-AOP" class="headerlink" title="Spring AOP"></a>Spring AOP</h1><h2 id="AOP-原理"><a href="#AOP-原理" class="headerlink" title="AOP 原理"></a>AOP 原理</h2><h3 id="什么是连接点-JoinPoint"><a href="#什么是连接点-JoinPoint" class="headerlink" title="什么是连接点 JoinPoint"></a>什么是连接点 JoinPoint</h3><p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/spring-aop/principle1.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/spring-aop/principle2.png" srcset="/img/loading.gif" lazyload></p>
+<p>单线程JVM运行java程序，就是从main方法开始，一个方法挨着一个方法，一个方法套着多个方法的调用下去。每个线程都会有自己的私有方法栈，每调用一个方法，就是往这个栈内push一个栈桢，栈桢内保存了方法的基本信息和现场信息。那么，如果我们把同一个栈内的栈桢按先后顺序连接起来，其实就是一个方法的顺序执行流。其中每个方法调用就是一个 连接点 JoinPoint。</p>
+<h3 id="什么是-AOP"><a href="#什么是-AOP" class="headerlink" title="什么是 AOP"></a>什么是 AOP</h3><p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/spring-aop/principle3.png" srcset="/img/loading.gif" lazyload></p>
+<p>即针对上述的方法执行流，可以横向切割出若干切面 Aspect（就是连接点 JoinPoint），我们面向这些切面进行编程，从而增强功能。AOP 目的是针对业务处理过程中的切面进行提取，它所面对的是处理过程的某个步骤或阶段，将分散在各个业务逻辑代码中相同的代码通过横向切割的方式抽取到一个独立的模块中，其本质是为了解耦。</p>
+<h3 id="什么是切入点-PointCut"><a href="#什么是切入点-PointCut" class="headerlink" title="什么是切入点 PointCut"></a>什么是切入点 PointCut</h3><p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/spring-aop/principle5.png" srcset="/img/loading.gif" lazyload></p>
+<p>我们不会针对每个方法进行增强，所以我们可以挑选感兴趣的连接点进行增强，这些被选择的连接点就是切入点 PointCut。</p>
+<h3 id="AOP如何捕获针对切入点的方法调用"><a href="#AOP如何捕获针对切入点的方法调用" class="headerlink" title="AOP如何捕获针对切入点的方法调用"></a>AOP如何捕获针对切入点的方法调用</h3><p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/spring-aop/principle4.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/spring-aop/principle6.png" srcset="/img/loading.gif" lazyload></p>
+<p>既然我们选择了切入点，想对其进行增强，那我们如何感知到切入点被调用了呢？这就是代理模式。</p>
+<p>当我们调用一个实例对象的方法时，都会先经过这个实例对象相应的代理对象， 即执行的控制权先交给代理对象。代理对象内部肯定是要调用实力对象的真实方法的，那就可以在真实方法执行前、执行后、异常时都加入额外的逻辑，这就是AOP的实现原理。</p>
+<h3 id="如何自定义增强逻辑"><a href="#如何自定义增强逻辑" class="headerlink" title="如何自定义增强逻辑"></a>如何自定义增强逻辑</h3><p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/spring-aop/principle7.png" srcset="/img/loading.gif" lazyload></p>
+<p>我们肯定想要针对不同场景指定不同的增强逻辑，那我们就可以将自定义的增强逻辑包装成针对各个位置的建议 Advice，然后在生成代理对象时将它们织入进去。</p>
+<h3 id="如何实现代理"><a href="#如何实现代理" class="headerlink" title="如何实现代理"></a>如何实现代理</h3><p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/spring-aop/principle8.png" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li><p>静态代理</p>
+<ul>
+<li>在编译期间，由工具类甚至是我们自己手动实现代理对象，并替换原实例对象的调用位置，显然非常低效，可拓展性也很差。</li>
+</ul>
+</li>
+<li><p>动态代理</p>
+<p>之前了解过，Spring 容器里的 bean 都是通过 BeanFactory 工厂类创建出来的。那么如果我们指定的是 ProxyFactoryBean 即生成代理类的工厂，那我们便实现了瞒天过海，将所有原本的实例对象替换成了代理对象，并且这些对象都交由 Spring 容器管理，容器可以获知这些代理对象的一切信息与行为。</p>
+<p>最后只剩一个问题，如何动态地生成这些代理对象。</p>
+<ul>
+<li><p>基于JDK面向接口的动态代理JdkDynamicAopProxy生成代理对象</p>
+<p>利用反射Proxy、InvocationHandler动态织入建议，生成代理对象</p>
+</li>
+<li><p>基于Cglib子类继承方式的动态代理CglibAopProxy生成代理对象</p>
+<p>获取原始对象的字节码文件，改写织入建议后，动态加载代理类，并生成代理对象</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="建议类型"><a href="#建议类型" class="headerlink" title="建议类型"></a>建议类型</h2><ul>
+<li>前置通知：在某连接点之前执行的通知，但这个通知不能阻止连接点之前的执行流程（除非它抛出一个异常）。</li>
+<li>后置通知：在某连接点正常完成后执行的通知。</li>
+<li>异常通知：在方法抛出异常退出时执行的通知。</li>
+<li>最终通知：当某连接点退出的时候执行的通知（不论是正常返回还是异常退出）。</li>
+<li>环绕通知：包围一个连接点的通知，如方法调用。环绕通知可以在方法调用前后完成自定义的行为。它也会选择是否继续执行连接点或直接返回它自己的返回值或抛出异常来结束执行。</li>
+</ul>
+<h2 id="多种增强建议的顺序？"><a href="#多种增强建议的顺序？" class="headerlink" title="多种增强建议的顺序？"></a>多种增强建议的顺序？</h2><p>当定义在不同的切面里的两个通知都需要在一个相同的连接点中运行， 那么除非指定优先级，否则执行的顺序是未知的。在进入连接点的情况下，最高优先级的通知会先执行。 在退出连接点的情况下，最高优先级的通知会最后执行。通过 @Order 注解指定优先级，注解值越低优先级越高。</p>
+<h1 id="Spring-MVC"><a href="#Spring-MVC" class="headerlink" title="Spring MVC"></a>Spring MVC</h1><h2 id="什么是MVC"><a href="#什么是MVC" class="headerlink" title="什么是MVC"></a>什么是MVC</h2><ul>
+<li>Model（模型）：处理应用程序数据逻辑的部分</li>
+<li>View（视图）：处理数据显示的部分</li>
+<li>Controller（控制器）：处理用户交互的部分。通常控制器负责从视图读取数据，控制用户输入，并向模型发送数据。</li>
+</ul>
+<h2 id="请求处理流程（包含-Servlet）"><a href="#请求处理流程（包含-Servlet）" class="headerlink" title="请求处理流程（包含 Servlet）"></a>请求处理流程（包含 Servlet）</h2><p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/spring-mvc/servlet.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/spring-mvc/request.png" srcset="/img/loading.gif" lazyload></p>
+<ol>
+<li><p>客户端（或浏览器）发送请求至主机（201.187.10.21）的端口 8080，被在该端口上监听的 Connector 所接收。</p>
+</li>
+<li><p>Connector 将该请求交给它所在 Service 的 Engine 处理。</p>
+</li>
+<li><p>Engine 获得请求之后，从报文头中提取主机名称（201.187.10.21），在所有虚拟主机 Host 当中寻找匹配。在未匹配到同名虚拟主机的情况下，Engine 将该请求交给名为 localhost 的默认虚拟主机 Host 处理。</p>
+</li>
+<li><p>Host 获得请求之后，根据 URI 匹配 Context，并将请求交给其处理。</p>
+</li>
+<li><p>Context 构建 HttpServletRequest、HttpServletResponse 对象，将其作为参数传给 Servlet 应用，由应用完成业务逻辑执行、结果数据存储等过程。</p>
+<p>下面讲的 DispatcherServlet 就是上述的 Servlet 实例：</p>
+<ol>
+<li>客户端请求 -&gt; DispatcherServlet：DispatcherServlet 作为统一访问点，进行全局的流程控制，收到请求后自己不进行处理，而是委托给具体的处理器进行处理。</li>
+<li>DispatcherServlet -&gt; HandlerMapping：HandlerMapping 根据 HTTP 请求的 URI 映射到 HandlerExecutionChain 对象，包含一 个Handler 处理器对象、多个 HandlerInterceptor 拦截器对象。</li>
+<li>DispatcherServlet -&gt; HandlerAdapter：HandlerAdapter 是底层多种类型的处理器的适配器，屏蔽掉底层差异。</li>
+<li>HandlerAdapter -&gt; 具体处理器 Handler（如 Controller）：HandlerAdapter 将会根据适配的结果调用真正的处理器方法处理请求，并返回一个 ModelAndView 对象。在调用处理器 Handler 之前其拦截器的方法 preHandler() 会执行。在调用处理器 Handler 之后其拦截器的方法 postHandler() 会执行。</li>
+<li>Handler -&gt; DispatcherServlet：DispatcherServlet 根据返回的 ModelAndView 选择适合的视图解析器 ViewResolver。</li>
+<li>DispatcherServlet -&gt; ViewResolver：ViewResolver 把逻辑视图名解析为具体的 View。</li>
+<li>View -&gt; 渲染：View 会根据传进来的 Model 模型数据进行渲染。</li>
+<li>DispatcherServlet -&gt; 客户端响应：DispatcherServlet 返回渲染后的响应给用户，至此请求处理结束。</li>
+</ol>
+</li>
+<li><p>Context 接收到应用返回的 HttpServletResponse 对象之后将其返回给 Host。</p>
+</li>
+<li><p>Host 将 HttpServletResponse 对象返回给 Engine。</p>
+</li>
+<li><p>Engine 将 HttpServletResponse 对象返回 Connector。</p>
+</li>
+<li><p>Connector 将 HttpServletResponse 对象返回给客户端（或浏览器）</p>
+</li>
+</ol>
+<h2 id="Servlet-生命周期"><a href="#Servlet-生命周期" class="headerlink" title="Servlet 生命周期"></a>Servlet 生命周期</h2><ol>
+<li>实例化 new：服务器第一次被访问时，加载一个Servlet容器，而且只会被加载一次。</li>
+<li>初始化 init：创建完Servlet容器后，会调用仅执行一次的 init() 初始化方法，用于初始化Servlet对象，无论多少台客户端在服务器运行期间访问都不会再执行 init() 方法。</li>
+<li>执行处理 service：HttpServlet 的抽象类提供了doGet()、doPost() 等方法，对应了request请求的发送方法。</li>
+<li>销毁 destroy：在服务器关闭或重启时，Servlet会调用 destroy 方法来销毁，将Servlet容器标记为垃圾文件，让 GC 回收。</li>
+</ol>
+<h1 id="Spring-事务"><a href="#Spring-事务" class="headerlink" title="Spring 事务"></a>Spring 事务</h1><h2 id="如何实现事务开启、提交、回滚"><a href="#如何实现事务开启、提交、回滚" class="headerlink" title="如何实现事务开启、提交、回滚"></a>如何实现事务开启、提交、回滚</h2><p>一般情况下，Mysql都会设置autocommit=1，即开启事务自动提交。这种情况下，我们单独执行一个sql就会把它包裹在一个事务中，所以我们需要显示的开启一个事务，然后显示提交或回滚事务。</p>
+<ul>
+<li><p>编程式实现事务</p>
+<p>我们通过 transactionManager.getTransaction 方法开启一个事务，并在其中用 try…catch 包裹我们的业务代码，如果所有业务代码顺利执行，那么就执行 transactionManager.commit 提交事务，否则如果业务代码抛出异常，就在 catch 块中执行 transactionManager.rollback 回滚事务。</p>
+</li>
+<li><p>声明式事务管理</p>
+<p>@Transactional 底层就是通过 AOP，将被注解的业务方法，用上述编程式事务实现一遍。@Transactional 注解的使用范围：</p>
+<ul>
+<li>方法<ul>
+<li>推荐</li>
+<li>只能应用到 public 方法上，否则不生效。原因是 AOP 底层有 JDK 和 CGlib 两种实现方式，其中 JDK 基于接口实现，所以都是 public 方法，CGlib 基于继承实现，可以是 public、protected、package 方法。综合起来，@Transactional 只支持 public 方法</li>
+</ul>
+</li>
+<li>类<ul>
+<li>对该类中所有的 public 方法都生效</li>
+</ul>
+</li>
+<li>接口<ul>
+<li>不推荐</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="如何管理事务"><a href="#如何管理事务" class="headerlink" title="如何管理事务"></a>如何管理事务</h2><h2 id="Transactional-属性"><a href="#Transactional-属性" class="headerlink" title="@Transactional 属性"></a>@Transactional 属性</h2><ul>
+<li><p>传播行为</p>
+<p>需要主要，这些传播行为都是依赖异常检测的，所以分析实际问题时，需要考虑上异常的检查情况。</p>
+<ul>
+<li>以事务方式执行<ul>
+<li>REQUIRED<ul>
+<li>如果当前存在事务，就加入这个事务。</li>
+<li>如果当前不存在事务，就新开启事务。</li>
+</ul>
+</li>
+<li>REQUIRES_NEW<ul>
+<li>如果当前存在事务，就把当前事务挂起。</li>
+<li>如果当前不存在事务，就新开启事务。</li>
+</ul>
+</li>
+<li>NESTED<ul>
+<li>如果当前存在事务事务，就开启嵌套事务，即父子事务<ul>
+<li>父事务提交，子事务才能提交，子事务不能单独提交</li>
+<li>父事务回滚，子事务也要回滚，子事务可以单独回滚</li>
+</ul>
+</li>
+<li>如果当前不存在事务，就新开启事务。</li>
+</ul>
+</li>
+<li>MANDATORY<ul>
+<li>如果当前存在事务，就加入这个事务。</li>
+<li>如果当前不存在事务，就抛出异常。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>以非事务方式执行<ul>
+<li>SUPPORTS</li>
+<li>NOT_SUPPORTED</li>
+<li>NEVER</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>隔离级别</p>
+<ul>
+<li>DEFAULT<ul>
+<li>使用底层数据库的默认隔离级别<ul>
+<li>Mysql 默认可重复读</li>
+<li>Oracle 默认提交读</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>未提交读</li>
+<li>提交读</li>
+<li>可重复读</li>
+<li>可串行化</li>
+</ul>
+</li>
+<li><p>超时时间</p>
+<ul>
+<li>默认值为-1（不会超时）</li>
+<li>如果超过该时间限制但事务还没有完成，则自动回滚事务。</li>
+</ul>
+</li>
+<li><p>是否为只读事务</p>
+<ul>
+<li>默认值为 false。</li>
+<li>提供一些优化，例如 sql 合并，多条相关的 sql 只发出一条</li>
+<li>比如在多条读sql情况下，要求他们看到的数据一致，则需要开启事务</li>
+</ul>
+</li>
+<li><p>能够触发事务回滚的异常类型</p>
+<ul>
+<li>默认情况只有 Error 和 RuntimeException 会触发回滚</li>
+</ul>
+</li>
+</ul>
+<h2 id="Spring-事务失效场景"><a href="#Spring-事务失效场景" class="headerlink" title="Spring 事务失效场景"></a>Spring 事务失效场景</h2><ul>
+<li>底层数据库不支持事务</li>
+<li>事务所在类未被 Spring 容器管理</li>
+<li>AOP 自调用问题</li>
+<li>没有加在 public 方法上</li>
+<li>没有正确设置传播行为和回滚异常类型属性</li>
+</ul>
+<h1 id="Spring-boot"><a href="#Spring-boot" class="headerlink" title="Spring boot"></a>Spring boot</h1><h2 id="Spring-boot-特点"><a href="#Spring-boot-特点" class="headerlink" title="Spring boot 特点"></a>Spring boot 特点</h2><ul>
+<li>自动装配</li>
+<li>嵌入式 Tomcat Web 服务器，不需要手动配置服务器</li>
+<li>已经打包好的 starter</li>
+</ul>
+<h2 id="Spring-自动装配原理（-SpringBootApplication-原理）"><a href="#Spring-自动装配原理（-SpringBootApplication-原理）" class="headerlink" title="Spring 自动装配原理（@SpringBootApplication 原理）"></a>Spring 自动装配原理（@SpringBootApplication 原理）</h2><p>避免了繁琐的 xml 配置、Java 配置，大大简化了配置工作。</p>
+<ul>
+<li>@EnableAutoConfiguration<ul>
+<li>开启自动装配</li>
+<li>SpringBoot 定义了一套接口规范，这套规范规定：SpringBoot 在启动时会扫描外部引用 jar 包中的<code>META-INF/spring.factories</code>文件，将文件中的配置信息加载到 Spring 容器，并执行类中定义的各种操作。对于外部 jar 来说，只需要按照 SpringBoot 定义的标准，就能将自己的功能装置进 SpringBoot。我们引入的各类 xxx-starter 包，就是实现了这套规范的 jar 包。</li>
+</ul>
+</li>
+<li>@Configuration<ul>
+<li>允许在上下文中注册额外的 bean 或导入其他配置类</li>
+<li>如果我们加载所有引入包的，那系统未免太臃肿了。所以可以设置 @ConditionalOnXXX 注解，在指定条件满足时才会加载本配置类的内容。</li>
+</ul>
+</li>
+<li>@ComponentScan<ul>
+<li>扫描并加载指定路径下（默认扫描启动类所在包下的所有类），被 @Component、@Controller、@Service、@Repository 注解的类</li>
+<li>可以自定义排除某些类</li>
+</ul>
+</li>
+</ul>
+<h1 id="Spring-Cloud"><a href="#Spring-Cloud" class="headerlink" title="Spring Cloud"></a>Spring Cloud</h1>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/08/19/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">工作笔记</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/08/12/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
+                        <span class="hidden-mobile">设计模式</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"64e7a0af76ea907275e7","clientSecret":"58fc6a6232d3179936704144df3ddeef170c2fdd","repo":"bolg-comment","owner":"Xzzz583722585","admin":["Xzzz583722585"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: 'f6c753c22219592602b6730b4ee09c83'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <i class="iconfont icon-love"></i> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        京ICP证123456号
+      </a>
+    </span>
+    
+      
+        <span>
+          <a
+            href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+            rel="nofollow noopener"
+            class="beian-police"
+            target="_blank"
+          >
+            
+              <span style="visibility: hidden; width: 0">|</span>
+              <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+            
+            <span>京公网安备12345678号</span>
+          </a>
+        </span>
+      
+    
+  </div>
+
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

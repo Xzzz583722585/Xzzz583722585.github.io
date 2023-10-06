@@ -1,0 +1,825 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="Jon Xzzz">
+  <meta name="keywords" content="">
+  
+  <title>kafka面试题 - Jon Xzzz</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"www.jonxzzz.xyz","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"SAmnq0afTzl9DvACTmD2ys0H-gzGzoHsz","app_key":"yxbky5wsCPQcibrgyi8HmBtm","server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Jon Xzzz</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="kafka面试题">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2023-08-18 23:34" pubdate>
+        2023年8月18日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.8k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      28
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        浏览 <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">kafka面试题</h1>
+            
+            <div class="markdown-body">
+              <h2 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h2><ul>
+<li>消息持久化</li>
+<li>高吞吐<ul>
+<li>日志追加写</li>
+<li>零拷贝</li>
+<li>reactor 网络模型</li>
+</ul>
+</li>
+<li>高容错</li>
+<li>高可拓展<ul>
+<li><p>多分区多副本</p>
+<ul>
+<li><p>partition 分区</p>
+<ul>
+<li><p>可伸缩性</p>
+<ul>
+<li>将每个 topic 划分为多个分区，不同的分区可以放置在不同的节点上，而数据的读写操作也是针对分区这个粒度进行的，这样每个分区都能独立地处理读写请求</li>
+</ul>
+</li>
+<li><p>分区策略（负载均衡）：</p>
+<ul>
+<li><p> 生产者：将消息发送到哪个分区</p>
+</li>
+<li><p>轮询</p>
+</li>
+<li><p>加权轮询</p>
+</li>
+<li><p>最小连接数</p>
+</li>
+<li><p>加权最小连接数</p>
+</li>
+<li><p>随机</p>
+</li>
+<li><p>源地址映射：订单消息中心就按照dealId分区</p>
+</li>
+<li><p>消费者：从哪个分区读取消息</p>
+<ul>
+<li><p>RoundRobin</p>
+<ul>
+<li>针对所有 topic 分配：将所有分区和消费者按照 hashcode 排序，然后依次分配下去（一张一张发牌）。</li>
+</ul>
+</li>
+<li><p>TopicRange</p>
+<ul>
+<li>按 topic 依次分配：分区数/消费者数就是每个消费者分配到的分区数（余数按顺序依次给前面的消费者每人一个）。对每个 topic 内的分区按需要从小到大排序，对所有消费者按照字典序排序，逐个分配（一次分配完，而不是一张一张发牌）。</li>
+</ul>
+</li>
+<li><p>Sticky</p>
+<ul>
+<li>尽可能保证分区分配均衡（优先级更高）</li>
+<li>rebalance 情况下尽可能保留现有分区</li>
+</ul>
+</li>
+<li><p>CooperativeSticky</p>
+<ul>
+<li>上述三种策略都会导致一次全局的重新分配</li>
+<li>本策略分成多次小规模的重新分配</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>数据持久化</p>
+<ul>
+<li>使用日志文件保存数据。写入消息就在文件末尾追加，消费消息就从offset （最新的读取位置）顺序读取。所以可以保证消息在 partition 内有序，但在 topic 内无序</li>
+<li>对日志进行分段 segment，当写满一个日志段后，就会新建一个日志段继续写，并且会将之前的日志段封存起来。会有定时任务定期检查日志段并删除</li>
+</ul>
+</li>
+<li><p>索引</p>
+<ul>
+<li>偏移量索引</li>
+<li>时间戳索引</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>replication 副本</p>
+<ul>
+<li>好处<ul>
+<li>数据可靠性：分布在不同机器上</li>
+<li>高伸缩性（没有，因为副本不对外提供任何服务）</li>
+<li>改善数据局部性，可以更加靠近用户地理位置，从而降低延迟（没有）</li>
+</ul>
+</li>
+<li>为什么不要另外两个好处<ul>
+<li>本身可以实现高吞吐量，不需要额外提供读服务</li>
+<li>没有数据一致性问题</li>
+</ul>
+</li>
+<li>针对分区做数据备份，每个分区有多个副本</li>
+<li>分类<ul>
+<li>partition leader 分区主副本<ul>
+<li>主副本，对外提供读写功能</li>
+<li>由 controller leader 负责选举出 partition leader</li>
+</ul>
+</li>
+<li>partition follower 分区从副本<ul>
+<li>备份副本，只做数据备份，不提供任何功能</li>
+<li>ISR<ul>
+<li>由主副本负责维护。代表了与主副本进度同步的副本集合。所以主副本天生就在 ISR 内，如果不在，说明主副本挂掉了。判断一个副本在不在 ISR 的标准就是他落后主副本的最长连续时间间隔，默认不超过10秒。通过LEO判断。</li>
+<li>ISR 是动态集合。如果一个副本落后主副本的时间超过阈值，就会被踢出 ISR。反之如果这个副本追上了主副本进度，会重新加入 ISR。</li>
+<li>unclean 选举：主副本挂掉时，ISR 集合为空，需要根据配置判断是否可以从进度落后主副本的从副本中选主，是一个可用性与数据一致性的选择问题。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>主从同步<ul>
+<li>从副本异步拉取最新数据</li>
+<li>高水位 HW：位移小于高水位的消息属于已提交消息（参见生产者ack），可以被消费者消费。位移大于等于高水位的消息属于未提交消息，不可以被消费者消费。分区的高水位就是主副本的高水位。</li>
+<li>日志末端位移 LEO：当前副本写入下一条消息的位移值</li>
+<li>远程副本LEO：主副本所在 broker 为了辅助主副本判断其HW，保存了各个从副本的LEO值在主 broker 上，称为远程副本</li>
+<li>更新机制<ul>
+<li>主副本LEO：主副本接收到生产者发送来的消息，写入磁盘成功后，更新LEO</li>
+<li>主副本HW<ul>
+<li>主副本.HW = min{主副本.LEO, 从副本1.LEO, …, 从副本n.LEO}</li>
+<li>更新时机<ul>
+<li>主副本更新LEO后</li>
+<li>远程副本更新LEO后</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>从副本 LEO：从副本拉取主副本消息，写入磁盘成功后，更新LEO</li>
+<li>从副本 HW：从副本更新完自己的LEO后，从副本.HW = min{从副本.LEO, 主副本.HW}</li>
+<li>远程副本LEO：从副本拉取主副本消息时，会告诉主副本从哪个位移位置开始拉取，此时会更新远程副本LEO为这个开始位移值</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>主从切换：zookeeper 负责选主</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><p>本质上是通过中间层，做应用解耦。以此带来了异步通信与流量削峰的好处。</p>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>kafka 是分布式的消息引擎，提供一套完备的消息发布订阅解决方案。</p>
+<ul>
+<li><p>topic 主题</p>
+<ul>
+<li>发布订阅的对象，是一类数据的集合，相当于数据库中的表</li>
+</ul>
+</li>
+<li><p>client 客户端</p>
+<ul>
+<li>producer 生产者<ul>
+<li>向订阅的 topic 发布消息的客户端</li>
+<li>向集群push消息</li>
+</ul>
+</li>
+<li>consumer 消费者<ul>
+<li><p>从订阅的 topic 读取消息的客户端，从集群pull消息</p>
+</li>
+<li><p>消费者 offset</p>
+<ul>
+<li>记录当前实例消费的位置，具体指下一条需要的消息位置，而不是最新消费过的消息位置。需要向分配给它的每个分区提交位移。目的是消费者重启后，能够从上次提交的位置直接重新读取，而不需要从头再来。</li>
+<li>方式<ul>
+<li>自动提交<ul>
+<li>每次 poll 消息，都会先提交上次 poll 返回的所有消息，再处理当前消息</li>
+<li>默认每5秒提交一次</li>
+</ul>
+</li>
+<li>手动提交<ul>
+<li>可以指定消费位移</li>
+</ul>
+</li>
+<li>同步提交</li>
+<li>异步提交<ul>
+<li>不会自动重试</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>consumer group 消费者组</p>
+<ul>
+<li><p>多个消费者实例组成一个 group，共同消费一组 topic。这组 topic 内的每个分区，都只会被组内的唯一消费者消费。不同组之间，可以重复消费同一个分组。</p>
+</li>
+<li><p>消息模式</p>
+<ul>
+<li><p>点对点</p>
+<ul>
+<li>目的是提高消费端的吞吐量，避免重复消费</li>
+</ul>
+</li>
+<li><p>发布订阅</p>
+</li>
+</ul>
+</li>
+<li><p>保存位移数据</p>
+<ul>
+<li><p>针对每个分区，本组中只有一个消费者会消费它</p>
+</li>
+<li><p>Map&lt;topic-partition, offset&gt;存储每个分区的消费位移</p>
+</li>
+<li><p>Coordinator 协调者</p>
+<ul>
+<li>负责为 group 执行 rebalance、位移管理和组成员管理。所有 broker 启动时，都会开启 Coordinator 组件。当某个 comsumer 向集群提交位移，其实是向服务他的 Coordinator 提交位移。</li>
+<li>消费组内的分区会分配给某个 comsumer 消费，那么这个分区对应的 leader partition 所在 broker 的 Coordinator，就是该消费者需要连接并提交位移的  Coordinator。</li>
+<li>存储位置</li>
+<li>场景要求<ul>
+<li>持久性</li>
+<li>频繁写</li>
+<li>老版本</li>
+<li>zookeeper，但问题是 zookeeper 不适合这种频繁写操作的场景<ul>
+<li>目的是减少 broker 保存状态的开销，并且可以做到无状态，方便拓展</li>
+</ul>
+</li>
+<li>新版本<ul>
+<li>专门存储消费位移的 topic： __consumer_offsets，因为 kafka 天生就是符合这个场景</li>
+<li>专门的后台线程，类似于 AOF 重写式地删除过期消息</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>rebalance</p>
+</li>
+<li><p>问题</p>
+<ul>
+<li>STW 式的重新分配过程，在此期间无法提供服务</li>
+<li>效率低</li>
+<li>很慢</li>
+</ul>
+</li>
+<li><p>触发条件</p>
+<ul>
+<li><p>组内成员发生变更</p>
+<ul>
+<li><p>原因</p>
+<ul>
+<li>心跳检测失败</li>
+<li>消费时间过长</li>
+<li>消费者实例 GC 问题</li>
+</ul>
+</li>
+<li><p>执行过程</p>
+</li>
+<li><p>当某个消费者主动加入/主动退出/被动退出（被心跳检测出）时，协调者向现有组内成员发出命令，要求他们退出组并重新加入</p>
+<ul>
+<li>协调者收集完所有成员的加入请求后，会将第一个加入组的消费者指定为领导者，并要求他置顶重平衡策略</li>
+<li>领导者负责执行重平衡策略，完成后将其发送给协调者</li>
+<li>协调者将分区方案依次发送给组内每一个消费者</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>订阅主题发生变更（一般不变）</p>
+</li>
+</ul>
+</li>
+<li><p>订阅主题的分区数发生变更（一般不变）</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>server 集群</p>
+<ul>
+<li><p>可用性</p>
+</li>
+<li><p>broker 实例</p>
+<ul>
+<li>实际执行任务的进程，主要负责接收和处理客户端发送过来的请求，以及数据持久化</li>
+<li>controller<ul>
+<li>每个 broker 启动时都会创建一个 controller 进程</li>
+<li>通过 zookeeper，选举出 controller leader</li>
+<li>controller leader 负责管理集群的分区和副本状态</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>网络模型</p>
+<p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/kafka/network.jpg" srcset="/img/loading.gif" lazyload></p>
+<p>大体上基于 reactor 模型。网络线程池基于 I/O 多路复用，处理完套接字后，将请求放入共享请求队列（相当于缓冲区）内，I/O线程池会不断处理共享请求队列内的请求。如果是不能立即处理的延时请求，就会先将这个请求放入炼狱队列中，等待时机成熟再处理。处理完成的相应会被放入网络县城对应的响应队列中，分别传回客户端。</p>
+<p>另外，控制类请求和数据类请求的处理逻辑一致，但是分别由两套独立上述机制处理。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="消息可靠性承诺"><a href="#消息可靠性承诺" class="headerlink" title="消息可靠性承诺"></a>消息可靠性承诺</h2><ul>
+<li>最多一次：消息可能丢失，但绝不会重复发送<ul>
+<li>实现：生产者保证不会生成重复消息，并且只发送一遍，发送出去后就不关心了，也不会重试</li>
+</ul>
+</li>
+<li>至少一次：消息不会丢失，但有可能重复发送<ul>
+<li><p>实现：消息丢失</p>
+<ul>
+<li><p>生产者</p>
+<ul>
+<li>本地消息表：落业务数据表的时候，会利用Mysql的事务机制，保证同时成功落本地消息表。</li>
+<li>重试<ul>
+<li>手动重试：调用带有 callback 的 send 方法，可以确认消息是否发送成功</li>
+<li>自动重试：设置 retries</li>
+</ul>
+</li>
+<li>设置 acks<ul>
+<li>有多少副本确认提交后才算提交成功</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>服务器：可靠性保证</p>
+<ul>
+<li>冗余副本机制</li>
+<li>禁用 unclean leader：leader 副本挂掉后，一定从 ISR 中挑选新 leader，否则宁愿不可用</li>
+<li>ISR</li>
+<li>高水位线</li>
+</ul>
+</li>
+<li><p>消费者</p>
+<ul>
+<li>先消费消息，再更新位移</li>
+<li>关闭自动提交位移，而是手动提交位移</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>精确一次：消息不会丢失，也不会重复发送<ul>
+<li>实现：消息重复<ul>
+<li>生产者<ul>
+<li>本地消息表：业务系统使用数据库唯一键，自己保证消息的幂等性</li>
+<li>幂等型生产者<ul>
+<li>设置幂等键</li>
+<li>可以保证单分区上的幂等性，无法保证多分去区之间的幂等性</li>
+</ul>
+</li>
+<li>事务型生产者<ul>
+<li>设置为幂等型生产者</li>
+<li>设置事务id</li>
+<li>设置隔离级别</li>
+<li>2pc实现</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>消费者<ul>
+<li>业务系统自己保证</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"64e7a0af76ea907275e7","clientSecret":"58fc6a6232d3179936704144df3ddeef170c2fdd","repo":"bolg-comment","owner":"Xzzz583722585","admin":["Xzzz583722585"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '10aea74d4a2fc4955f645f75ac0dbe9b'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <i class="iconfont icon-love"></i> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        京ICP证123456号
+      </a>
+    </span>
+    
+      
+        <span>
+          <a
+            href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+            rel="nofollow noopener"
+            class="beian-police"
+            target="_blank"
+          >
+            
+              <span style="visibility: hidden; width: 0">|</span>
+              <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+            
+            <span>京公网安备12345678号</span>
+          </a>
+        </span>
+      
+    
+  </div>
+
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

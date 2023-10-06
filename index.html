@@ -146,6 +146,259 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2023/08/19/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/" target="_blank">
+          工作笔记
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2023/08/19/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/" target="_blank">
+          
+          
+            
+          
+          订单消息中心
+本地消息表：落订单数据表的时候，会利用Mysql的事务机制，保证同时成功落本地消息表，代表之后要发送的通知消息。消息表主要包含订单id、消息状态、消息初始内容、消息最终内容、创建时间、最后发送消息的时间
+重试：调用带有 callback 的 send 方法，可以确认消息是否发送成功。
+幂等性生产者：本地消息表的唯一键保证
+
+设计模式在订单系统的应用
+核心逻辑
+
+生成器模式
+分步骤创建
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-08-19 15:29" pubdate>
+              2023-08-19
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/08/12/spring%E9%9D%A2%E8%AF%95%E9%A2%98/" target="_blank">
+          spring面试题
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2023/08/12/spring%E9%9D%A2%E8%AF%95%E9%A2%98/" target="_blank">
+          
+          
+            
+          
+          Spring IoC什么是 IoC 和 DIIoC 控制反转，不是一种具体技术，而是一种设计思想，能指导我们如何设计出松耦合的程序。指的是将我们需要使用的对象交给 IOC 容器进行管理控制，由容器进行注入依赖对象。而不是传统的在类内部主动创建依赖对象并进行组合、管理。
+DI 依赖注入，指的是组件之间依赖关系由容器在运行期决定，形象的说，即由容器动态的将某个依赖关系注入到组件之中。通过依赖注入机制，
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-08-12 16:39" pubdate>
+              2023-08-12
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/08/12/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" target="_blank">
+          设计模式
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2023/08/12/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" target="_blank">
+          
+          
+            
+          
+          创建型单例模式描述确保一个类只有一个实例，并提供该实例的全局访问点。
+类图
+使用一个私有构造函数、一个私有静态变量以及一个公有静态函数来实现。
+私有构造函数保证了不能通过构造函数来创建对象实例，只能通过公有静态函数返回唯一的私有静态变量。
+实现
+懒汉式 - 线程不安全
+1234567891011121314public class Singleton &#123;    private stati
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-08-12 13:56" pubdate>
+              2023-08-12
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/08/09/java%E5%B9%B6%E5%8F%91/" target="_blank">
+          java并发
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2023/08/09/java%E5%B9%B6%E5%8F%91/" target="_blank">
+          
+          
+            
+          
+          内存模型JMM
+Java内存模型规定了所有变量（实例字段，静态字段和构成数组中的元素，不包括线程私有的局部变量和方法参数）都存储在主内存。每条线程都有自己的工作内存，用来保存被该线程使用的变量的主内存副本。线程对变量的所有操作（读取、赋值等）都必须在工作内存中进行，而不能直接读写主内存中的数据。不同线程之间无法之间访问对方工作内存中的变量，线程间变量值的传递均需要通过主内存来完成。
+内存交互操作
+
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-08-09 23:14" pubdate>
+              2023-08-09
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/08/01/java%E9%9D%A2%E8%AF%95%E9%A2%98/" target="_blank">
+          java面试题
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2023/08/01/java%E9%9D%A2%E8%AF%95%E9%A2%98/" target="_blank">
+          
+          
+            
+          
+          容器java 容器
+Collection
+List
+ArrayList
+动态数组实现
+优点：读速度快，随机搜索
+缺点：写速度慢，涉及移动大量数组元素
+
+
+Vector
+synchronized实现的ArrayList的线程安全版本
+
+
+CopyOnWriteArrayList
+synchronized实现的线程安全列表
+为了增加并发度，读写分离，写数据时会copy一份新数组，在新数组上修改，修改完
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-08-01 22:38" pubdate>
+              2023-08-01
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/07/30/JVM%E9%9D%A2%E8%AF%95%E9%A2%98/" target="_blank">
+          JVM面试题
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2023/07/30/JVM%E9%9D%A2%E8%AF%95%E9%A2%98/" target="_blank">
+          
+          
+            
+          
+          Java 内存区域程序计数器（线程私有）当前线程所执行字节码的行号指示器
+虚拟机栈（线程私有）为Java方法服务。每个方法在执行时都会往栈中push一条栈桢：局部变量表、操作数栈、动态链接、方法出口等。若线程请求深度大于虚拟机所允许的深度，会产生StackOverslowError。
+本地方法栈（线程私有）和虚拟机栈类似，为Native方法服务。
+方法区（线程共享）存储已被虚拟机加载的类信息、常量
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-07-30 22:45" pubdate>
+              2023-07-30
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2023/06/23/%E5%9F%BA%E6%95%B0%E7%BB%9F%E8%AE%A1%E7%AE%97%E6%B3%95/" target="_blank">
           基数统计算法
         </a>
@@ -224,62 +477,6 @@ LogLog Counting回顾一些高中知识。我们假设抛出一枚硬币，其�
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/finish/">finish</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2023/06/04/Redis%E5%BA%94%E7%94%A8-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" target="_blank">
-          Redis应用-分布式锁
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2023/06/04/Redis%E5%BA%94%E7%94%A8-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" target="_blank">
-          
-          
-            
-          
-          分布式锁简介如何获取锁首先我们解决“锁”的问题，即前一个请求通过Redis加了一把锁，后面的请求再想加一把同样的锁就不可以了。我们通过SETNX命令实现。
-12// 语义：set if not exists，即key不存在时设置key/value成功，否则失败SETNX KEY VALUE
-
-
-
-下面两个命令熟不熟？
-12345// 设置string对象，键为key，值为valueSET key 
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-06-04 22:01" pubdate>
-              2023-06-04
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/redis/">redis</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/editing/">editing</a>
             
           </div>
         
@@ -393,59 +590,13 @@ LogLog Counting回顾一些高中知识。我们假设抛出一枚硬币，其�
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2021/09/08/SAC-003-REST/" target="_blank">
-          SAC-003-REST
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/09/08/SAC-003-REST/" target="_blank">
-          
-          
-            
-          
-          前言架构级别的所有设计决策都应该在所设计系统的功能、行为和社会需求的背景下做出，这是一个同样适用于软件架构和传统建筑架构领域的原则。“形式追随功能”的准则来自数百年失败的构建项目的经验，但经常被软件从业者忽视。
-改变应用程序的交互方式对性能的影响比所使用的通信协议更大。
-一般而言，基于网络的体系结构和软件体系结构之间的主要区别在于，如果可以在运行时基于组件的位置选择更有效的机制，则组件之间的通信仅
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-09-08 16:33" pubdate>
-              2021-09-08
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/The-Software-Architecture-Chronicles/">The Software Architecture Chronicles</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/editing/">editing</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
 
 
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/#board">2</a><a class="extend next" rel="next" href="/page/2/#board"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
 
 
 

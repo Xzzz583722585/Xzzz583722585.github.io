@@ -1,0 +1,723 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="Jon Xzzz">
+  <meta name="keywords" content="">
+  
+  <title>知乎项目总结 - Jon Xzzz</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"www.jonxzzz.xyz","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"SAmnq0afTzl9DvACTmD2ys0H-gzGzoHsz","app_key":"yxbky5wsCPQcibrgyi8HmBtm","server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Jon Xzzz</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="知乎项目总结">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2023-08-20 22:18" pubdate>
+        2023年8月20日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      5.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      51
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        浏览 <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">知乎项目总结</h1>
+            
+            <div class="markdown-body">
+              <h1 id="自我介绍"><a href="#自我介绍" class="headerlink" title="自我介绍"></a>自我介绍</h1><p>你好，我叫肖其宗，目前就职于北京知乎科技有限公司，担任 java 后端开发工程师的岗位。</p>
+<ul>
+<li><p>技术能力</p>
+<ul>
+<li>熟悉 java 基础、集合、并发、jvm（有 jvm 问题排查经验）</li>
+<li>熟悉 Spring、Spring boot 等主流 java 框架，了解底层原理</li>
+<li>熟悉 Mysql，了解索引、事务等原理，有过SQL优化、索引优化经验</li>
+<li>熟悉 Redis，了解底层数据结构、主从复制、分片集群等原理，编写过 Redis 分布式锁实现</li>
+<li>熟悉 kafka，了解底层原理</li>
+<li>熟悉分布式事务、Spring 事务</li>
+<li>了解 Python 语言，有编写简单脚本、数据处理能力</li>
+<li>了解 k8s、docker 等容器技术</li>
+</ul>
+</li>
+<li><p>通用能力</p>
+<ul>
+<li>项目推进、管理<ul>
+<li>负责过10人左右的需求管理经验，了解任务分解、目标制定、人员分工、进度跟进、风险管理、资源协调、效果总结的基本工作内容。</li>
+</ul>
+</li>
+<li>沟通能力<ul>
+<li>语言上积极主动、表达清晰，文字上结构清晰、目标结论明确。</li>
+</ul>
+</li>
+<li>学习能力<ul>
+<li>对于新项目、新业务，可以做到可量化的快速学习掌握</li>
+<li>喜爱阅读技术书籍、开源项目，有做技术博客、读书笔记的习惯，喜欢分享技术知识。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="项目总结"><a href="#项目总结" class="headerlink" title="项目总结"></a>项目总结</h1><p>我们组为整个知乎提供交易和支付的能力。其中，交易的正向流程分为 建品、算价、下单、支付、履约 五大步骤，通过这五步，使用户拥有了浏览各类商品、使用促销获取各种价格、形成交易内容、付款、获得相关权益的能 力。通过这些能力，我们主要支撑了整个知乎教育课程、会员、电子书、社区商品、实体电商以及站外商品的交易行为。每月完成交易1100万单，涉及流水2亿元。以我个人所做的代客下单需求为例，上线第一季度就为公司带来收入超3000万元。</p>
+<p>那重点看我们内部，订单系统从上至下依次划分为业务对接层、核心领域产品层与基础能力层。业务对接层会有多个系统，分别对接不同业务线，通过对核心层和基础层能力的编排，为每个业务线提供各自定制化的交易能力、更简单易用的接口。核心领域层提供我们抽象出来的订单核心能力，包括创建结算单、创建订单、创建支付单、确认支付、关闭订单、售后、履约等，这些能力都不会理解具体业务，只理解订单域本身的概念。基础能力层的系统是那些与其他订单子系统几乎无关联的系统，例如算价、库存、用户地址、商品等。如此一来，在实际工作中，我们会将业务需求的更改范围限定在业务层实现，这样即使改出了问题，也不会影响其他业务，而且不影响我们的核心逻辑。如果不得不修改底层，那说明我们的系统功能缺失或者定义不清晰、不正确，那么就需要扩大需求范围，研究将其沉淀为基础能力的必要性与设计方案。</p>
+<p>我个人的主要任务是算价模块的重构与迁移、下单模块拆分：</p>
+<ul>
+<li><p>算价模块的重构与迁移</p>
+<p>简单说，之前的算价就是在一个方法里实现了各种价格的计算，然后利用模板模式，通过子类继承的方式供不同业务场景使用。其主要问题是：</p>
+<ul>
+<li>可拓展性差，新增业务场景、价格类型、促销类型都很困难</li>
+<li>可读性与可维护性差</li>
+<li>性能难以提升</li>
+</ul>
+<p>新的算价模型主要就分为两步，基本信息获取 与 链式价格计算：</p>
+<ul>
+<li>基本信息获取，指的是获取商品、服务（快递）、用户的信息</li>
+<li>链式价格计算，按责任链的模式，设计一个个价格的计算逻辑。其中每个节点，都已上一个节点的输出作为自己的输入，即本节点的基本价格，然后获取配置好的促销源数据，运用到基本价格后，就输出了本节点的价格。依次执行这个价格计算链路，获取所有价格信息。这样设计的好处是：<ul>
+<li>可拓展性好。新增一种价格类型，就是往链路中新增一个节点，实现促销源配置与价格计算逻辑。节点与节点都是独立的，很容易添加。目前价格链路是写死的，但这个模型很容易做到配置化。另外，每个节点都准备好了拓展点，按执行的先后顺序依次是 价格计算前做的事、校验、价格计算后做的事，可以通过代理模式，让业务方在自己的系统获知中间价格的计算，并有机会改变价格。</li>
+<li>可读性与可维护性好。由于节点与节点是独立的，所以理解代码的成本很低，只需要一个个单独看就行，不存在上下文依赖。</li>
+<li>促销源是独立于价格计算外的，所以可以一次性，通过并发统一获取，大大提升了算价性能。</li>
+</ul>
+</li>
+</ul>
+<p>带来的收益有：</p>
+<ul>
+<li>新支持教育业务方的所有场景下单及会员app内购买场景，新增接口QPS400</li>
+<li>接口响应时间从250ms降低至100ms左右</li>
+</ul>
+</li>
+<li><p>下单模块拆分</p>
+<ul>
+<li><p>背景</p>
+<p>原有的订单系统超过10w行代码，拥有对外接口超200个，带来的问题是：</p>
+<ul>
+<li>订单核心功能中参杂了很多非核心逻辑，导致领域边界不清晰</li>
+<li>业务耦合重，难以理解、维护、拓展</li>
+<li>相同逻辑存在多版本代码，容易出bug</li>
+</ul>
+</li>
+<li><p>拆分流程：总体上基于 DDD 进行领域识别与划分，并以此为基础拆分订单系统</p>
+<ul>
+<li><p>业务分析</p>
+<ul>
+<li><p>按业务流程（时间线）</p>
+<p>通过事件风暴和四色标记法，我们总结出订单系统内的正向核心流程：算价、创建订单、创建支付单、确认支付。除此以外，还有逆向售后流程、用户地址、库存相关功能，C端、B端的数据检索功能。详细列举了每个步骤涉及的所有对象、触发方式、触发条件等，将其归纳为功能点</p>
+</li>
+<li><p>按数据表</p>
+<p>严格来说，DDD是业务维度的，不关心底层数据模型。但一方面，传统的MVC架构，数据模型中往往包含大量之前的系统设计，可以辅助我们理解业务。另一方面，最终的落地依然要考虑数据迁移。</p>
+<p>目前订单系统的主要数据表有：deal、order、order_item、service_item、promotion_item，分别代表交易、交易下的多笔订单、一笔订单内的多个商品、服务和使用到的促销。另外，系统内还存在算价、商品、库存、用户地址，他们与刚才说的订单核心表无直接关联。</p>
+</li>
+<li><p>按业务场景</p>
+<p>目前我们支持知乎教育、会员、电商、社区业务，我们单独梳理出了与各业务耦合在一起的接口参数、代码位置即逻辑、底层数据存储，并将其抽象转成成了与业务线无关的功能点。</p>
+</li>
+</ul>
+</li>
+<li><p>领域建模</p>
+<p>根据上述梳理结果，我们大致划分出了结算单、订单、支付单、售后单这四个核心域，以及算价、商品、库存、用户地址这些支撑域与通用域。</p>
+<p>很明显，无论是业务流程还是数据表都显示，订单、支付单与售后单这三个概念截然不同，有不同的职责。订单负责组织起这笔交易涉及的各类资源，如商品、用户、促销活动、价格、支付信息等等，而支付单的职责是记录并支撑一次支付行为，售后单更不用讨论了。另外，结算单这个概念，是我们经过多次讨论，基于订单信息不变的原则，所抽象出的用户创建订单前的行为，即下单前在收银台的交易明细展示。</p>
+<p>至此，我们就有了大致的领域划分。并且，我们还产出了每个领域内部的核心实体对象与值对象。</p>
+</li>
+<li><p>划分限界上下文</p>
+<p>有了大致的领域划分后，我们就开始处理领域与领域的边界问题。这一步是最繁琐与耗时的，并且可以说，永远没有尽头，是一个不断动态修改磨合的过程。</p>
+<p>我们首先识别出模糊点位置，然后利用上述事件描述的方法，将该点功能描述出来，然后依次判断其与哪边的领域定义更贴合，功能关系、数据关系、代码关系更紧密，做出判断。实在不好判断的，要么先放在一个领域的外层，要么单独放在一个垃圾堆里。</p>
+</li>
+<li><p>制定实施计划</p>
+<ol>
+<li>我们需要将识别出来的每一个领域实现为微服务。</li>
+<li>我们将抽象出来的领域划分为核心域与支撑域，并按照彼此间的依赖关系，将所有领域对应的微服务划分为核心层与基础层。</li>
+<li>我们调研了现在技术领域DDD的落地方案，选用六边形架构作为我们每个微服务的架构方式，优点是能很好的保护内部领域模型不被侵入，具有很高的可拓展性。</li>
+<li>我们先以非常独立的算价服务作为试点，验证架构的可实施性，以及探索未知问题。在成功落地后，快速将同属于基础层的商品、库存、用户地址实现。特殊的是，属于订单核心域中的订单状态机，我们单独抽离出来作为基础层服务，目的是重中之重的保护订单状态流转。</li>
+<li>制定拆分计划，将结算单、订单、支付单、售后单依次拆解出来。主要根据之前梳理的各个功能在流程中的位置、重要性、依赖顺序、迁移复杂度做决策。</li>
+<li>按照拆分计划，投入人力执行计划。</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p>经验总结</p>
+<ul>
+<li><p>如何进行系统的增量演进</p>
+<p>参考绞杀植物模式，允许一段时间内新老系统同时存在、同时运行，并逐步替换，将风险降至最低。具体实施步骤：</p>
+<ol>
+<li>建立灰度开关：一方面可以动态控制切换进度，方便A/B测试。另一方面，方便有问题随时切换流量到旧系统。</li>
+<li>增量迁移：不需要一次性将所有功能迁移走，而是采用小步快跑的方式，少量拆分迁移，少量测试验证，大大降低了风险，提高了研发人员信心。</li>
+<li>并行运行：一方面，即使灰度完成也不要立即删除旧代码，而是保持一段时间，确认没有问题后再删除。另一方面，对于只读接口，可以同时运行新旧代码，对比其出入参与异常，发现测试不能发现的问题。</li>
+<li>代码清理：确认新代码完全没问题后，及时清理旧代码，避免不熟悉的研发人员产生困惑。</li>
+</ol>
+<p>最后，想强调一点，上述是一个比较漫长的过程一定要提前做好整体排期规划，否则会没完没了，即没有达到战略目标，又占用人员精力时间。</p>
+</li>
+<li><p>对于一些基础服务，最好的方式是通过入参传入其需要的参数，而不是通过传入id，再让其根据id查询数据。原因是这样可以解耦系统间依赖，将依赖关系集中在编排层或中间层。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="遇到的技术难题"><a href="#遇到的技术难题" class="headerlink" title="遇到的技术难题"></a>遇到的技术难题</h1><ul>
+<li><p>项目类</p>
+<ul>
+<li><p>接口diff对比工具</p>
+<ul>
+<li><p>背景</p>
+<p>我们在做大量系统拆分、重构、迁移类项目，目的是优化系统架构、提供更快更好的交易能力、为不同业务线的快速发展保驾护航。这些改动影响整个知乎所有业务线的交易功能。不论是在测试人力资源不够的客观情况下，还是对正确性的要求，都需要找到一个方法保证新旧系统、功能或代码的一致性、正确性。</p>
+</li>
+<li><p>输出</p>
+<p>基于反射的，在代码层面对新旧方面的输入输出自动作比较，并输出对比结果的工具。</p>
+<p>使用方法是，优先写好新老方法，此时要求两者出入参数类型一致，在需要方法比较的方法上使用注解，表明对比类的类型，默认同名方法。在工具内部，会优先执行原方法并返回，然后使用线程异步地执行新方法，然后利用新旧方法的输入输出参数做比较，默认深拷贝出参，对所有字段排序后转json字符串做字符串比较，默认比较不一致就打log。</p>
+<p>我还在原方法执行前后、原方法返回前、新方法执行前后、对比方法执行前后、比较方法、通知方法处都做了拓展点，灵活支持各种场景的比较需求。</p>
+<p>最后，为了支持平滑迁移，还实现了基于apollo的灰度放量工具。</p>
+</li>
+<li><p>Q：为什么不使用钟馗这类的流量回放</p>
+<p>A：我们是同时使用钟馗和diff工具的。但由于钟馗是接口维度的，只适用于读请求的回放比较，对于一些方法层面的比较，或者写请求不适用。diff工具是代码维度的，可以很灵活的使用。比如对于写请求，我就可以对真正落库前的所有读操作作比较，一定程度地保证我的新旧代码一致性。</p>
+</li>
+<li><p>缺点</p>
+</li>
+<li><p>代码侵入性比较强</p>
+<ul>
+<li>占用一定资源</li>
+</ul>
+</li>
+<li><p>效果</p>
+<p>以算价迁移为例，在迁移过程中，没有占用测试人力。上线后一周内发现12个bug，修复后观察一周，完成最终新老系统替换。使用diff工具的情况下，平均每天占用研发人力1-2小时，总计10人时不到。相同情况下，测试预计排期4天，总计4*8+4*2=40人时。</p>
+</li>
+</ul>
+</li>
+<li><p>实现redis分布式锁</p>
+<ul>
+<li><p>背景</p>
+<p>由于公司没有人力维护ETCD数据库，导致其很不稳定，请求经常超时。故原有的基于ETCD实现的分布式锁极不稳定。</p>
+<p>使用redis实现分布式锁的限制条件：</p>
+<ul>
+<li>不选择redlock，因为我们对性能没有那么极致的追求，更在乎锁的正确性，而redlock是存在数据一致性风险的。另外，redlock很消耗资源，少量节点的集群没多大意义。</li>
+</ul>
+</li>
+<li><p>由于lua脚本在分片集群中使用的局限性，即涉及的多个key可能分布在不用节点，导致一般选用第一个key作为计算slot的key。虽然分布式锁这个场景我们依然能用集群lua脚本，但公司层面已经禁用掉了lua脚本功能。</p>
+</li>
+<li><p>输出成果</p>
+<p>【实现方式参见redis章】。释放锁时，采用pipline+multi事务+watch的方式，保证释放锁的正确性。</p>
+</li>
+<li><p>效果</p>
+<p>目前使用到的应用33个，涉及服务超200个</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>纯技术类</p>
+<ul>
+<li><p>ForkJoinPool 线程池导致的算价服务 OOM</p>
+<ul>
+<li><p>背景</p>
+<ul>
+<li>算价迁移到单独服务后，沿用之前代码，上线30min后接口开始大量报错，服务直接OOM</li>
+</ul>
+</li>
+<li><p>结论</p>
+<ul>
+<li>具体原因：<ul>
+<li>算价服务使用的 ForkJoinPool 线程池用到的阻塞队列使用无界队列。</li>
+<li>当时正好降本增效期间，申请到的服务数量较少。</li>
+</ul>
+</li>
+<li>这就导致新服务没有能力处理大量算价请求，阻塞队列不断堆积，内存达到上限后触发GC。但由于这些线程任务都被 ForkJoin 持有，无法释放，最终导致频繁GC，CPU与内存不断暴涨，最终OOM</li>
+</ul>
+</li>
+<li><p>追踪过程</p>
+<ol>
+<li><p>【应急处理】观察到服务报错后立即回滚部署</p>
+</li>
+<li><p>【定位表面问题】查看GF大盘。发现报错期间服务的内存持续增加，到达某个临界点时CPU暴涨到90%。怀疑GC引起的CPU暴涨，查看GC监控，果然发现老年代内存不断升高，并且无法被GC释放掉。那显然是内存不断升高导致的CPU暴涨，根本问题在内存上。</p>
+<p>另外注意，此时看监控，发现线程数很正常，但我们没有线程池的其余内容监控，耗费了时间。</p>
+</li>
+<li><p>【复现问题】由于我们公司容器重启后不会保存现场的堆栈信息，所以需要重现问题，拿到堆栈信息。在测试环境部署问题代码后，采用jmeter模拟线上QPS，对其进行压测，果然复现了问题。</p>
+</li>
+<li><p>【定位根因】利用jprofiler分析堆栈信息，发现ForkJoinPool相关对象占用了大量内存。查看问题代码，找出使用到ForkJoinPool的位置。追查ForkJoinPool源码，发现其内部线程池使用的是无界队列。</p>
+</li>
+</ol>
+</li>
+<li><p>解决方案</p>
+<ul>
+<li>使用 hippo4j动态线程池，设置有界队列</li>
+</ul>
+</li>
+<li><p>总结经验</p>
+<ul>
+<li>服务迁移时要注意新服务的规格，是否能承受当前QPS</li>
+<li>完善线程池相关监控，使用 hippo4j动态线程池</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>其他</p>
+<ul>
+<li>问题描述<ul>
+<li>一开始跟项目的时候，我给自己的定位是订单组的后端开发工程师，我的职责是满足业务/产品需求，为前端、其他组后端工程师提供接口，完成订单域功能。但在实际工作中，我遇到这么几类问题：<ol>
+<li>离实际业务很远，导致总是从技术角度考虑产品需求，很多方案总是很复杂，沟通成本也很高，搞的自己很累</li>
+<li>出现问题排查慢</li>
+<li>对于新信息的获知速度慢，很多别人早就知道的事情，我是犯了错误以后才知道</li>
+<li>对自己的成长速度不满意</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>原因<ol>
+<li>对业务模式不了解，对上下游系统不了解，对整体订单流程不够了解</li>
+<li>与其他组人的交流比较少</li>
+<li>沟通不积极，不主动获取信息</li>
+</ol>
+</li>
+<li>解决方式<ol>
+<li>优先熟悉自己负责的算价模块、正向下单模块，并设立检验标准，就是写这些模块的业务、架构、细节文档，并分享给别人，收集他人对于自己分享内容的评价、建议、问题，作为自己的backlog，逐步去解决这些问题</li>
+<li>约组内有经验的人单独聊天吃饭，询问整体架构情况。翻看组人共享文档，了解整体架构情况。</li>
+<li>根据整体架构，优先熟悉与自己有直接交互的模块。</li>
+<li>根据整体架构，逐步熟悉其余模块。</li>
+<li>再做项目的过程中，积极主动推进流程。参加每个人的技术方案会议，约每日站会，询问每日进度与问题。会议之后，了解其他组的工作内容，发展规划。</li>
+<li>在保证自身任务完成的情况下，积极参加业务需求会议，了解业务动态与发展方向。</li>
+</ol>
+</li>
+<li>总结经验<ul>
+<li>在我做了上述努力后，一是做需求更加游刃有余，二是获得了别人更多的认可。我认为，这套经验是可以量化与复制的。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"64e7a0af76ea907275e7","clientSecret":"58fc6a6232d3179936704144df3ddeef170c2fdd","repo":"bolg-comment","owner":"Xzzz583722585","admin":["Xzzz583722585"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: 'd8220f6f630da4a02866d30050dfcc57'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <i class="iconfont icon-love"></i> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        京ICP证123456号
+      </a>
+    </span>
+    
+      
+        <span>
+          <a
+            href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+            rel="nofollow noopener"
+            class="beian-police"
+            target="_blank"
+          >
+            
+              <span style="visibility: hidden; width: 0">|</span>
+              <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+            
+            <span>京公网安备12345678号</span>
+          </a>
+        </span>
+      
+    
+  </div>
+
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

@@ -1,0 +1,845 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="Jon Xzzz">
+  <meta name="keywords" content="">
+  
+  <title>JVM面试题 - Jon Xzzz</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"www.jonxzzz.xyz","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"SAmnq0afTzl9DvACTmD2ys0H-gzGzoHsz","app_key":"yxbky5wsCPQcibrgyi8HmBtm","server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Jon Xzzz</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="JVM面试题">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2023-07-30 22:45" pubdate>
+        2023年7月30日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      6.6k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      68
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        浏览 <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">JVM面试题</h1>
+            
+            <div class="markdown-body">
+              <h1 id="Java-内存区域"><a href="#Java-内存区域" class="headerlink" title="Java 内存区域"></a>Java 内存区域</h1><h2 id="程序计数器（线程私有）"><a href="#程序计数器（线程私有）" class="headerlink" title="程序计数器（线程私有）"></a>程序计数器（线程私有）</h2><p>当前线程所执行字节码的行号指示器</p>
+<h2 id="虚拟机栈（线程私有）"><a href="#虚拟机栈（线程私有）" class="headerlink" title="虚拟机栈（线程私有）"></a>虚拟机栈（线程私有）</h2><p>为Java方法服务。每个方法在执行时都会往栈中push一条栈桢：局部变量表、操作数栈、动态链接、方法出口等。若线程请求深度大于虚拟机所允许的深度，会产生StackOverslowError。</p>
+<h2 id="本地方法栈（线程私有）"><a href="#本地方法栈（线程私有）" class="headerlink" title="本地方法栈（线程私有）"></a>本地方法栈（线程私有）</h2><p>和虚拟机栈类似，为Native方法服务。</p>
+<h2 id="方法区（线程共享）"><a href="#方法区（线程共享）" class="headerlink" title="方法区（线程共享）"></a>方法区（线程共享）</h2><p>存储已被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等。若方法区无法满足内存分配要求，则会抛出OutOfMemoryError。</p>
+<p>HotSpot 虚拟机把它当成永久代来进行垃圾回收。但很难确定永久代的大小，因为它受到很多因素影响，并且每次 Full GC 之后永久代的大小都会改变，所以经常会抛出 OutOfMemoryError 异常。为了更容易管理方法区，从 JDK 1.8 开始，移除永久代，并把方法区移至元空间，它位于本地内存中，而不是虚拟机内存中。</p>
+<p>方法区是一个 JVM 规范，永久代与元空间都是其一种实现方式。在 JDK 1.8 之后，原来永久代的数据被分到了堆和元空间中。元空间存储类的元信息，静态变量和常量池等放入堆中。</p>
+<h2 id="运行时常量池"><a href="#运行时常量池" class="headerlink" title="运行时常量池"></a>运行时常量池</h2><p>方法区的一部分。编译器生成的字面量和符号引用会在类加载后被放入这个区域。除了在编译期生成的常量，还允许动态生成，例如 String 类的 intern()。</p>
+<h2 id="堆（线程共享）"><a href="#堆（线程共享）" class="headerlink" title="堆（线程共享）"></a>堆（线程共享）</h2><p>用于存放对象实例。若堆无法满足内存分配要求，并且无法拓展堆大小，则会抛出OutOfMemoryError。</p>
+<h3 id="直接内存"><a href="#直接内存" class="headerlink" title="直接内存"></a>直接内存</h3><p>在 JDK 1.4 中新引入了 NIO 类，它可以使用 Native 函数库直接分配堆外内存，然后通过 Java 堆里的 DirectByteBuffer 对象作为这块内存的引用进行操作。这样能在一些场景中显著提高性能，因为避免了在堆内存和堆外内存来回拷贝数据。</p>
+<h1 id="垃圾回收"><a href="#垃圾回收" class="headerlink" title="垃圾回收"></a>垃圾回收</h1><h2 id="判断一个对象是否可被回收"><a href="#判断一个对象是否可被回收" class="headerlink" title="判断一个对象是否可被回收"></a>判断一个对象是否可被回收</h2><ol>
+<li>引用计数算法：为对象添加一个引用计数器，当对象增加一个引用时计数器加 1，引用失效时计数器减 1。引用计数为 0 的对象可被回收。在两个对象出现循环引用的情况下，此时引用计数器永远不为 0，导致无法对它们进行回收。</li>
+<li>可达性分析算法：以 GC Roots 为起始点进行搜索，可达的对象都是存活的，不可达的对象可被回收。GC Roots 一般包含以下内容<ul>
+<li>虚拟机栈中引用的对象</li>
+<li>本地方法栈中引用的对象</li>
+<li>方法区中类静态属性引用的对象</li>
+<li>方法区中常量引用的对象</li>
+</ul>
+</li>
+</ol>
+<h2 id="引用类型"><a href="#引用类型" class="headerlink" title="引用类型"></a>引用类型</h2><p>无论是通过引用计数算法判断对象的引用数量，还是通过可达性分析算法判断对象是否可达，判定对象是否可被回收都与引用有关。Java 提供了四种强度不同的引用类型：</p>
+<ul>
+<li>强引用<ul>
+<li>被强引用关联的对象不会被回收</li>
+<li>使用 new 一个新对象的方式来创建强引用</li>
+</ul>
+</li>
+<li>软引用<ul>
+<li>被软引用关联的对象只有在内存不够的情况下才会被回收</li>
+<li>使用 SoftReference 类来创建软引用</li>
+</ul>
+</li>
+<li>弱引用<ul>
+<li>被弱引用关联的对象一定会被回收，也就是说它只能存活到下一次垃圾回收发生之前</li>
+<li>使用 WeakReference 类来创建弱引用</li>
+</ul>
+</li>
+<li>虚引用<ul>
+<li>又一个对象是否有虚引用的存在，不会对其生存时间造成影响，也无法通过虚引用得到一个对象。为一个对象设置虚引用的唯一目的是能在这个对象被回收时收到一个系统通知。</li>
+<li>使用 PhantomReference 来创建虚引用。</li>
+</ul>
+</li>
+</ul>
+<h2 id="垃圾回收算法"><a href="#垃圾回收算法" class="headerlink" title="垃圾回收算法"></a>垃圾回收算法</h2><ul>
+<li><p>标记 - 清除</p>
+<p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/jvm/mark-clean.png" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li>在标记阶段，程序会检查每个对象是否为活动对象，如果是活动对象，则程序会在对象头部打上标记。</li>
+<li>在清除阶段，会进行对象回收并取消标志位，另外，还会判断回收后的分块与前一个空闲分块是否连续，若连续，会合并这两个分块。回收对象就是把对象作为分块，连接到被称为 “空闲链表” 的单向链表，之后进行分配时只需要遍历这个空闲链表，就可以找到分块。</li>
+<li>在分配时，程序会搜索空闲链表寻找空间大于等于新对象大小 size 的块 block。如果它找到的块等于 size，会直接返回这个分块；如果找到的块大于 size，会将块分割成大小为 size 与 (block - size) 的两部分，返回大小为 size 的分块，并把大小为 (block - size) 的块返回给空闲链表</li>
+<li>缺点：<ul>
+<li>标记和清除过程效率都不高</li>
+<li>会产生大量不连续的内存碎片，导致无法给大对象分配内存</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>标记 - 整理</p>
+<p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/jvm/mark-compact.png" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li>在标记阶段，程序会检查每个对象是否为活动对象，如果是活动对象，则程序会在对象头部打上标记。</li>
+<li>在整理阶段，让所有存活的对象都向一端移动，然后直接清理掉端边界以外的内存。</li>
+<li>优点：<ul>
+<li>不会产生内存碎片</li>
+</ul>
+</li>
+<li>缺点：<ul>
+<li>需要移动大量对象，处理效率比较低。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>复制</p>
+<p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/jvm/repeat.png" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li>将内存划分为大小相等的两块，每次只使用其中一块，当这一块内存用完了就将还存活的对象复制到另一块上面，然后再把使用过的内存空间进行一次清理。</li>
+<li>现在的商业虚拟机都采用这种收集算法回收新生代，但是并不是划分为大小相等的两块，而是一块较大的 Eden 空间和两块较小的 Survivor 空间，每次使用 Eden 和其中一块 Survivor。在回收时，将 Eden 和 Survivor 中还存活着的对象全部复制到另一块 Survivor 上，最后清理 Eden 和使用过的那一块 Survivor。HotSpot 虚拟机的 Eden 和 Survivor 大小比例默认为 8:1，保证了内存的利用率达到 90%。</li>
+<li>缺点：<ul>
+<li>内存利用率只有一半</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>分代收集</p>
+<ul>
+<li>根据对象存活周期将内存划分为几块，不同块采用适当的收集算法。一般将堆分为新生代和老年代。<ul>
+<li>新生代使用：复制算法</li>
+<li>老年代使用：标记 - 清除 或者 标记 - 整理 算法</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="垃圾回收器"><a href="#垃圾回收器" class="headerlink" title="垃圾回收器"></a>垃圾回收器</h2><p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/jvm/garbage-collector.jpg" srcset="/img/loading.gif" lazyload></p>
+<ol>
+<li><p>Serial 收集器</p>
+<p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/jvm/Serial.jpg" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li>串行，即垃圾收集器与用户程序交替执行</li>
+<li>单线程</li>
+<li>优点<ul>
+<li>简单高效，在单个 CPU 环境下，由于没有线程交互的开销，因此拥有最高的单线程收集效率</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>ParNew 收集器</p>
+<p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/jvm/ParNew.jpg" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li>Serial 收集器的多线程版本<ul>
+<li>串行，即垃圾收集器与用户程序交替执行</li>
+<li>多线程</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Parallel Scavenge 收集器</p>
+<ul>
+<li>与 ParNew 一样是多线程收集器</li>
+<li>其它收集器目标是尽可能缩短垃圾收集时用户线程的停顿时间，而它的目标是达到一个可控制的吞吐量，因此它被称为“吞吐量优先”收集器。这里的吞吐量指 CPU 用于运行用户程序的时间占总时间的比值。停顿时间越短就越适合需要与用户交互的程序，良好的响应速度能提升用户体验。而高吞吐量则可以高效率地利用 CPU 时间，尽快完成程序的运算任务，适合在后台运算而不需要太多交互的任务。缩短停顿时间是以牺牲吞吐量和新生代空间来换取的：新生代空间变小，垃圾回收变得频繁，导致吞吐量下降</li>
+<li>GC 自适应的调节策略：拟机会根据当前系统的运行情况收集性能监控信息，动态调整这些参数以提供最合适的停顿时间或者最大的吞吐量。</li>
+</ul>
+</li>
+<li><p>Serial Old 收集器</p>
+<p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/jvm/Serial-Old.jpg" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li>是 Serial 收集器的老年代版本</li>
+<li>标记 - 整理算法</li>
+<li>串行，即垃圾收集器与用户程序交替执行</li>
+<li>单线程</li>
+</ul>
+</li>
+<li><p>Parallel Old 收集器</p>
+<p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/jvm/Parallel-Old.jpg" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li>是 Parallel Scavenge 收集器的老年代版本</li>
+<li>标记 - 整理算法</li>
+<li>串行，即垃圾收集器与用户程序交替执行</li>
+<li>多线程</li>
+</ul>
+</li>
+<li><p>CMS 收集器</p>
+<p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/jvm/CMS.jpg" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li>标记 - 清除算法</li>
+<li>流程：<ul>
+<li>初始标记：仅仅只是标记一下 GC Roots 能直接关联到的对象，速度很快，需要停顿。</li>
+<li>并发标记：进行 GC Roots Tracing 的过程，它在整个回收过程中耗时最长，不需要停顿。</li>
+<li>重新标记：为了修正并发标记期间因用户程序继续运作而导致标记产生变动的那一部分对象的标记记录，需要停顿。</li>
+<li>并发清除：不需要停顿。</li>
+</ul>
+</li>
+<li>缺点：<ul>
+<li>吞吐量低：低停顿时间是以牺牲吞吐量为代价的，导致 CPU 利用率不够高。</li>
+<li>无法处理浮动垃圾，可能出现 Concurrent Mode Failure。浮动垃圾是指并发清除阶段由于用户线程继续运行而产生的垃圾，这部分垃圾只能到下一次 GC 时才能进行回收。由于浮动垃圾的存在，因此需要预留出一部分内存，意味着 CMS 收集不能像其它收集器那样等待老年代快满的时候再回收。如果预留的内存不够存放浮动垃圾，就会出现 Concurrent Mode Failure，这时虚拟机将临时启用 Serial Old 来替代 CMS。</li>
+<li>标记 - 清除算法导致的空间碎片，往往出现老年代空间剩余，但无法找到足够大连续空间来分配当前对象，不得不提前触发一次 Full GC。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>G1 收集器</p>
+<p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/jvm/G1.jpg" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li><p>堆被分为新生代和老年代，其它收集器进行收集的范围都是整个年轻代或者老年代，而 G1 通过年轻代收集集合和混合收集集合，可以单独收集年轻代，或者对年轻代和老年代一起回收。</p>
+<p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/jvm/generations.png" srcset="/img/loading.gif" lazyload></p>
+<p>G1 把堆划分成多个大小相等的独立区域（Region），年轻代和老年代不再物理隔离，他们都是一部分Region的集合。通过引入 Region 的概念，从而将原来的一整块内存空间划分成多个的小空间，使得每个小空间可以单独进行垃圾回收。这种划分方法带来了很大的灵活性，使得可预测的停顿时间模型成为可能。通过记录每个 Region 垃圾回收时间以及回收所获得的空间（这两个值是通过过去回收的经验获得），并维护一个优先列表，每次根据允许的收集时间，优先回收价值最大的 Region。</p>
+<p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/jvm/G1-heap-allocation.png" srcset="/img/loading.gif" lazyload></p>
+<p>在串行和并行收集器中，GC通过整堆扫描，来确定对象是否处于可达路径中。然而G1为了避免STW式的整堆扫描，在每个 Region 都记录了一个 Remembered Set，用来记录该 Region 对象的引用对象所在的 Region。通过使用 Remembered Set，在做可达性分析的时候就可以避免全堆扫描。当要回收该分区时，通过扫描分区的RSet，来确定引用本分区内的对象是否存活，进而确定本分区内的对象存活情况。需要注意，对年轻代进行整体收集，因此引用源自年轻代的对象，不需要在RSet中记录。只有老年代的分区可能会有RSet记录。</p>
+</li>
+<li><p>流程：</p>
+<ul>
+<li>初始标记</li>
+<li>并发标记</li>
+<li>最终标记：为了修正在并发标记期间因用户程序继续运作而导致标记产生变动的那一部分标记记录，虚拟机将这段时间对象变化记录在线程的 Remembered Set Logs 里面，最终标记阶段需要把 Remembered Set Logs 的数据合并到 Remembered Set 中。这阶段需要停顿线程，但是可并行执行。</li>
+<li>筛选回收：首先对各个 Region 中的回收价值和成本进行排序，根据用户所期望的 GC 停顿时间来制定回收计划。此阶段其实也可以做到与用户程序一起并发执行，但是因为只回收一部分 Region，时间是用户可控制的，而且停顿用户线程将大幅度提高收集效率。</li>
+</ul>
+</li>
+<li><p>优点：</p>
+<ul>
+<li>空间整合：整体来看是基于“标记 - 整理”算法实现的收集器，从局部（两个 Region 之间）上来看是基于“复制”算法实现的，这意味着运行期间不会产生内存空间碎片。</li>
+<li>可预测的停顿：能让使用者明确指定在一个长度为 M 毫秒的时间片段内，消耗在 GC 上的时间不得超过 N 毫秒。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="CMS与G1的并发标记算法-三色标记法"><a href="#CMS与G1的并发标记算法-三色标记法" class="headerlink" title="CMS与G1的并发标记算法 - 三色标记法"></a>CMS与G1的并发标记算法 - 三色标记法</h2><p>CMS和G1在并发标记时使用的是同一个算法：三色标记法，使用白灰黑三种颜色标记对象。</p>
+<ul>
+<li>白色是未标记</li>
+<li>灰色自身被标记，所有引用的对象没有完全被标记</li>
+<li>黑色自身与所有引用对象都已标记</li>
+</ul>
+<p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/jvm/g1-three-color.png" srcset="/img/loading.gif" lazyload></p>
+<ol>
+<li>GC 开始前所有对象都是白色。</li>
+<li>初始标记时，所有GC Roots直达的对象被压到栈中，待搜索，此时颜色是灰色。</li>
+<li>然后依次从栈中取出灰色对象，搜索其子对象，子对象也会被涂为灰色，入栈。当其所有的子对象都涂为灰色之后该对象被涂为黑色。</li>
+<li>当 GC 结束之后灰色对象将全部没了，剩下黑色的为存活对象，白色的为垃圾。</li>
+</ol>
+<p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/jvm/three-color.gif" srcset="/img/loading.gif" lazyload></p>
+<p>漏标问题。在重新标记/最终标记的过程中，若删除了灰色到白色的引用，而是改为黑色指向白色，此时如果不对黑色重新扫描，则会漏标，会把白色回收掉。</p>
+<p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/jvm/three-color-spill-tag-1.png" srcset="/img/loading.gif" lazyload></p>
+<p>产生漏标问题的条件有两个：</p>
+<ul>
+<li>黑色对象指向了白色对象</li>
+<li>灰色对象指向白色对象的引用消失</li>
+</ul>
+<p>所以要解决漏标问题，打破两个条件之一即可：</p>
+<ul>
+<li>跟踪黑指向白的增加 incremental update：增量更新，关注引用的增加，把黑色重新标记为灰色，下次重新扫描该对象。CMS采用该方法。</li>
+<li>记录灰指向白的消失 SATB snapshot at the beginning：关注引用的删除，当灰–&gt;白消失时，要把这个白色推到GC的堆栈，保证白还能被GC扫描到。G1采用该方法。</li>
+</ul>
+<p>为什么G1采用SATB而不用incremental update？</p>
+<p>因为采用incremental update把黑色重新标记为灰色后，之前扫描过的还要再扫描一遍，效率太低。G1有RSet与SATB相配合。RSet里记录了其他对象指向自己的引用，这样就不需要再扫描其他区域，只要扫描RSet就可以了。</p>
+<h1 id="内存分配与回收策略"><a href="#内存分配与回收策略" class="headerlink" title="内存分配与回收策略"></a>内存分配与回收策略</h1><h2 id="Minor-GC-和-Full-GC"><a href="#Minor-GC-和-Full-GC" class="headerlink" title="Minor GC 和 Full GC"></a>Minor GC 和 Full GC</h2><ul>
+<li>Minor GC：回收新生代，因为新生代对象存活时间很短，因此 Minor GC 会频繁执行，执行的速度一般也会比较快。</li>
+<li>Full GC：回收老年代和新生代，老年代对象其存活时间长，因此 Full GC 很少执行，执行速度会比 Minor GC 慢很多。</li>
+</ul>
+<h2 id="内存分配策略"><a href="#内存分配策略" class="headerlink" title="内存分配策略"></a>内存分配策略</h2><ol>
+<li><p>对象优先在 Eden 分配</p>
+<p>大多数情况下，对象在新生代 Eden 上分配，当 Eden 空间不够时，发起 Minor GC。</p>
+</li>
+<li><p>大对象直接进入老年代</p>
+<p>大对象是指需要连续内存空间的对象，直接在老年代分配，避免在 Eden 和 Survivor 之间的大量内存复制</p>
+</li>
+<li><p>长期存活的对象进入老年代</p>
+<p>为对象定义年龄计数器，对象在 Eden 出生并经过 Minor GC 依然存活，并且能被 Survivor 容纳，年龄就增加 1 岁，增加到一定年龄（默认15）则移动到老年代中。</p>
+</li>
+<li><p>动态对象年龄判定</p>
+<p>虚拟机并不是永远要求对象的年龄必须达到阈值才能晋升老年代，如果在 Survivor 中相同年龄所有对象大小的总和大于 Survivor 空间的一半，则年龄大于或等于该年龄的对象可以直接进入老年代。</p>
+</li>
+<li><p>空间分配担保</p>
+<p>把Survivor无法容纳的对象直接转移到老年代。</p>
+<p>在 Minor GC 之前，虚拟机先检查老年代最大可用的连续空间是否大于新生代所有对象总空间，如果条件成立的话，那么 Minor GC 可以确认是安全的。如果不成立的话虚拟机会查看是否允许担保失败，如果允许那么就会继续检查老年代最大可用的连续空间是否大于历次晋升到老年代对象的平均大小，如果大于，将尝试着进行一次 Minor GC；如果小于，或者不允许冒险，那么就要进行一次 Full GC。</p>
+</li>
+</ol>
+<h2 id="Full-GC-的触发条件"><a href="#Full-GC-的触发条件" class="headerlink" title="Full GC 的触发条件"></a>Full GC 的触发条件</h2><p>对于 Minor GC，其触发条件非常简单，当 Eden 空间满时，就将触发一次 Minor GC。而 Full GC 则相对复杂，有以下条件：</p>
+<ol>
+<li><p>调用 System.gc()</p>
+<p>只是建议虚拟机执行 Full GC，但是虚拟机不一定真正去执行。不建议使用这种方式，而是让虚拟机管理内存。</p>
+</li>
+<li><p>老年代空间不足</p>
+<p>常见原因：</p>
+<ol>
+<li>老大对象直接进入老年代：尽量不要创建过大的对象以及数组</li>
+<li>长期存活的对象进入老年代：通过调节虚拟机参数，让对象在新生代多存活一段时间</li>
+</ol>
+</li>
+<li><p>空间分配担保失败</p>
+<p>使用复制算法的 Minor GC 需要老年代的内存空间作担保，如果担保失败会执行一次 Full GC。</p>
+</li>
+<li><p> JDK 1.7 及以前的永久代空间不足</p>
+</li>
+</ol>
+<p>   在 JDK 1.7 及以前，HotSpot 虚拟机中的方法区是用永久代实现的，永久代中存放的为一些 Class 的信息、常量、静态变量等数据。当系统中要加载的类、反射的类和调用的方法较多时，永久代可能会被占满。如果经过 Full GC 仍然回收不了，那么虚拟机会抛出 OutOfMemoryError。解决方法是增大永久代空间或转为使用 CMS GC。</p>
+<ol start="5">
+<li><p>Concurrent Mode Failure</p>
+<p>并发清除阶段产生的浮动垃圾触发 Full GC。</p>
+</li>
+</ol>
+<h1 id="类加载机制"><a href="#类加载机制" class="headerlink" title="类加载机制"></a>类加载机制</h1><h2 id="new对象都做了什么"><a href="#new对象都做了什么" class="headerlink" title="new对象都做了什么"></a>new对象都做了什么</h2><ol>
+<li>检查<ol>
+<li>是否有常量</li>
+<li>类是否加载过</li>
+</ol>
+</li>
+<li>分配内存</li>
+<li>初始化为零值</li>
+<li>对象头设置</li>
+<li>初始化代码中设置的值</li>
+</ol>
+<h2 id="类的生命周期"><a href="#类的生命周期" class="headerlink" title="类的生命周期"></a>类的生命周期</h2><p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/jvm/class-life.png" srcset="/img/loading.gif" lazyload></p>
+<ol>
+<li><p>加载</p>
+<ul>
+<li>通过类的完全限定名称获取定义该类的二进制字节流</li>
+<li>将该字节流表示的静态存储结构转换为方法区的运行时存储结构</li>
+<li>在内存中生成一个代表该类的 Class 对象，存储在方法区，作为方法区中该类各种数据的访问入口。</li>
+</ul>
+</li>
+<li><p>验证</p>
+<p>确保 Class 文件的字节流中包含的信息符合当前虚拟机的要求，并且不会危害虚拟机自身的安全</p>
+</li>
+<li><p>准备</p>
+<p>类变量是被 static 修饰的变量，准备阶段为类变量分配内存并设置初始值，使用的是方法区的内存。初始值一般为 0 值。如果类变量是常量，那么它将初始化为字面量。</p>
+<p>实例变量不会在这阶段分配内存，它会在对象实例化时随着对象一起被分配在堆中。应该注意到，实例化不是类加载的一个过程，类加载发生在所有实例化操作之前，并且类加载只进行一次，实例化可以进行多次。</p>
+</li>
+<li><p> 解析</p>
+</li>
+</ol>
+<p>   将常量池的符号引用替换为直接引用</p>
+<ol start="5">
+<li><p>初始化</p>
+<p>初始化阶段是虚拟机执行类构造器方法的过程。在准备阶段，类变量已经赋过一次系统要求的初始值，而在初始化阶段，根据程序员通过程序制定的主观计划去初始化类变量和其它资源。</p>
+<p>一些需要注意的：</p>
+<ul>
+<li>类构造器是由编译器自动收集类中所有类变量的赋值动作和静态语句块中的语句合并产生的，编译器收集的顺序由语句在源文件中出现的顺序决定。特别注意的是，静态语句块只能访问到定义在它之前的类变量，定义在它之后的类变量只能赋值，不能访问。</li>
+<li>由于父类的类构造器方法先执行，也就意味着父类中定义的静态语句块的执行要优先于子类</li>
+<li>接口中不可以使用静态语句块，但仍然有类变量初始化的赋值操作，因此接口与类一样都会生成类构造器方法。但接口与类不同的是，执行接口的类构造器方法不需要先执行父接口的类构造器方法。只有当父接口中定义的变量使用时，父接口才会初始化。另外，接口的实现类在初始化时也一样不会执行接口的类构造器方法。</li>
+<li>虚拟机会保证一个类的类构造器方法在多线程环境下被正确的加锁和同步。</li>
+</ul>
+</li>
+</ol>
+<h2 id="类初始化时机"><a href="#类初始化时机" class="headerlink" title="类初始化时机"></a>类初始化时机</h2><ol>
+<li><p>主动引用</p>
+<ul>
+<li>使用 new 关键字实例化对象、读取或设置一个类的静态字段（被 final 修饰、已在编译期把结果放入常量池的静态字段除外）、调用一个类的静态方法</li>
+<li>当初始化一个类的时候，如果发现其父类还没有进行过初始化，则需要先触发其父类的初始化</li>
+<li>当虚拟机启动时，会先初始化主类</li>
+<li>使用 java.lang.reflect 包的方法对类进行反射调用的时候，如果类没有进行初始化，则需要先触发其初始化</li>
+<li>当使用 JDK 1.7 的动态语言支持时，如果一个 java.lang.invoke.MethodHandle 实例最后的解析结果为 REF_getStatic, REF_putStatic, REF_invokeStatic 的方法句柄，并且这个方法句柄所对应的类没有进行过初始化，则需要先触发其初始化</li>
+</ul>
+</li>
+<li><p>被动引用</p>
+<p>以上 5 种场景中的行为称为对一个类进行主动引用。除此之外，所有引用类的方式都不会触发初始化，称为被动引用。被动引用的常见例子包括：</p>
+<ul>
+<li>通过子类引用父类的静态字段，不会导致子类初始化</li>
+<li>通过数组定义来引用类，不会触发此类的初始化。该过程会对数组类进行初始化，数组类是一个由虚拟机自动生成的、直接继承自 Object 的子类，其中包含了数组的属性和方法。</li>
+<li>常量在编译阶段会存入<strong>调用类</strong>的常量池中，本质上并没有直接引用到<strong>定义常量的类</strong>，因此不会触发定义常量的类的初始化</li>
+</ul>
+</li>
+</ol>
+<h2 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h2><p>两个类相等，需要类本身相等，并且使用同一个类加载器进行加载。这是因为每一个类加载器都拥有一个独立的类名称空间。</p>
+<p>从 Java 虚拟机的角度来讲，只存在以下两种不同的类加载器：</p>
+<ul>
+<li>启动类加载器，使用 C++ 实现，是虚拟机自身的一部分；</li>
+<li>所有其它的类加载器，使用 Java 实现，独立于虚拟机，继承自抽象类 java.lang.ClassLoader。</li>
+</ul>
+<p>从 Java 开发人员的角度看，类加载器可以划分得更细致一些：</p>
+<ul>
+<li>启动类加载器</li>
+<li>扩展类加载器</li>
+<li>应用程序类加载器</li>
+<li>自定义类加载器</li>
+</ul>
+<h2 id="双亲委派模型"><a href="#双亲委派模型" class="headerlink" title="双亲委派模型"></a>双亲委派模型</h2><p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/jvm/parent-delegation-model.png" srcset="/img/loading.gif" lazyload></p>
+<p>类加载器之间的层次关系，称为双亲委派模型。该模型要求除了顶层的启动类加载器外，其它的类加载器都要有自己的父类加载器。这里的父子关系一般通过组合关系来实现，而不是继承关系。</p>
+<p>工作过程：一个类加载器首先将类加载请求转发到父类加载器，只有当父类加载器无法完成时才尝试自己加载。</p>
+<p>好处：使得 Java 类随着它的类加载器一起具有一种带有优先级的层次关系，从而使得基础类得到统一。</p>
+<h1 id="虚拟机字节码执行引擎"><a href="#虚拟机字节码执行引擎" class="headerlink" title="虚拟机字节码执行引擎"></a>虚拟机字节码执行引擎</h1><h2 id="静态多态：重载方法匹配优先级"><a href="#静态多态：重载方法匹配优先级" class="headerlink" title="静态多态：重载方法匹配优先级"></a>静态多态：重载方法匹配优先级</h2><p>静态分派：看静态类型能查找并匹配到的方法版本</p>
+<ol>
+<li><p>自动转型</p>
+<p>byte/char/short -&gt; int -&gt; long -&gt; float -&gt; double</p>
+</li>
+<li><p>接口</p>
+<p> 匹配到多个接口，其优先级一样，编译器会报错</p>
+</li>
+<li><p>父类</p>
+<p>按照继承关系从下到上</p>
+</li>
+<li><p>可变长参数</p>
+</li>
+</ol>
+<h2 id="动态多态：重写方法匹配过程"><a href="#动态多态：重写方法匹配过程" class="headerlink" title="动态多态：重写方法匹配过程"></a>动态多态：重写方法匹配过程</h2><p>动态分派：看动态类型能查找并匹配到的方法版本。</p>
+<p>其底层实现是在类方法区中建立一个虚方法表，虚方法表中存放着各个方法的实际入口。如果某个方法在子类中没有被重写，那子类的虚方法表里面的地址入口就和父类相同方法的地址入口一致，都指向父类的方法实现入口。如果子类重写了这个方法，那子类的虚方法表里面的地址入口就指向子类实现版本的方法入口。确定动态类型后，查找虚方法表，返回方法的直接引用。</p>
+<p>先考虑方法重写，再考虑方法重载。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/08/01/java%E9%9D%A2%E8%AF%95%E9%A2%98/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">java面试题</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/06/23/%E5%9F%BA%E6%95%B0%E7%BB%9F%E8%AE%A1%E7%AE%97%E6%B3%95/">
+                        <span class="hidden-mobile">基数统计算法</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"64e7a0af76ea907275e7","clientSecret":"58fc6a6232d3179936704144df3ddeef170c2fdd","repo":"bolg-comment","owner":"Xzzz583722585","admin":["Xzzz583722585"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '9f1f282bdc7c2643fd159715fd257521'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <i class="iconfont icon-love"></i> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        京ICP证123456号
+      </a>
+    </span>
+    
+      
+        <span>
+          <a
+            href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+            rel="nofollow noopener"
+            class="beian-police"
+            target="_blank"
+          >
+            
+              <span style="visibility: hidden; width: 0">|</span>
+              <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+            
+            <span>京公网安备12345678号</span>
+          </a>
+        </span>
+      
+    
+  </div>
+
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

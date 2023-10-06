@@ -149,7 +149,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      7.2k 字
+      9.3k 字
     </span>
   
 
@@ -159,7 +159,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      81
+      103
        分钟
     </span>
   
@@ -406,7 +406,7 @@
 
 <p>在处理集合类型的数据时，为了防止单个key多包含的元素过多，造成客户端缓冲区aofBuf溢出，会循环分批处理这个key中的元素（默认配置64个元素），即最终效果是写入多条命令。</p>
 <p>之前我们提到过，写入AOF时，如果key已经过期，但还没有被删除，那么依然会将其写入到AOF文件内，等到它真正被删除时，再往AOF文件内追加一条DEL删除命令。之所以这样。是因为可以在不会影响AOF文件所表达出的数据库状态的情况下，保持AOF写入原则，忠实地记录写命令的执行情况。</p>
-<p>另外，对于AOF写入，它所想要的效果是用最少的命令表达当前数据库的状态，很显然就不需要写入过期键到AOF重写文件内了。</p>
+<p>另外，对于AOF重写，它所想要的效果是用最少的命令表达当前数据库的状态，很显然就不需要写入过期键到AOF重写文件内了。</p>
 <p>触发AOF重写有两种方式：</p>
 <ul>
 <li>执行BGREWRITEAOF命令</li>
@@ -440,9 +440,80 @@
 <p><strong>为什么不直接重写原AOF文件，而是等重写的最后再用生成好的新文件替换原AOF文件？</strong></p>
 <p>一，子进程复用原AOF文件，必然会在某些时候和父进程产生争抢，从而影响父进程性能，这和我们一开始用子进程负责AOF重写的初衷不符。</p>
 <p>二，若AOF重写过程中失败，复用原文件会对其产生污染，导致AOF功能不可用。</p>
-<h1 id="六-事件"><a href="#六-事件" class="headerlink" title="六.事件"></a>六.事件</h1><p>Redis服务器主进程就是一个事件循环处理函数，依次处理文件事件与时间事件，</p>
-<p>文件事件负责接受客户端的命令请求，以及向客户端发送命令回复。</p>
-<p>时间事件负责处理像serverCron()函数这样需要定时运行的函数。</p>
+<h1 id="六-事件"><a href="#六-事件" class="headerlink" title="六.事件"></a>六.事件</h1><p>Redis服务器主进程就是一个事件循环处理函数，依次处理文件事件与时间事件：</p>
+<ul>
+<li>文件事件：负责接收客户端的命令请求，以及向客户端发送命令回复。Redis服务器通过套接字与客户端进行连接，而文件事件就是服务器对套接字操作的抽象。服务器与客户端的通信会产生相应的文件事件，而服务器则通过监听并处理这些事件完成一系列网络通信操作。</li>
+<li>时间事件：负责处理像serverCron()函数这样需要定时运行的函数，时间事件就是对这类定时操作的抽象。</li>
+</ul>
+<h2 id="6-1-文件事件"><a href="#6-1-文件事件" class="headerlink" title="6.1.文件事件"></a>6.1.文件事件</h2><h3 id="6-1-1-基于Reactor-I-O多路复用模式的文件事件处理器"><a href="#6-1-1-基于Reactor-I-O多路复用模式的文件事件处理器" class="headerlink" title="6.1.1.基于Reactor I/O多路复用模式的文件事件处理器"></a>6.1.1.基于Reactor I/O多路复用模式的文件事件处理器</h3><p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/redis/event-loop.png" srcset="/img/loading.gif" lazyload></p>
+<p>文件事件处理器由四部分组成：套接字、I/O多路复用程序、文件事件分派器、文件事件处理器：</p>
+<ul>
+<li>套接字<ul>
+<li>文件事件是对套接字操作的抽象。每当一个套接字准备好执行链接应答、写入、读取、关闭等操作时，就会产生一个文件事件。</li>
+</ul>
+</li>
+<li>I/O多路复用程序<ul>
+<li>同时监听多个套接字，既实现了高性能的网络通信模型，又可以很好地与Redis服务器中同样以单线程运行的模块对接。</li>
+<li>尽管由于服务器连接的多个套接字会并发地产生文件事件，但I/O多路复用程序总是会将所有产生事件的套接字，按照先后顺序、同步、每次一个的方案依次加入队列中，然后将套接字传送给文件事件分派器。只有当上一个套接字产生的事件被处理完毕后，I/O多路复用程序才会向文件事件分派器传送下一个套接字。</li>
+</ul>
+</li>
+<li>文件事件分派器<ul>
+<li>接收I/O多路复用程序传送来的套接字，根据套接字产生的事件的类型，为其关联不同的事件处理器进行处理。</li>
+<li>文件事件类型：<ul>
+<li>AE_READABLE：当套接字变得可读时（客户端对套接字执行connect、write、close操作），套接字产生AE_READABLE事件</li>
+<li>AE_WRITABLE：当套接字变得可写时（客户端对套接字执行read操作），套接字产生AE_WRITABLE事件</li>
+<li>当一个套接字同时产生AE_READABLE、AE_WRITABLE两类事件时，服务器会先处理AE_READABLE事件，再处理AE_WRITABLE事件。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>文件事件处理器<ul>
+<li>执行实际的处理动作。</li>
+<li>分类：<ul>
+<li>连接应答处理器：当服务器初始化的时候，会降<strong>服务器监听套接字的AE_READABLE事件</strong>与连接应答处理器关联起来。当有客户端连接服务器监听套接字时，套接字就会产生AE_READABLE事件，从而引发连接应答处理器的执行，并执行相应的套接字应答操作。</li>
+<li>命令请求处理器：当一个客户端通过连接应答处理器成功连接到服务器之后，服务器会将<strong>客户端套接字的AE_READABLE事件</strong>和命令请求处理器关联起来。当客户端向服务器发送命令请求的时候，套接字就会产生AE_READABLE事件，从而引发命令请求处理器的执行，并执行相应的套接字读取操作。</li>
+<li>命令回复处理器：当服务器有命令回复需要传输给客户端的时候，服务器会将<strong>客户端套接字的AE_WRITABLE事件</strong>和命令响应处理器关联起来。当客户端准备好接收服务器的命令回复的时候，套接字就会产生AE_WRITABLE事件，从而引发命令回复处理器的执行，并执行相应的套接字写入操作。</li>
+<li>其他</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="6-1-2-一次完整的客户端与服务器连接事件示例"><a href="#6-1-2-一次完整的客户端与服务器连接事件示例" class="headerlink" title="6.1.2.一次完整的客户端与服务器连接事件示例"></a>6.1.2.一次完整的客户端与服务器连接事件示例</h3><p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/redis/event-loop-demo.png" srcset="/img/loading.gif" lazyload></p>
+<ol>
+<li>假设Redis服务器已经启动完成，那么此时服务器监听套接字的AE_READABLE事件会与连接应答处理器关联起来，并处于监听状态。</li>
+<li>客户端向服务器发起建立 socket 连接的请求，监听套接字会产生AE_READABLE事件，触发连接应答处理器执行。连接应答处理器会对客户端的连接请求进行应答，创建客户端套接字及客户端状态，并将客户端套接字的AE_READABLE事件和命令请求处理器关联起来，并处于监听状态。</li>
+<li>客户端建立连接后，向服务器发送命令，那么客户端套接字将产生 AE_READABLE 事件，触发命令请求处理器执行。命令请求处理器读取客户端命令，然后传递给相关程序去执行。</li>
+<li>执行命令获得相应的命令回复后，为了将命令回复传递给客户端，服务器将客户端套接字的 AE_WRITEABLE 事件与命令回复处理器关联。当客户端试图读取命令回复时，客户端套接字产生 AE_WRITEABLE 事件，触发命令回复处理器执行。命令回复处理器将命令回复全部写入到套接字中后，就会解除客户端套接字的 AE_WRITEABLE 事件与命令回复处理器的关联。</li>
+<li>命令回复会由套接字负责传输给客户端。</li>
+</ol>
+<h2 id="6-2-时间事件"><a href="#6-2-时间事件" class="headerlink" title="6.2.时间事件"></a>6.2.时间事件</h2><p>时间事件的具体定义结构：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs java">typedef struct aeTimeEvent &#123;<br>    <span class="hljs-comment">/* 全局唯一ID */</span><br>    <span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> id; <span class="hljs-comment">/* time event identifier. */</span><br>    <span class="hljs-comment">/* 秒精确的UNIX时间戳，记录时间事件到达的时间*/</span><br>    <span class="hljs-keyword">long</span> when_sec; <span class="hljs-comment">/* seconds */</span><br>    <span class="hljs-comment">/* 毫秒精确的UNIX时间戳，记录时间事件到达的时间*/</span><br>    <span class="hljs-keyword">long</span> when_ms; <span class="hljs-comment">/* milliseconds */</span><br>    <span class="hljs-comment">/* 时间处理器 */</span><br>    aeTimeProc *timeProc;<br>    <span class="hljs-comment">/* 事件结束回调函数，析构一些资源*/</span><br>    aeEventFinalizerProc *finalizerProc;<br>    <span class="hljs-comment">/* 私有数据 */</span><br>    <span class="hljs-keyword">void</span> *clientData;<br>    <span class="hljs-comment">/* 前驱节点 */</span><br>    struct aeTimeEvent *prev;<br>    <span class="hljs-comment">/* 后继节点 */</span><br>    struct aeTimeEvent *next;<br>&#125; aeTimeEvent;<br></code></pre></td></tr></table></figure>
+
+<p>时间事件分类：</p>
+<ul>
+<li>定时事件：让一段程序在指定的时间之后执行一次。</li>
+<li>周期性事件：让一段程序每隔指定时间就执行一次。</li>
+</ul>
+<p>区分时间事件类型的方法是通过时间事件处理器的返回值：</p>
+<ul>
+<li>如果返回值是 <code>AE_NOMORE</code>，那么这个事件是一个定时事件，该事件在到达后会被删除，之后不会再重复。</li>
+<li>如果返回值是非 <code>AE_NOMORE</code> 的值，那么这个事件为周期性事件，当一个时间事件到达后，服务器会根据时间处理器的返回值，对时间事件的 when 属性进行更新，让这个事件在一段时间后再次到达，并以这种方式一直更新下去。</li>
+</ul>
+<p><img src="https://jon-xzzz-image-bed.oss-cn-beijing.aliyuncs.com/blog/jonxzzz/redis/time-event-list.png" srcset="/img/loading.gif" lazyload></p>
+<p>Redis服务器将所有时间事件都放在一个无序链表中，每当时间事件执行器运行时，它就遍历整个链表，查找所有已到达的时间事件，并调用相应的事件处理器处理。新产生的时间事件总是插到链表头。由于正常模式下的Redis服务器只使用serverCron一个时间事件，而在benchmark模式下，服务器也只使用两个时间事件，所以不影响事件执行的性能。</p>
+<p>综上所述，处理时间事件的函数如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">processTimeEvents</span><span class="hljs-params">(aeEventLoop *eventLoop)</span> </span>&#123;<br>    <span class="hljs-keyword">int</span> maxId = eventLoop-&gt;timeEventNextId-<span class="hljs-number">1</span>;<br>    <span class="hljs-comment">/* 遍历服务器中的所有时间事件 */</span><br>    <span class="hljs-keyword">for</span>(<span class="hljs-function">timeEvent in <span class="hljs-title">allTimeEvent</span><span class="hljs-params">()</span>) </span>&#123;<br>        <span class="hljs-keyword">long</span> now_sec, now_ms;<br>        <span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> id;<br><br>        <span class="hljs-comment">/* 删除需要删除的时间事件 */</span><br>        <span class="hljs-keyword">if</span> (timeEvent.id == AE_DELETED_EVENT_ID) &#123;<br>            <span class="hljs-comment">// 从链表中删除</span><br>            <span class="hljs-keyword">continue</span>;<br>        &#125;<br><br>        <span class="hljs-comment">/* id 大于最大maxId,是该循环周期生成的时间事件，不处理 */</span><br>        <span class="hljs-keyword">if</span> (timeEvent.id &gt; maxId) &#123;<br>            <span class="hljs-keyword">continue</span>;<br>        &#125;<br>        <br>        aeGetTime(&amp;now_sec, &amp;now_ms);<br>        <span class="hljs-comment">/* 事件已经到达，调用其timeProc函数 */</span><br>        <span class="hljs-keyword">if</span> (timeEvent.whenSec &lt;= now)<br>        &#123;<br>            <span class="hljs-keyword">int</span> retval = timeEvent.timeProc(eventLoop, id, timeEvent.clientData);<br>            <br>            <span class="hljs-comment">/* 如果返回值不等于 AE_NOMORE,表示是一个周期性事件，修改其whenSec和whenMs属性*/</span><br>            <span class="hljs-keyword">if</span> (retval != AE_NOMORE) &#123;<br>                aeAddMillisecondsToNow(retval, timeEvent.whenSec, timeEvent.whenMs);<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                <span class="hljs-comment">/* 一次性事件，标记为需删除，下次遍历时会删除*/</span><br>                timeEvent.id = AE_DELETED_EVENT_ID;<br>            &#125;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>serverCron函数默认每100ms执行一次，可以通过修改hz配置来调整其执行周期，它的职责包括：</p>
+<ul>
+<li>更新服务器的各类统计信息</li>
+<li>清理过期键值对</li>
+<li>关闭和清理连接失效的客户端</li>
+<li>尝试进行RDB或AOF持久化</li>
+<li>如果服务器是master，那么对slave进行定期同步</li>
+<li></li>
+</ul>
 <h1 id="七-客户端"><a href="#七-客户端" class="headerlink" title="七.客户端"></a>七.客户端</h1><h1 id="八-服务端"><a href="#八-服务端" class="headerlink" title="八.服务端"></a>八.服务端</h1><p><strong>todo list</strong></p>
 <ul>
 <li><input disabled="" type="checkbox"> 图完善</li>
@@ -489,9 +560,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/06/04/Redis%E5%BA%94%E7%94%A8-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/">
+                      <a href="/2023/06/09/fork%E5%87%BD%E6%95%B0%E4%BB%A5%E5%8F%8ACopy-On-Write%E6%9C%BA%E5%88%B6/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Redis应用-分布式锁</span>
+                        <span class="hidden-mobile">fork函数以及Copy-On-Write机制</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
